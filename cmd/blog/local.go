@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// +build !appengine
-
 // This file implements a stand-alone blog server.
 
 package main
@@ -15,7 +13,7 @@ import (
 )
 
 var (
-	httpAddr     = flag.String("http", "localhost:8080", "HTTP listen address")
+	httpAddr     = flag.String("http", "localhost:9003", "HTTP listen address")
 	contentPath  = flag.String("content", "content/", "path to content files")
 	templatePath = flag.String("template", "template/", "path to template files")
 	staticPath   = flag.String("static", "static/", "path to static files")

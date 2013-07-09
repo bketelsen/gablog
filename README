@@ -2,7 +2,7 @@ Gopher Academy Blog engine.
 
 Shamelessly forked from go.blog
 
-To add articles, fork and create articles in the /content directory.  See examples in /example articles directory, or read go.blog and slide documentation.
+To add articles, fork and create articles in the /content directory.  See examples in /example articles directory, or read go.blog and slide documentation.  http://godoc.org/code.google.com/p/go.talks/present
 
 Send pull request with article.
 

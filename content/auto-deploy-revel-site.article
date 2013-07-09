@@ -6,7 +6,7 @@ Brian Ketelsen
 
 * Introduction
 
-The websites that power GopherAcademy and GopherCon are written using [[http://robfig.github.io/revel/][Reve]], which is a very nice framework for building web applications.  Go has a great built-in HTTP server, but there are times when you don't want to roll-your-own web framework.  Revel is great if you're looking for a batteries-included approach to web development in Go.
+The websites that power GopherAcademy and GopherCon are written using [[http://robfig.github.io/revel/][Revel]], which is a very nice framework for building web applications.  Go has a great built-in HTTP server, but there are times when you don't want to roll-your-own web framework.  Revel is great if you're looking for a batteries-included approach to web development in Go.
 
 I come from a Ruby and Rails background, and one of my favorite parts of the Rails ecosystem is [[https://github.com/capistrano/capistrano/wiki][Capistrano]].  Deploying a Rails app is just a simple "cap deploy" command once you've set things up correctly.  I missed that with Revel.  I know that I could have used Capistrano to deploy our Revel applications; capistrano isn't limited in what you can use it to deploy.  But I wanted an opportunity to learn new technologies and push my Linux/Git/Go learning a little bit.  When Jeff Lindsay released [[https://github.com/progrium/dokku][Dokku]] I had my inspiration.  I wanted to create an automated deployment system like Dokku, but without using Docker. 
 

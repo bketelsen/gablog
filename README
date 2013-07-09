@@ -1,4 +1,21 @@
-This repository holds the Go Blog server code and content.
+Gopher Academy Blog engine.
 
-To submit changes to this repository, see http://golang.org/doc/contribute.html.
+Shamelessly forked from go.blog
+
+To add articles, fork and create articles in the /content directory.  See examples in /example articles directory, or read go.blog and slide documentation.
+
+Send pull request with article.
+
+Deployment:
+
+ssh to GA server. SU to git user:
+cd /var/www/gablog
+git pull
+ps -eaf | grep blog
+kill $PID of blog
+nohup ./blog &
+
+TODO:
+
+Better deployment script!
 

@@ -113,7 +113,22 @@ Restart the _Upstart_ service that runs the web application.
 
 * UPDATE
 
-Rob Figueiredo emailed me with a few comments about the post.  The best piece of advice he gave me was to ditch the `revel package $1` command in favor of `revel build $1 /var/www/$1/releases/$2` which shaves many seconds off the deployment and avoids the creation of the tar.gz file completely.  Awesome!  He also said that Revel supports environment variables in the app.conf file so I could export ${DBPASS} and use ${DBPASS} in my mysql connection script.  I tried this and couldn't make it work, more than likely it's a problem with the setuid stanza in the Upstart script and how Upstart handles environment variables.  I'll keep trying with that piece.  Thanks for the great advice Rob.  And of course, thanks for Revel, we love it.
+Rob Figueiredo emailed me with a few comments about the post.  The best piece of advice he gave me was to ditch the `revel package $1` command in favor of `revel build $1 /var/www/$1/releases/$2` which shaves many seconds off the deployment and avoids the creation of the tar.gz file completely.  Awesome!  He also said that Revel supports environment variables in the app.conf file so I could export ${DBPASS} and use ${DBPASS} in my mysql connection script.  I tried this and couldn't make it work, more than likely it's a problem with the setuid stanza in the Upstart script and how Upstart handles environment variables.  I'll keep trying with that piece.  Thanks for the great advice Rob.  And of course, thanks for Revel, we love it.  The new script looks like this:
+
+	#!/bin/bash
+	echo "Removing previous directory"
+	rm -rf /home/git/tmp/src/$1
+	echo "Creating new package directory"
+	mkdir -p /home/git/tmp/src/$1 && cat | tar -x -C /home/git/tmp/src/$1
+	export PATH=$PATH:/home/git/tmp/bin:/usr/local/go/bin
+	export GOPATH=/home/git/tmp
+	echo "Packaging application $1"
+	sed -i 's/BOGUSPASS/ncc1701c/g' /home/git/tmp/src/$1/conf/app.conf
+	revel build $1 /var/www/$1/releases/$2
+	rm /var/www/$1/current 
+	ln -s /var/www/$1/releases/$2 /var/www/$1/current
+	chmod +x /var/www/$1/current/run.sh
+	sudo restart $1
 
 * NginX Configuration
 

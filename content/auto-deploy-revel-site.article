@@ -123,7 +123,7 @@ Rob Figueiredo emailed me with a few comments about the post.  The best piece of
 	export PATH=$PATH:/home/git/tmp/bin:/usr/local/go/bin
 	export GOPATH=/home/git/tmp
 	echo "Packaging application $1"
-	sed -i 's/BOGUSPASS/ncc1701c/g' /home/git/tmp/src/$1/conf/app.conf
+	sed -i 's/BOGUSPASS/MyGoodPass/g' /home/git/tmp/src/$1/conf/app.conf
 	revel build $1 /var/www/$1/releases/$2
 	rm /var/www/$1/current 
 	ln -s /var/www/$1/releases/$2 /var/www/$1/current

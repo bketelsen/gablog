@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // This is a blog server for articles written in present format.
-// It powers blog.golang.org.
+// It powers blog.gopheracademy.com.
 package main
 
 import (
@@ -26,7 +26,7 @@ import (
 )
 
 const (
-	hostname     = "blog.golang.org"
+	hostname     = "blog.gopheracademy.com"
 	baseURL      = "http://" + hostname
 	homeArticles = 5  // articles to display on the home page
 	feedArticles = 10 // articles to include in Atom and JSON feeds
@@ -253,7 +253,7 @@ func (s *Server) renderAtomFeed() error {
 		updated = s.docs[0].Time
 	}
 	feed := atom.Feed{
-		Title:   "The Go Programming Language Blog",
+		Title:   "The Gopher Academy Blog",
 		ID:      "tag:" + hostname + ",2013:" + hostname,
 		Updated: atom.Time(updated),
 		Link: []atom.Link{{

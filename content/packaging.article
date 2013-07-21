@@ -1,0 +1,128 @@
+Remote Packages
+With Go Get & Git
+20 Jul 2013
+Tags: golang,remote,packages,dependencies
+
+Nathan Youngman
+
+* Introduction
+
+Go has an atypically strong suite of tools with go build, gofmt, godoc and gofix. For managing remote packages, we use `go`get`:
+
+  go get github.com/howeyc/fsnotify
+
+"One of the virtues of the Go tool is that it uses Git, Mercurial, Subversion, Bazaar..." - Andrew Gerrand, [[http://www.youtube.com/watch?v=p9VUCp98ay4][Go Fireside Chat 2013]]
+
+Compared to a _traditional_ centralized repository, `go`get` has several advantages:
+
+- easy to get started, use the DVCS we know
+- name spaces for package names
+- no additional processes or permissions to push a package
+- encourages new developers to use version control
+- a local copy of the full history, in case a remote repository disappears
+
+* Embrace DVCS
+
+As an extended example of _embracing_ the DVCS we know and love, lets consider forking a repository to add a feature or fix a bug (I'll be using Git).
+
+- `go`get`-u`github.com/howeyc/fsnotify` for the latest changes (or just pull master)
+- find and fix the bug, test it within our project, and commit the change to a feature branch
+- fork the repository on GitHub to `github.com/mycompany/fsnotify`
+- add a remote for the fork, push the change, and do a pull request
+
+This all feels very normal. We didn't even need to tell our package manager to switch from using a nut/gem/egg to Git, and the repository was already cloned.
+
+What happens if our pull request goes unanswered for a few days?
+
+- team members should go get the original repository to `src/github.com/howeyc/fsnotify`
+- then add a remote for `github.com/mycompany/fsnotify`
+- and checkout the feature branch for our bugfix
+
+When the fix is merged upstream, everyone can checkout master and pull from the `origin` remote.
+
+It's important to recognize that the Go compiler toolchain is only concerned with finding packages on disk. If your code imports `github.com/howeyc/fsnotify` then this package must be under `src/github.com/howeyc/fsnotify`. Any other third-party packages that import fsnotify will be looking there too. Lets consider this the _canonical_import_path_ for fsnotify.
+
+It's best to avoid resorting to symlinks or rewriting imports if we don't need to.
+
+* Reproducible Builds
+
+"Version skew is a really, really bad problem." - Rob Pike, [[http://www.youtube.com/watch?v=bj9T2c2Xk_s][The path to Go 1]]
+
+It's important for team members and CI servers to have a consistent view of the world. My first question for every reported issue is "are your dependencies up-to-date?"
+
+The go tools don't provide a solution, what about Git? Git can store references to other repositories with [[http://git-scm.com/book/en/Git-Tools-Submodules][submodules]]. Submodules can work, but they aren't without [[http://git-scm.com/book/en/Git-Tools-Submodules#Issues-with-Submodules][issues]].
+
+- it's possible for the main repository to reference unpushed changes in a submodule
+- submodules are unaware of the fork we make, so team members won't get our patch
+
+Git also supports [[http://git-scm.com/book/en/Git-Tools-Subtree-Merging][subtree merging]] to store a remote repository within the parent. This improve the situation slightly.
+
+- it's still quite tedious to check each dependency for updates
+- limits us to working with Git, requiring mirrors for gocheck, mgo, goamz, etc.
+
+This approach _divides_ the Go community by DVCS. Using mirrors makes it even more difficult to contribute across the DVCS boundary.
+
+A simple tool could _hoist_ the list of remote dependencies with SHA revisions, storing them in a per-project file. That environment can be recreated on another machine. Unlike subtree merging, our CI server needs to fetch packages from GitHub, et al. before it can deploy the final binary to our servers.
+
+* Virtual Environments
+
+It can be helpful to separate dependencies by project, particularly if they depend on different revisions of the same dependency. The Go tools have _rudimentary_ support for this by modifying the GOPATH. A simple tool or shell script can switch the GOPATH for you.
+
+To ensure that code completion and imports continue to work, editors must support [[https://github.com/DisposaBoy/GoSublime/blob/master/USAGE.md#per-project--settings--project-based-gopath][per-project settings]].
+
+Third-party packages are like a black box in other ecosystems, but `go`get` has nothing to  hide. Exploring and contributing is easy and obvious, and thankfully the [[https://code.google.com/p/go/source/detail?r=7102e27d578ef3cdfd1dc1e2cf36f3a94e8fc226][issue with detached HEADs]] has been resolved.
+
+* Versioning
+
+Go get has no support for DVCS *tags*. Third-party tools can help, but until the Go community converges on one tool, it seems unreasonable to require a specific tool to install our package.
+
+This has resulted in the makeshift solution of incorporating version numbers into the import path. If widely adopted, it follows that we will face builds with multiple versions of the same package.
+
+As a relatively young ecosystem, not many packages have reached v2. A dependency resolver for [[http://semver.org/][semantic versions]] may be inevitable, but we still have some time to explore other avenues.
+
+** Test-Driven Dependencies
+
+When updating a package with [[http://kylelemons.net/blog/2012/04/22-rx-for-go-headaches.article][Rx]], it will run all the tests for the package and every package that depends on it. While this isn't nearly as fast as comparing a few version numbers, it provides greater assurances.
+
+** Gofix Modules
+
+While I love having gofmt reformat my code, I'm not yet used to having a tool _alter_ my code. Given that we can easily review/revert the changes, gofix holds great promise for allowing API restructuring, particularly during the 0.x phase.
+
+"not every change is gofixable, sometimes you need to understand the code" - Rob Pike, [[http://www.youtube.com/watch?v=bj9T2c2Xk_s][The path to Go 1]]
+
+Fortunately, gofix can insert comments at the relevant locations:
+
+  // TODO: Deprecated, use ....
+
+How far can we take gofix? Can we make it easier for package authors to write and ship gofix modules?
+
+** Curated Directory
+
+The Go tool supports vanity import paths, which would allow a central curated directory of Go packages that are tested to work with one another.
+
+* Third-Party Tools
+
+The Go Authors had the foresight to directly support DVCS in the Go tools. What `go`get` does not provide, we can build on top of this foundation.
+
+"Everything else is built on this flexible foundation (FTP) and has grown over time." - Steffen Mueller, [[http://www.google.com/url?q=http%3A%2F%2Fmail.python.org%2Fpipermail%2Fdistutils-sig%2F2009-December%2F014977.html&sa=D&sntz=1&usg=AFQjCNHK-oYwAsIsjWXjqi44P8yDBIJgXQ][Python people want CPAN and how the latter came about]]
+
+There are several package managers for Go, and so the _paradox_of_choice_. Diversity is good, to the extent that these tools explore different solutions. Yet it's hard to imagine multiple tools with different strategies not causing a fracture in Go community. Eventually we will need to _bless_ one particular strategy that meets our needs and makes our lives easier.
+
+* Go Community
+
+It's worth considering what tools we as a community wish to build and use, and in turn how those tools affect our community.
+
+- To what extent do we trust others vs. take a _defensive_coding_ approach?
+- Do the tools cater to users of a specific OS, DVCS, or editor/IDE more so than others?
+- Do we encourage reuse of individual packages vs. repositories?
+- Do we make it easier or more difficult to contribute to open source?
+- Do the tools make- life easier for package maintainers and end-users alike?
+- Do the tools impose a maintenance burden?
+- Do we emphasize exploration and diversity with many packages that solve the same problem (eg. ANSI colors), or a unified effort towards a single package?
+- Do we focus on open source to such an extent that private repositories are "out of scope"?
+
+In the course of researching for this article, I experienced and saw much confusion over simple tasks, like the forking example at the beginning. I want to thank Dave Cheney and Kyle Lemons for helping me understand, and for many of the ideas presented here. I also would like to thank everyone who took the time to read & comment on the [[http://goo.gl/oqkvu][Go Packaging Google Doc]].
+
+
+
+

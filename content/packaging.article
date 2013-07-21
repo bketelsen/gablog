@@ -100,6 +100,16 @@ How far can we take gofix? Can we make it easier for package authors to write an
 
 The Go tool supports vanity import paths, which would allow a central curated directory of Go packages that are tested to work with one another.
 
+** Code Analysis
+
+[[http://semver.org/][Semantic versioning]] provides the prospective upgrader with three pieces of information:
+
+- Major: Are the exported APIs different?
+- Minor: Are there new features to evaluate?
+- Patch: Does it only contain only bug fixes or security updates?
+
+This information could be derived and aggregated from keywords in commit logs, standardized changelogs, issue trackers, and code analysis against exported identifiers. This isn't nearly as simple as a version number, but it can also provide richer information.
+
 * Third-Party Tools
 
 The Go Authors had the foresight to directly support DVCS in the Go tools. What `go`get` does not provide, we can build on top of this foundation.

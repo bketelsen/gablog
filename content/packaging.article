@@ -43,7 +43,8 @@ What happens if our pull request goes unanswered for a few days?
 - then add a remote for `github.com/mycompany/fsnotify`
 - and checkout the feature branch for our bugfix
 
-We did this without resorting to symlinks or rewriting imports. When the fix is merged upstream, everyone can checkout master and pull from the `origin` remote.
+We did this without resorting to symlinks or rewriting imports. When the fix is
+merged upstream, everyone can checkout master and pull from the `origin` remote.
 
 It's important to remember that the Go compiler toolchain is only concerned with
 finding packages on disk. If your code imports `github.com/howeyc/fsnotify` then
@@ -53,7 +54,8 @@ this the _canonical_import_path_ for fsnotify.
 
 * Reproducible Builds
 
-"Version skew is a really, really bad problem." - Rob Pike, [[http://www.youtube.com/watch?v=bj9T2c2Xk_s][The path to Go 1]]
+"Version skew is a really, really bad problem." - Rob Pike,
+[[http://www.youtube.com/watch?v=bj9T2c2Xk_s][The path to Go 1]]
 
 It's important for team members and CI servers to have a consistent view of the world.
 
@@ -156,8 +158,8 @@ provide richer information.
 The Go Authors had the foresight to directly support DVCS in the Go tools.
 What `go`get` does not provide, we can build on top of this foundation.
 
-"Everything else is built on this flexible foundation (FTP) and has grown over time."
- - Steffen Mueller, [[http://www.google.com/url?q=http%3A%2F%2Fmail.python.org%2Fpipermail%2Fdistutils-sig%2F2009-December%2F014977.html&sa=D&sntz=1&usg=AFQjCNHK-oYwAsIsjWXjqi44P8yDBIJgXQ][Python people want CPAN and how the latter came about]]
+"Everything else is built on this flexible foundation (FTP) and has grown over time." - Steffen Mueller,
+[[http://www.google.com/url?q=http%3A%2F%2Fmail.python.org%2Fpipermail%2Fdistutils-sig%2F2009-December%2F014977.html&sa=D&sntz=1&usg=AFQjCNHK-oYwAsIsjWXjqi44P8yDBIJgXQ][Python people want CPAN and how the latter came about]]
 
 There are several package managers for Go, and so the _paradox_of_choice_. Diversity
 is good, to the extent that these tools explore different solutions. Yet it's hard to

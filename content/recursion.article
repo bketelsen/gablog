@@ -232,13 +232,13 @@ If you have a problem that could best be solved by recursion but are afraid of b
 
 Here is how you could implement the Recursive function using channels:
 
-	func RecursiveChannel(number int, product int, result *chan int) {
+	func RecursiveChannel(number int, product int, result chan int) {
 
 	    product = product + number
 
 	    if number == 1 {
 
-	        *result <- product
+	        result <- product
 	        return
 	    }
 
@@ -249,7 +249,7 @@ Here is how you could implement the Recursive function using channels:
 	 
 	    result := make(chan int)
 
-	    RecursiveChannel(4, 0, &result)
+	    RecursiveChannel(4, 0, result)
 	    answer := <-result
 
 	    fmt.Printf("Recursive: %d\n", answer)
@@ -257,8 +257,8 @@ Here is how you could implement the Recursive function using channels:
 
 It follows along with the tail call implementation. Once the anchor is hit it contains the final answer and the answer is placed into the channel. Instead of making a recursive call, we spawn a Go routine providing the same state we were pushing onto the stack in the tail call example.
 
-The one difference is we pass a pointer to the same unbuffered channel to every Go routine. Only the anchor writes data to the channel and returns without spawning another Go routine.
+The one difference is we pass an unbuffered channel to the Go routine. Only the anchor writes data to the channel and returns without spawning another Go routine.
 
-In main an unbuffered channel is created and the RecursiveChannel function is called with the initial parameters and a pointer to the channel. The function returns immediately but main does not terminate. This is because it waits for data to be written to the channel. Once the anchor is hit and writes the answer to the channel, main wakes up with the result and it is printed to the screen. In most cases main will wake before the Go routine terminates.
+In main an unbuffered channel is created and the RecursiveChannel function is called with the initial parameters and the channel. The function returns immediately but main does not terminate. This is because it waits for data to be written to the channel. Once the anchor is hit and writes the answer to the channel, main wakes up with the result and it is printed to the screen. In most cases main will wake before the Go routine terminates.
 
 Recursion is another tool you can use when writing your Go programs. For now the Go compiler will not optimize the code for tail calls but there is nothing stopping future version of Go from doing so. If memory could be a problem you can always you a channel to minic recursion.

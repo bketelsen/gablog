@@ -5,7 +5,7 @@ Tags: recursion guest
 William Kennedy
 
 * Introduction
-_This_guest_post_is_written_by_William_Kennedy,_author_of_the_Going_Go_blog._
+_This_guest_post_is_written_by_William_Kennedy,_author_of_the_[[http://goinggo.net][_Going_Go_]]_blog._
 
 I was looking at a code sample that showed a recursive function in Go and the writer was very quick to state how Go does not optimize for recursion, even if tail calls are explicit. I had no idea what a tail call was and I really wanted to understand what he meant by Go was not optimized for recursion. I didn't know recursion could be optimized.
 

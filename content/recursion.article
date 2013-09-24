@@ -9,7 +9,7 @@ _This_guest_post_is_written_by_William_Kennedy,_author_of_the_[[http://goinggo.n
 
 I was looking at a code sample that showed a recursive function in Go and the writer was very quick to state how Go does not optimize for recursion, even if tail calls are explicit. I had no idea what a tail call was and I really wanted to understand what he meant by Go was not optimized for recursion. I didn't know recursion could be optimized.
 
-For those who don't know what recursion is, put simply, it is when a function calls itself. Why would we ever write a function that would call itself? Recursion is great for algorithms that perform operations on data that can benefit from using a stack, FIFO (First In Last Out). It can be faster than using loops and can make your code much simpler.
+For those who don't know what recursion is, put simply, it is when a function calls itself. Why would we ever write a function that would call itself? Recursion is great for algorithms that perform operations on data that can benefit from using a stack, FILO (First In Last Out). It can be faster than using loops and can make your code much simpler.
 
 Performing math operations where the result of a calculation is used in the next calculation is a classic example where recursion shines. As with all recursion, you must have an anchor that eventually causes the function to stop calling itself and return. If not, you have an endless loop that eventually will cause a panic because you will run out of memory.
 
@@ -228,7 +228,7 @@ There is a bit more assembly code with the TailRecursive function. However the r
 
 Nothing has been optimized for the tail call we implemented. We still have all the same stack manipulation and recursive calls being made. So I guess it is true that Go currently does not optimize for recursion. This does not mean we shouldn't use recursion, just be aware of all the things we learned.
 
-If you have a problems that could best be solved by recursion but are afraid of blowing out memory, you can always use a channel. Mind you this will be significantly slower but it will work.
+If you have a problem that could best be solved by recursion but are afraid of blowing out memory, you can always use a channel. Mind you this will be significantly slower but it will work.
 
 Here is how you could implement the Recursive function using channels:
 
@@ -250,7 +250,7 @@ Here is how you could implement the Recursive function using channels:
 	    result := make(chan int)
 
 	    RecursiveChannel(4, 0, &result)
-	    answer = <-result
+	    answer := <-result
 
 	    fmt.Printf("Recursive: %d\n", answer)
 	}

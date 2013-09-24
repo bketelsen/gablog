@@ -20,9 +20,9 @@ import (
 	"sort"
 	"time"
 
-	"code.google.com/p/go.blog/pkg/atom"
-	_ "code.google.com/p/go.talks/pkg/playground"
-	"code.google.com/p/go.talks/pkg/present"
+	"github.com/bketelsen/gablog/pkg/atom"
+	_ "code.google.com/p/go.tools/playground"
+	"code.google.com/p/go.tools/present"
 )
 
 const (

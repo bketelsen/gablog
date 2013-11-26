@@ -50,7 +50,7 @@ is counter-intuitive. Quick: tell me what the expected results are, not what the
     So(foo, ShouldBeGreaterThanOrEqualTo, bar)
     So(baz, ShouldEqual, "abc")
 
-(Did you read the original test correctly? Most people forget that `foo` can *equal* `bar` and still pass.)
+(Did you read the original test correctly? Most people forget that `foo` can be *equal* to `bar` and still pass.)
 
 If you're wondering whether you should use GoConvey, the answer is: it depends. Definitely give it a try. It was designed to be a drop-in convenience around your existing tests. You'll notice that GoConvey is more verbose, whereas Go convention is to be concise and even abbreviated. But Go purists may still find the web UI appealing while sticking to the standard testing package. (And let’s remind ourselves that the test files and packages, with all their verbosity, are not compiled into the production binaries.)
 

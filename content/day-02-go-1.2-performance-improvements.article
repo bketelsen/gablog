@@ -6,7 +6,93 @@ Dave Cheney
 
 * Introduction
 
+6 months, 1700 changes, well over 350 issues closed[1], and Go 1.2 is done [link]. Go and install it now, it's ok, it only takes a few minutes to install, I'll wait.
+
+Back when Go 1.1 was released in April I did a series of posts (part 1, part 2, part 3) exploring the performance improvments that it ? provided. Go 1.1 was a herculian development cycle, stretching some 14 months and bought with it equally impressive performance improvements.
+
+This time around, the Andrew Gerrand proposed adding a little more structure to the development effort, a 6 month development effort with a delivery date announced up front. Split into equal halves, contributors spend 3 months in a free for all before a 3 month feature freeze. 
+
+Of course, shorter cycles mean less scope for audacious performance improvements, but as we shall discover, Go 1.2 has not failed to deliver.
+
+* The top line number
+
+A widely quoted figure for the Go 1.1 performance improvements was 30-40% [link http://golang.org/doc/go1.1#performance]. As Go matures it becomes harder to find these big performance gains, and just as hard to summarise them in a single sentance. Throughout this article there are links to the raw data in the autobench repository which 
+
+
+* Autobench
+
+Release candidates arriving in september, fired up autobench to s
+
+New benchmarks added to track 
+
+Megajson performance
+
+Snappy performance
+
 Link to AJ Starks' benchviz tool http://mindchunk.blogspot.com.au/2013/05/visualizing-go-benchmarks-with-benchviz.html
+
+* Performance headlines
+
+** 8 K stack segments
+
+Since the earliest days of Go, each goroutine has used an initial 4k stack. Being equal to the default operating system page size made that a sensible value to handle, but it had been known for a long time for code that was recursive or contained inner loops of long call chains (most of the encoding/* packages fall into this category) stack splitting, or stack stradelling was a significant cause of slowdown, and benchmark instability. 
+
+[link to split stacks]
+
+In AUG (!) Russ Cox proposed changing the default size of the Goroutine stack to 8k, and presented a wealth of evidence to support this claim. This one change alone boosted many of the Go 1 benchmarks by 10% alone, but the main clue that this was the right decision was the infamous JsonEncoder benchmark became stable and predictable.
+
+Not without a cost, but this cost is believed to be managable. Russ' data demonstrated that the original 4k stack size was wrong, and as it had been chosen without any empiracl evidence, a number which could not be defended as 'better'
+
+** Preemption
+
+Preemption check on every function entry. 
+
+Easily predictable by cpu branch predictors
+
+Lowers the overall GC time by allowing the GC to stop-the-world faster.
+
+** Intergrated network poller
+
+The work that was started by Mikio Hara and Dmirty Vyokov in 1.1 of integrating the the network polling subsystem directly into the runtime was completed for the remaining platforms. 
+
+Freebsd issue fixed, link
+
+** Faster sync.Cond primative
+
+meh.
+
+** Unified strings and bytes primatives
+
+* show runtime benchmarks
+
+Important primative
+
+* Stable sort
+
+* GC improvements
+
+More memory moved outside the heap
+
+More precise GC (what does precise gc mean) 
+ -- less things mistaken for pointers, so heap growth is reduced
+ -- smaller heap leading to lower mark times and less system resouces used
+ -- less pointer like things
+
+* Append is faster 
+
+- tuned, then removed append crossover due to Remy's inline append logic
+ - * cmd/gc, runtime: inline append in frontend (thanks Rémy Oudompheng),
+
+** Http benchmark numbers
+
+** crypto improvements
+
+faster routines for arm, more to come thanks to Nick Craig-Wood
+faster des
+
+** compress
+
+faster flate and bzip2, thanks to Remy
 
 
 * Wrapping up
@@ -25,4 +111,8 @@ Link to rsc' Linker document.
 
 Russ Cox has proposed some wide ranging changes to the linker which will move more work to the compiler, thus being parallisable, and reusabe, and has te
 
-Precise GC and  
+Precise GC and copying stacks
+
+Copying stacks will allow stacks to grow when rquired without the cost of straddling the stack segment break. Rust have come to the same conclusion
+
+[1] https://code.google.com/p/go/issues/list?can=1&q=label%3Ago1.2+OR+label%3Ago1.2maybe+AND+status%3AFixed+&colspec=ID+Status+Stars+Priority+Owner+Reporter+Summary&cells=tiles -- the real number is probably higher, many issues are closed without being tagged for the release they are fixed in.

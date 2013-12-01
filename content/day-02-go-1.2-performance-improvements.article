@@ -79,12 +79,23 @@ Improving the precision of the garbage collector means fewer values on the heap 
 
 Finishing the work of making the garbage collector precise is a major focus of the 1.3 development cycle.
 
+** Faster primatives
+
+In my previous series on Go 1.1 I showed large data sets from the runtime
+
 ** Append is faster 
 
-- tuned, then removed append crossover due to Remy's inline append logic
- - * cmd/gc, runtime: inline append in frontend (thanks Rémy Oudompheng), https://codereview.appspot.com/12815046/
+The `append` builtin function was improved in Go 1.1 by Rob Pike to reduce it's overhead when being called on slices with a small number of elements, which is a common operation. During 1.2 this was improved further by [[Rémy Oudompheng][https://codereview.appspot.com/12815046/] who moved the append operations into the compiler thus reducing the overhead for all append operations.
+
+[benchmark data from 386, amd64, intel]
 
 ** Unified strings and bytes primatives
+
+In Go 1.1 `bytes.IndexByte` and `bytes.Equal` received assembly versions for all three architectures which improved their throughput. In Go 1.2 this was improved further by unifying the operation of their counterparts in the `strings` package.
+
+** Memmove improvements
+
+
 
 ** Http benchmark numbers
 
@@ -105,19 +116,24 @@ Important primative
 
 * Wrapping up
 
-* Looking forward to the 1.3 development cycle
 
-Link to the TODO document
 
 Fewer low hanging fruit, less big wins
+
+* Looking forward to the 1.3 development cycle
+
+Planning for the 1.3 cycle has been underway for a month now. Rob Pike opened the discussion on the second of November with [[this thread][
+https://groups.google.com/d/msg/golang-dev/846QFpppXUo/satz-x5kxosJ]] out of which a [[document][http://golang.org/s/go13todo]] identifying the major items for this cycle.
+
 
 Shifting focus to real workloads, encoding, compression, encryption, decoding, networking
 
 Renewed focus on toolchain performance. We picked up a 30% speedup in compilation in 1.1, but have paid back most of that over the 1.2 cycle.
 
-Link to rsc' Linker document. 
 
 Russ Cox has proposed some wide ranging changes to the linker which will move more work to the compiler, thus being parallisable, and reusabe, and has te
+
+Link to rsc' Linker document. [[http://golang.org/s/go13linker]]
 
 Binary size.
 

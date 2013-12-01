@@ -1,4 +1,4 @@
-Day 2 - Go 1.2 is released
+Day 2 - Go 1.2 performance improvements
 2 Dec 2013
 Tags: goadvent
 
@@ -6,13 +6,13 @@ Dave Cheney
 
 * Introduction
 
-6 months, 1700 changes, well over 350 issues closed[1], and Go 1.2 is done [link]. Go and install it now, it's ok, it only takes a few minutes to install, I'll wait.
+6 months, 1700 changes, well over 350 issues closed[1], and Go 1.2 is done [link]. Go and install it now, it's ok, it only takes a few minutes, I'll wait.
 
-Back when Go 1.1 was released in April I did a series of posts (part 1, part 2, part 3) exploring the performance improvments that it ? provided. Go 1.1 was a herculian development cycle, stretching some 14 months and bought with it equally impressive performance improvements.
+When Go 1.1 was released earlier this April I did a series of posts (part 1, part 2, part 3) exploring the performance improvments that the then current released provided. Go 1.1 was a herculian development effort, stretching some 14 months and bought with it equally impressive performance improvements.
 
-This time around, the Andrew Gerrand proposed adding a little more structure to the development effort, a 6 month development effort with a delivery date announced up front. Split into equal halves, contributors spend 3 months in a free for all before a 3 month feature freeze. 
+This time around, a 6 month development effort with a fixed delivery date was announced up front. Split into equal halves, contributors spend 3 months in a free for all before a 3 month feature freeze. 
 
-Of course, shorter cycles mean less scope for audacious performance improvements, but as we shall discover, Go 1.2 has not failed to deliver.
+Of course, shorter cycles mean less scope for performance improvement, but as we shall discover, Go 1.2 has not failed to deliver.
 
 * The top line number
 
@@ -49,11 +49,15 @@ Preemption check on every function entry.
 
 Easily predictable by cpu branch predictors
 
+http://golang.org/doc/go1.2#preemption
+
+Prevents a single goroutine from monopolising the CPU under *some* conditions.
+
 Lowers the overall GC time by allowing the GC to stop-the-world faster.
 
 ** Intergrated network poller
 
-The work that was started by Mikio Hara and Dmirty Vyokov in 1.1 of integrating the the network polling subsystem directly into the runtime was completed for the remaining platforms. 
+The work that was started by Mikio Hara and Dmirty Vyokov in 1.1 of integrating the the network polling subsystem directly into the runtime was completed for the remaining platforms, that is Windows and the BSD family.
 
 Freebsd issue fixed, link
 
@@ -105,11 +109,13 @@ Fewer low hanging fruit, less big wins
 
 Shifting focus to real workloads, encoding, compression, encryption, decoding, networking
 
-Renewed focus on toolchain performance. We picked up 50% XXX in 1.1, but have paid back at least 15% during 1.2. 
+Renewed focus on toolchain performance. We picked up a 30% speedup in compilation in 1.1, but have paid back most of that over the 1.2 cycle.
 
 Link to rsc' Linker document. 
 
 Russ Cox has proposed some wide ranging changes to the linker which will move more work to the compiler, thus being parallisable, and reusabe, and has te
+
+Binary size.
 
 Precise GC and copying stacks
 

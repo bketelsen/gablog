@@ -1,0 +1,28 @@
+Day 2 - Go 1.2 is released
+2 Dec 2013
+Tags: goadvent
+
+Dave Cheney
+
+* Introduction
+
+Link to AJ Starks' benchviz tool http://mindchunk.blogspot.com.au/2013/05/visualizing-go-benchmarks-with-benchviz.html
+
+
+* Wrapping up
+
+* Looking forward to the 1.3 development cycle
+
+Link to the TODO document
+
+Fewer low hanging fruit, less big wins
+
+Shifting focus to real workloads, encoding, compression, encryption, decoding, networking
+
+Renewed focus on toolchain performance. We picked up 50% XXX in 1.1, but have paid back at least 15% during 1.2. 
+
+Link to rsc' Linker document. 
+
+Russ Cox has proposed some wide ranging changes to the linker which will move more work to the compiler, thus being parallisable, and reusabe, and has te
+
+Precise GC and  

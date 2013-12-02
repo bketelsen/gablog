@@ -1,0 +1,29 @@
+# linux/amd64 (thinkpad x220)
+benchmark                                old ns/op    new ns/op    delta
+BenchmarkAppend                                102          103   +0.98%
+BenchmarkAppend1Byte                           212          140  -33.96%
+BenchmarkAppend4Bytes                          297          130  -56.23%
+BenchmarkAppend8Bytes                          381          129  -66.14%
+BenchmarkAppend16Bytes                         529          231  -56.33%
+BenchmarkAppend32Bytes                         529          136  -74.29%
+BenchmarkAppendSpecialCase                      45           39  -14.47%
+
+# linux/386 (atom 330)
+benchmark                                old ns/op    new ns/op    delta
+BenchmarkAppend                                269          218  -18.96%
+BenchmarkAppend1Byte                          1529          482  -68.48%
+BenchmarkAppend4Bytes                         1818          500  -72.50%
+BenchmarkAppend8Bytes                         2272          521  -77.07%
+BenchmarkAppend16Bytes                        3354          570  -83.01%
+BenchmarkAppend32Bytes                        2647          711  -73.14%
+BenchmarkAppendSpecialCase                     180          181   +0.56%
+
+# linux/arm (beaglebone black)
+benchmark                                old ns/op    new ns/op    delta
+BenchmarkAppend                                716          635  -11.31%
+BenchmarkAppend1Byte                          1748         1201  -31.29%
+BenchmarkAppend4Bytes                         2078         1405  -32.39%
+BenchmarkAppend8Bytes                         2825         1485  -47.43%
+BenchmarkAppend16Bytes                        2354         1851  -21.37%
+BenchmarkAppend32Bytes                        2289         1525  -33.38%
+BenchmarkAppendSpecialCase                     615          597   -2.93%

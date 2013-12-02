@@ -1,0 +1,32 @@
+#linux/amd64 (thinkpad x220)
+benchmark                  old ns/op    new ns/op    delta
+BenchmarkWordsDecode1e3         4193         2618  -37.56%
+BenchmarkWordsDecode1e4        49712        38608  -22.34%
+BenchmarkWordsDecode1e5       583578       483510  -17.15%
+BenchmarkWordsDecode1e6      5159685      4571674  -11.40%
+BenchmarkWordsEncode1e3        15585        13514  -13.29%
+BenchmarkWordsEncode1e4       104307        82231  -21.16%
+BenchmarkWordsEncode1e5      1174999      1030980  -12.26%
+BenchmarkWordsEncode1e6      9553665      8667768   -9.27%
+
+#linux/386 (atom 330)
+benchmark                  old ns/op    new ns/op    delta
+BenchmarkWordsDecode1e3        32722        32624   -0.30%
+BenchmarkWordsDecode1e4       348440       361097   +3.63%
+BenchmarkWordsDecode1e5      3580823      3754388   +4.85%
+BenchmarkWordsDecode1e6     36004325     38813912   +7.80%
+BenchmarkWordsEncode1e3        94929        92995   -2.04%
+BenchmarkWordsEncode1e4       638323       611909   -4.14%
+BenchmarkWordsEncode1e5      6420710      6164851   -3.98%
+BenchmarkWordsEncode1e6     56570347     54368349   -3.89%
+
+#linux/arm (beaglebone black)
+benchmark                  old ns/op    new ns/op    delta
+BenchmarkWordsDecode1e3        57021        39311  -31.06%
+BenchmarkWordsDecode1e4       579238       411121  -29.02%
+BenchmarkWordsDecode1e5      6061517      4336039  -28.47%
+BenchmarkWordsDecode1e6     63654552     47915405  -24.73%
+BenchmarkWordsEncode1e3       188412       157693  -16.30%
+BenchmarkWordsEncode1e4      1198571       911877  -23.92%
+BenchmarkWordsEncode1e5     11808740      8917168  -24.49%
+BenchmarkWordsEncode1e6    109462816     82492452  -24.64%

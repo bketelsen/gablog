@@ -12,7 +12,7 @@ Go and install it now, its ok, it only takes a few minutes, I'll wait.
 
 When Go 1.1 was released earlier in the year I did a series of posts ([[http://dave.cheney.net/2013/05/21/go-11-performance-improvements][part 1]], [[http://dave.cheney.net/2013/05/25/go-11-performance-improvements-part-2][part 2]], [[http://dave.cheney.net/2013/05/28/go-11-performance-improvements-part-3][part 3]]) exploring the performance improvements the then current released provided. Go 1.1 was a herculean development effort, stretching some 14 months and bought with it equally impressive performance improvements.
 
-This time around Go 1.2 was a 7 month development effort with a fixed delivery date announced up front. Contributors spent 3-4 months landing improvements before a 3 month feature freeze. 
+This time around, Go 1.2 was a 7 month development effort with a fixed delivery date announced up front. Contributors spent 3-4 months landing improvements before a 3 month feature freeze. 
 
 Of course, shorter cycles mean less scope for performance improvement, but as we shall discover, Go 1.2 has not failed to deliver.
 
@@ -20,11 +20,11 @@ Of course, shorter cycles mean less scope for performance improvement, but as we
 
 * The top line number
 
-A widely quoted figure for the Go 1.1 performance improvements was [[http://golang.org/doc/go1.1#performance][30-40%]]. As Go matures it becomes harder to find these big performance gains, and is just as difficult to summarize them in a single sentence. To find out more, read on.
+A widely quoted figure for the Go 1.1 performance improvements was [[http://golang.org/doc/go1.1#performance][30-40%]]. As Go matures it becomes harder to find big performance gains, and is just as difficult to summarize them in a single sentence. To find out more, read on.
 
 * Performance headlines
 
-This section highlights some of the major performance improvements that landed in Go 1.2.
+This section highlights some of the major improvements that landed in Go 1.2.
 
 ** 8kb stack segments
 

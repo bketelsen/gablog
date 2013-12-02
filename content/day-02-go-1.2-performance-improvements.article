@@ -12,7 +12,7 @@ Go and install it now, its ok, it only takes a few minutes, I'll wait.
 
 When Go 1.1 was released earlier in the year I did a series of posts ([[http://dave.cheney.net/2013/05/21/go-11-performance-improvements][part 1]], [[http://dave.cheney.net/2013/05/25/go-11-performance-improvements-part-2][part 2]], [[http://dave.cheney.net/2013/05/28/go-11-performance-improvements-part-3][part 3]]) exploring the performance improvements the then current released provided. Go 1.1 was a herculean development effort, stretching some 14 months and bought with it equally impressive performance improvements.
 
-This time around a 7 month development effort with a fixed delivery date was announced up front. Split equally, contributors spend 3-4 months landing improvements before a 3 month feature freeze. 
+This time around Go 1.2 was a 7 month development effort with a fixed delivery date announced up front. Contributors spent 3-4 months landing improvements before a 3 month feature freeze. 
 
 Of course, shorter cycles mean less scope for performance improvement, but as we shall discover, Go 1.2 has not failed to deliver.
 
@@ -20,21 +20,19 @@ Of course, shorter cycles mean less scope for performance improvement, but as we
 
 * The top line number
 
-A widely quoted figure for the Go 1.1 performance improvements was [[http://golang.org/doc/go1.1#performance][30-40%]]. As Go matures it becomes harder to find these big performance gains, and is just as difficult to summarize them in a single sentence.
-
-Throughout this article there are links to the raw data in the autobench repository which I encourage you to consult.
+A widely quoted figure for the Go 1.1 performance improvements was [[http://golang.org/doc/go1.1#performance][30-40%]]. As Go matures it becomes harder to find these big performance gains, and is just as difficult to summarize them in a single sentence. To find out more, read on.
 
 * Performance headlines
 
-This next section will highlight some of the major performance improvements that landed in Go 1.2.
+This next section highlights some of the major performance improvements that landed in Go 1.2.
 
-** 8k stack segments
+** 8kb stack segments
 
-Since the earliest days of Go, each goroutine has allocated stack segments in units of 4096 bytes. Being equal to the operating system page size made this a sensible default, but it had been known for some time that for code which was recursive or contained inner loops of long call chains (most of the `encoding/*` packages fall into this category) stack splitting, or stack straddling was a significant cause of slowdown, and benchmark instability. 
+Since the earliest days of Go, each goroutine has allocated stack segments in units of 4096 bytes. Being equal to the operating system page size made this a sensible default, but it had been known for some time that code which was recursive or contained inner loops of long call chains (most of the `encoding/*` packages fall into this category) stack splitting, or stack straddling was a significant cause of slowdown, and benchmark instability. 
 
-In October Russ Cox proposed doubling this value to 8k and [[https://codereview.appspot.com/14317043/][presented a detailed analysis]] to support this change so late in the development cycle. This one change alone boosted many of the Go 1 benchmarks by 10% alone, but the main clue that this was the right decision was the infamous JsonEncoder benchmark became stable and predictable.
+In October Russ Cox proposed doubling this value to 8k and [[https://codereview.appspot.com/14317043/][presented a detailed analysis]] to support this change. This one change alone boosted many of the Go 1 benchmarks by 10% alone, but the main clue that this was the right decision was the infamously unreliable `JsonEncoder` benchmark became stable and predictable.
 
-Russ' data demonstrated that the original 4k stack size was wrong, and as it had been chosen without empirical evidence, a number which could not be defended as 'better'. However increasing the granularity of by which go routines 
+Russ' data demonstrated that the original 4k stack size was wrong, and as it had been chosen without empirical evidence, a number which could not be defended. However increasing the granularity of by which goroutines allocate memory from the operating system has a cost. The trade offs of this change are discussed in the final section of this article.
 
 .image day-02-go-1.2-performance-improvements/go1-amd64.png
 .image day-02-go-1.2-performance-improvements/go1-386.png
@@ -42,17 +40,13 @@ Russ' data demonstrated that the original 4k stack size was wrong, and as it had
 
 ** Preemption
 
-Prior to Go 1.2 
+Prior to Go 1.2 a single goroutine could hog the entire CPU if it ran in a tight loop. The effect of this CPU hogging is well known for programs which run with the default value of `GOMAXPROCS` but it has a more subtle effect on garbage collection performance.
 
-Preemption check on every function entry. 
+When a garbage collection cycle is requested the first action the GC takes is to stop the world, ie ask, then wait, for all goroutines to return to the scheduler. A single running goroutine can delay the stop the world phase, theoretically indefinitely, if it is performing a CPU intensive operation. 
 
-Easily predictable by CPU branch predictors
+To solve this problem a check is added for a stop the world flag to the preamble of every function entry allowing the garbage collector to halt running goroutines faster, lowering the overall time for a GC cycle.
 
 The Go 1.2 release notes [[http://golang.org/doc/go1.2#preemption][have more information]] on this feature.
-
-Prevents a single goroutine from monopolizing the CPU under *some* conditions.
-
-Lowers the overall GC time by allowing the GC to stop-the-world faster.
 
 ** Integrated network poller
 
@@ -102,22 +96,19 @@ The `append` built in function was improved in Go 1.1 by Rob Pike to reduce its 
 
 *** Unified strings and bytes primitives
 
-In Go 1.1 `bytes.IndexByte` and `bytes.Equal` received assembly versions for all three architectures which improved their throughput. In Go 1.2 this was [[https://codereview.appspot.com/12483043][improved further] by unifying the operation of their counterparts in the `strings` package.
+In Go 1.1 `bytes.IndexByte` and `bytes.Equal` received assembly versions for all three architectures which improved their throughput. In Go 1.2 this was [[https://codereview.appspot.com/12483043][improved further]] by unifying the operation of their counterparts in the `strings` package.
 
 ** Http benchmark numbers
 
 .image day-02-go-1.2-performance-improvements/http-amd64.png
 
-** crypto improvements
+** Cypto and compress improvements
 
-faster routines for arm, more to come thanks to Nick Craig-Wood
-faster des
+One area where Go continues to lag is the performance of its crypto libraries. 
 
-** compress
+During the cycle Nick Craig-Wood contributed a number of faster crypto primatives for arm (and I'm told more is to come). 
 
-faster flate and bzip2, thanks to Remy
-
-** Stable sort
+Rémy Oudompheng significantly improved the speed of `crypto/des` and contributed major speedups to `compress/flate` and `compress/bzip2`
 
 * Real world improvements
 
@@ -133,26 +124,25 @@ Snappy benchmarks show a big improvement on amd64 and arm platforms under Go 1.2
 
 These images are generated by AJ Starks' great [[http://mindchunk.blogspot.com.au/2013/05/visualizing-go-benchmarks-with-benchviz.html][benchviz]] tool.
 
-
 * Wrapping up
 
 So, does Go 1.2 deliver on the expectation of performance junkies ? Yes. 
 
-A shorter development cycle and fewer low hanging fruit meant that developers had to work harder to find performance gains. For 64 bit Intel platforms appear to be in the range for 15-20% for real world code. For the other 32bit platforms, the gains are more modest, in the 10% range.
+A shorter development cycle and fewer low hanging fruit meant that developers had to work harder to find performance gains. For 64 bit Intel platforms the gains appear to be in the 15-20% range for real world code. For the other 32bit platforms, the gains are more modest, in the 10% range.
 
 * Looking forward to the 1.3 development cycle
 
-Planning for the 1.3 cycle has been underway for a month now. Rob Pike opened the discussion on the second of November with [[https://groups.google.com/d/msg/golang-dev/846QFpppXUo/satz-x5kxosJ][this thread]] out of which came a [[http://golang.org/s/go13todo][document]] identifying the major items for this cycle.
+Planning for the 1.3 cycle has been underway for a month now. Rob Pike opened the discussion on the second of November with [[https://groups.google.com/d/msg/golang-dev/846QFpppXUo/satz-x5kxosJ][this thread]] out of which came a [[http://golang.org/s/go13todo][document]] identifying the major items for this cycle. Russ Cox has also provided a [[http://research.swtch.com/dashboard/Go1.3#all][dashboard]] to track the progress of 1.3.
 
-Dmitry Vyukov has proposed a 
-Shifting focus to real workloads, encoding, compression, encryption, decoding, networking
+Dmitry Vyukov has announced a [[https://groups.google.com/forum/#!msg/golang-dev/SvByhCXPwG8/iDyRCaiQVGAJ][performance dashboard]] which will track a slew of measurements for each commit. The dashboard is currently running on a [[http://goperfd.appspot.com/perf][temporary url]] but is expected to be integrated into the [[http://build.golang.org][main CI dashboard]] soon.
 
 There is also a renewed focus on tool chain performance. We picked up a 30% speedup in compilation time in 1.1, but have lost most of that over the 1.2 cycle.
 
 Russ Cox has proposed some wide ranging changes to the linker which will move more work to the compiler, thus becoming parallisable. Russ has published a document with his plans for a [[http://golang.org/s/go13linker][revised linker in 1.3]].
 
-Similarly the size of final Go executables, while never svelte, have been rising steadily for some time so work will be done to [[https://code.google.com/p/go/issues/detail?id=6853][understand and reverse]] this trend.
+Similarly the size of final Go executables, while never svelte, have been rising steadily for some time now, so work will be done to [[https://code.google.com/p/go/issues/detail?id=6853][understand and reverse]] this trend.
 
-Lastly, although Russ' work in raising the stack segment size to 8kb bought an important performance improvement, it did so at the cost that each goroutine now needs at least 8kb of stack space. For some applications who were happy with the original 4kb stack size this is overkill, and depending on the sophistication of your operating system's virtual memory subsystem may 
+Lastly, although Russ' work in raising the stack segment size to 8kb bought an important performance improvement, it did so at the cost that each goroutine now needs at least 8kb of stack space. For some applications who were happy with the original 4kb stack size, this is overkill, and depending on the sophistication of your operating system's virtual memory subsystem may lead to a larger memory footprint.
 
-To resolve this Russ Cox has proposed moving the runtime to use [[http://golang.org/s/contigstacks][contigious stacks]]. Goroutine stacks will grow as required and will eliminate the high cost of straddling the stack segment break. Interestingly the Rust project have come to the [[https://mail.mozilla.org/pipermail/rust-dev/2013-November/006550.html][same conclusions]] and are moving to the same contiguous stack model.
+To resolve this Russ Cox has proposed moving the runtime to use [[http://golang.org/s/contigstacks][contigious stacks]]. Segmented goroutine stacks will grow and shrink as required without the high cost of straddling the stack segment boundary. Interestingly the Rust project have come to the [[https://mail.mozilla.org/pipermail/rust-dev/2013-November/006550.html][same conclusions]] and are also moving to a contiguous stack model.
+ 

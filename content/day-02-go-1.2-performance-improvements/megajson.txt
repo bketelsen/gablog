@@ -3,6 +3,11 @@ benchmark               old ns/op    new ns/op    delta
 BenchmarkCodeEncoder     21046056     15128375  -28.12%
 BenchmarkCodeDecoder     75689535     54396430  -28.13%
 
+#linux/386 (atom 330)
+benchmark               old ns/op    new ns/op    delta
+BenchmarkCodeEncoder    151591958    130396581  -13.98%
+BenchmarkCodeDecoder    524752609    422224055  -19.54%
+
 #linux/arm (beaglebone black)
 benchmark               old ns/op    new ns/op    delta
 BenchmarkCodeEncoder    301043525    259263566  -13.88%

@@ -24,15 +24,15 @@ A widely quoted figure for the Go 1.1 performance improvements was [[http://gola
 
 * Performance headlines
 
-This next section highlights some of the major performance improvements that landed in Go 1.2.
+This section highlights some of the major performance improvements that landed in Go 1.2.
 
 ** 8kb stack segments
 
-Since the earliest days of Go, each goroutine has allocated stack segments in units of 4096 bytes. Being equal to the operating system page size made this a sensible default, but it had been known for some time that code which was recursive or contained inner loops of long call chains (most of the `encoding/*` packages fall into this category) stack splitting, or stack straddling was a significant cause of slowdown, and benchmark instability. 
+Since the earliest days of Go, each goroutine has allocated stack segments in units of 4096 bytes. Being equal to the operating system page size made this a sensible default, but it had been known for some time that code which was recursive or contained inner loops of long call chains (most of the `encoding/*` packages fall into this category) stack splitting, or stack straddling was a significant cause of slowdown and benchmark instability. 
 
-In October Russ Cox proposed doubling this value to 8k and [[https://codereview.appspot.com/14317043/][presented a detailed analysis]] to support this change. This one change alone boosted many of the Go 1 benchmarks by 10% alone, but the main clue that this was the right decision was the infamously unreliable `JsonEncoder` benchmark became stable and predictable.
+In October Russ Cox proposed doubling this value to 8k and [[https://codereview.appspot.com/14317043/][presented a detailed analysis]] to support this change. This one change boosted many of the Go 1 benchmarks by 10%, but the main clue that this was the right decision was the infamously unreliable `JsonEncoder` benchmark became stable and predictable.
 
-Russ' data demonstrated that the original 4k stack size was wrong, and as it had been chosen without empirical evidence, a number which could not be defended. However increasing the granularity of by which goroutines allocate memory from the operating system has a cost. The trade offs of this change are discussed in the final section of this article.
+Russ' data demonstrated that the original 4k stack size was wrong, and as it had been chosen without empirical evidence, a number which could not be defended. However increasing the granularity by which goroutines allocate memory from the operating system has a cost. The trade offs of this change are discussed in the final section of this article.
 
 .image day-02-go-1.2-performance-improvements/go1-amd64.png
 .image day-02-go-1.2-performance-improvements/go1-386.png
@@ -42,11 +42,11 @@ Russ' data demonstrated that the original 4k stack size was wrong, and as it had
 
 Prior to Go 1.2 a single goroutine could hog the entire CPU if it ran in a tight loop. The effect of this CPU hogging is well known for programs which run with the default value of `GOMAXPROCS` but it has a more subtle effect on garbage collection performance.
 
-When a garbage collection cycle is requested the first action the GC takes is to stop the world, ie ask, then wait, for all goroutines to return to the scheduler. A single running goroutine can delay the stop the world phase, theoretically indefinitely, if it is performing a CPU intensive operation. 
+When a garbage collection is requested the first action the GC takes is to stop the world, ie ask, then wait, for all goroutines to return to the scheduler. A single running goroutine can delay the stop the world phase, theoretically indefinitely, if it is performing a CPU intensive operation. 
 
-To solve this problem a check is added for a stop the world flag to the preamble of every function entry allowing the garbage collector to halt running goroutines faster, lowering the overall time for a GC cycle.
+To solve this problem a check is added to the preamble of every function entry allowing the garbage collector to halt running goroutines faster, lowering the overall time for a GC cycle.
 
-The Go 1.2 release notes [[http://golang.org/doc/go1.2#preemption][have more information]] on this feature.
+The Go 1.2 release notes [[http://golang.org/doc/go1.2#preemption][have more information]] on this feature and its limitations.
 
 ** Integrated network poller
 
@@ -58,11 +58,11 @@ The work that was started by Mikio Hara, Alex Brainman and Dmirty Vyukov in 1.1 
 
 A large amount of work tool place during the 1.2 cycle to further improve the performance of the garbage collector.
 
-While the garbage collector is not completely precise yet (this work continues in the 1.3 cycle), its precision has improved over Go 1.1, which itself was a major improvement over 1.0.
+While the garbage collector is not yet completely precise, its precision has improved over Go 1.1, which itself was a major improvement over 1.0.
 
-Improving the precision of the garbage collector means fewer values on the heap are mistaken for pointers. This has the direct result that the heap is smaller. A smaller heap leads to lower garbage collection time overall as well as lowering the memory footprint of Go programs.
+Improving the precision of the garbage collector means fewer values on the heap are mistaken for pointers. This has the direct result that the heap is smaller. A smaller heap leads to lower garbage collection time overall as well as lowering the memory footprint of Go programs. A fully precise garbage collector is also required to deliver features like contgious stacks (see below) or a compacting garbage collector.
 
-Finishing the work of making the garbage collector precise is a major focus of the 1.3 development cycle.
+Sadly many of the improvements are not enabled by default as they was not ready in time for the September 1 feature freeze. Finishing this work is a major focus of the 1.3 development cycle.
 
 ** Faster primitives
 
@@ -90,13 +90,15 @@ For Intel platforms [[https://codereview.appspot.com/9038048][Keith Randall land
 
 *** Faster append
 
-The `append` built in function was improved in Go 1.1 by Rob Pike to reduce its overhead when being called on slices with a small number of elements, which is a common operation. During 1.2 this was improved further by [[https://codereview.appspot.com/12815046/][Rémy Oudompheng]] who moved the append operations into the compiler thus reducing the overhead for all append operations.
+The `append` built in function was improved in Go 1.1 by Rob Pike to reduce its overhead when being called on slices with a small number of elements, a common operation.
+
+During 1.2 this was improved further by [[https://codereview.appspot.com/12815046/][Rémy Oudompheng]] who moved the append operations into the compiler thus further reducing their overhead.
 
 .image day-02-go-1.2-performance-improvements/append.png
 
 *** Unified strings and bytes primitives
 
-In Go 1.1 `bytes.IndexByte` and `bytes.Equal` received assembly versions for all three architectures which improved their throughput. In Go 1.2 this was [[https://codereview.appspot.com/12483043][improved further]] by unifying the operation of their counterparts in the `strings` package.
+In Go 1.1 `bytes.IndexByte` and `bytes.Equal` received assembly versions for all three architectures which improved their throughput. In Go 1.2 this was [[https://codereview.appspot.com/12483043][improved further]] by unifying their operation with their counterparts in the `strings` package.
 
 ** Cypto and compress improvements
 
@@ -108,11 +110,11 @@ Rémy Oudompheng significantly improved the speed of `crypto/des` and contribute
 
 * Real world improvements
 
-As Release Candidates started to arrive in September I took some time to brush the cobwebs off [[https://github.com/davecheney/autobench][autobench]] and put out a call for benchmark contributions. Along the way new benchmarks were contributed from external Go libraries which give an important view on the performance improvements Go 1.2 bring to code outside the standard library.
+As Release Candidates started to arrive in September I took some time to brush the cobwebs off [[https://github.com/davecheney/autobench][autobench]] and put out a call for benchmark contributions. Along the way new benchmarks were contributed from external Go libraries which give an important view on the performance improvements Go 1.2 brings to code outside the standard library.
 
 ** Megajson performance
 .image day-02-go-1.2-performance-improvements/megajson.png
-Ben Johnson's [[https://github.com/benbjohnson/megajson][Megajson]] package shows a 15-25% improvement over Go 1.1.2.
+Ben Johnson's [[https://github.com/benbjohnson/megajson][Megajson]] package shows a 15-30% improvement over Go 1.1.2.
 
 ** Snappy performance
 .image day-02-go-1.2-performance-improvements/snappy.png
@@ -122,13 +124,13 @@ These images are generated by AJ Starks' great [[http://mindchunk.blogspot.com.a
 
 * Wrapping up
 
-So, does Go 1.2 deliver on the expectation of performance junkies ? Yes. 
+So, does Go 1.2 deliver on the expectation of performance junkies ? In a word, yes. 
 
-A shorter development cycle and fewer low hanging fruit meant that developers had to work harder to find performance gains. For 64 bit Intel platforms the gains appear to be in the 15-20% range for real world code. For the other 32bit platforms, the gains are more modest, in the 10% range.
+A shorter development cycle and fewer low hanging fruit meant that developers had to work harder to find performance gains. For 64 bit Intel platforms the gains appear to be in the 15-20% range for real world code. For the other 32bit platforms, the gains are more modest, around 10%.
 
 * Looking forward to the 1.3 development cycle
 
-Planning for the 1.3 cycle has been underway for a month now. Rob Pike opened the discussion on the second of November with [[https://groups.google.com/d/msg/golang-dev/846QFpppXUo/satz-x5kxosJ][this thread]] out of which came a [[http://golang.org/s/go13todo][document]] identifying the major items for this cycle. Russ Cox has also provided a [[http://research.swtch.com/dashboard/Go1.3#all][dashboard]] to track the progress of 1.3.
+Planning for the 1.3 cycle has been underway for a month now. Rob Pike opened the discussion on the 2nd of November with [[https://groups.google.com/d/msg/golang-dev/846QFpppXUo/satz-x5kxosJ][this thread]] out of which came a [[http://golang.org/s/go13todo][document]] identifying the major items for this cycle. Russ Cox has also provided a [[http://research.swtch.com/dashboard/Go1.3#all][dashboard]] to track the progress of 1.3.
 
 Dmitry Vyukov has announced a [[https://groups.google.com/forum/#!msg/golang-dev/SvByhCXPwG8/iDyRCaiQVGAJ][performance dashboard]] which will track a slew of measurements for each commit. The dashboard is currently running on a [[http://goperfd.appspot.com/perf][temporary url]] but is expected to be integrated into the [[http://build.golang.org][main CI dashboard]] soon.
 
@@ -140,5 +142,5 @@ Similarly the size of final Go executables, while never svelte, have been rising
 
 Lastly, although Russ' work in raising the stack segment size to 8kb bought an important performance improvement, it did so at the cost that each goroutine now needs at least 8kb of stack space. For some applications who were happy with the original 4kb stack size, this is overkill, and depending on the sophistication of your operating system's virtual memory subsystem may lead to a larger memory footprint.
 
-To resolve this Russ Cox has proposed moving the runtime to use [[http://golang.org/s/contigstacks][contigious stacks]]. Segmented goroutine stacks will grow and shrink as required without the high cost of straddling the stack segment boundary. Interestingly the Rust project have come to the [[https://mail.mozilla.org/pipermail/rust-dev/2013-November/006550.html][same conclusions]] and are also moving to a contiguous stack model.
+To resolve this Keith Randall has proposed moving the runtime to use [[http://golang.org/s/contigstacks][contigious stacks]]. Segmented goroutine stacks will grow and shrink as required without the high cost of straddling the stack segment boundary. Interestingly the Rust project have come to the [[https://mail.mozilla.org/pipermail/rust-dev/2013-November/006550.html][same conclusions]] and are also moving to a contiguous stack model.
  

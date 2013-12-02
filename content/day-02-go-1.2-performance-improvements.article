@@ -98,10 +98,6 @@ The `append` built in function was improved in Go 1.1 by Rob Pike to reduce its 
 
 In Go 1.1 `bytes.IndexByte` and `bytes.Equal` received assembly versions for all three architectures which improved their throughput. In Go 1.2 this was [[https://codereview.appspot.com/12483043][improved further]] by unifying the operation of their counterparts in the `strings` package.
 
-** Http benchmark numbers
-
-.image day-02-go-1.2-performance-improvements/http-amd64.png
-
 ** Cypto and compress improvements
 
 One area where Go continues to lag is the performance of its crypto libraries. 

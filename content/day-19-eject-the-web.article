@@ -1,0 +1,267 @@
+Go Advent Day 19 - Eject the Web
+19 Dec 2013
+Tags: goadvent
+
+Yasuhiro Matsumoto
+
+* Introduction
+
+As you know, Go is a good programming language to write the web application. There already have many products providing Router, MVC, Sinatra-like frameworks.
+However, Go is also a good programming language to write the command-line application. I wrote many small programs written by Go until today. And I beleave Go is best for it for me.
+
+* OS Compatibility
+
+Most of Go's packages are beautiful, because Go hide OS's peculiar matters as possible. Ex: file system, character encodings, socket, concurrency, and most of feature of Go.
+
+`path/filepath` provide a way to be compatibility for each OSs.
+
+    package main
+    
+    import (
+    	"fmt"
+    	"log"
+    	"os"
+    	"path/filepath"
+    )
+    
+    func main() {
+    	pwd, err := os.Getwd()
+    	if err != nil {
+    		log.Fatal(err)
+    	}
+    	fmt.Println(filepath.ToSlash(
+    		filepath.Join(append([]string{pwd}, os.Args[1:]...)...)))
+    }
+
+This code will works fine for UNIX OS and Windows.
+`path/filepath` treat file paths as UTF-8 strings. And os.Args is encoded to UTF-8 even though it's on windows. So windows user can write programs without falling down to hell of multi-byte encoding.
+In japanese, windows application works Shift_JIS (MS932) file system encoding. Shift_JIS is double-byte character-set which some characters are contained 0x5C in trailing-byte. So many windows application developer met a hell of multi-byte encoding.
+
+    C:\path\contains\backslash\char>gcc -o unix_like_app.c
+    
+    C:\path\contains\backslash\char>unix_like_app.exe
+
+.image day-19-eject-the-web/image1.png
+
+Go make them happy.
+
+* Concurrency
+
+I guess that Go will provide new style operation of UI. It is difficult to handle both of key events and input timeout at once. However, if you separate key event handling in goroutine and pass events to a channel for external of the goroutine, it maybe get simple and complexity operation for the UI
+	
+    package main
+    
+    import (
+    	"fmt"
+    	"github.com/mattn/go-runewidth"
+    	"github.com/nsf/termbox-go"
+    	"log"
+    	"time"
+    )
+    
+    func print_tb(x, y int, msg string) {
+    	for _, c := range []rune(msg) {
+    		termbox.SetCell(x, y, c, termbox.ColorWhite, termbox.ColorDefault)
+    		x += runewidth.RuneWidth(c)
+    	}
+    	termbox.Flush()
+    }
+    
+    func main() {
+    	err := termbox.Init()
+    	if err != nil {
+    		log.Fatal(err)
+    	}
+    	termbox.Clear(termbox.ColorDefault, termbox.ColorDefault)
+    
+    	event := make(chan termbox.Event)
+    	go func() {
+    		for {
+    			event <- termbox.PollEvent()
+    		}
+    	}()
+    
+    	print_tb(1, 1, "Hit any key")
+    loop:
+    	for {
+    		select {
+    		case ev := <-event:
+    			print_tb(1, 2, fmt.Sprintf("Key typed: %v", ev.Ch))
+    			break loop
+    		case <-time.After(5 * time.Second):
+    			print_tb(1, 2, "Timeout")
+    			break loop
+    		}
+    	}
+    	close(event)
+    	time.Sleep(1 * time.Second)
+    	termbox.Close()
+    }
+
+If you make a new channel for the event, you will be able to add into `select` easily.
+
+- Receiving new tweet
+- Redraw window event
+- Key events
+
+Of course, this above code works fine for windows. You don't need to go for hard way. Writing pthread codes? Writing multiple event polling? Go easy way by Go.
+
+* But... I must write OS Specifiec Code
+
+For example, you'll want to remove the CD-ROM tray in Go. Then, Go [go-eject](https://github.com/mattn/go-eject).
+As you can see, Go can separate codes for each OSs with file name suffix.
+
+- eject_windows.go
+- eject_linux.go
+
+Another way to separate specific OS, add magic into the top of the file.
+
+    // +build !windows
+
+This mean "Build this code expect windows".
+Go provide easy way to write binding. If you have C code already exists, And you want to use it, you can use CGO.
+Look `eject_linux.go`
+
+    package eject
+    
+    /*
+    #include <fcntl.h>
+    #include <linux/cdrom.h>
+    #include <sys/ioctl.h>
+    #include <sys/stat.h>
+    #include <sys/types.h>
+    #include <unistd.h>
+    #include <errno.h>
+    
+    static int
+    _eject(int f) {
+      int r = 0;
+      int fd = open("/dev/cdrom", O_RDONLY | O_NONBLOCK);
+      if (fd == -1) {
+        r = errno;
+      } else {
+        int e = CDROMEJECT;
+        if (f == 0) {
+          if (ioctl(fd, CDROM_DRIVE_STATUS, 0) == CDS_TRAY_OPEN)
+            e = CDROMCLOSETRAY;
+        } else if (f == 1)
+          e = CDROMEJECT;
+        else
+          e = CDROMCLOSETRAY;
+        if (ioctl(fd, e, 0) < 0) {
+          r = errno;
+        }
+        close(fd);
+      }
+      return r;
+    }
+    */
+    import "C"
+    import "errors"
+    import "syscall"
+    
+    func Eject() error {
+        if r := C._eject(0); r != 0 {
+            return errors.New(syscall.Errno(r).Error())
+        }
+        return nil
+    }
+
+If you don't want to contain C code in Go code, you can separate C code to another file. Go tool will work fine to build. 
+For windows, you can call function in DLLs dynamically.
+
+    package eject
+    
+    import (
+    	"errors"
+    	"syscall"
+    	"unsafe"
+    )
+    
+    var winmm = syscall.MustLoadDLL("winmm.dll")
+    var mciSendStringProc = winmm.MustFindProc("mciSendStringW")
+    var mciGetErrorStringProc = winmm.MustFindProc("mciGetErrorStringW")
+    
+    func mciGetErrorString(mcierr int) string {
+    	var b [256]uint16
+    	_, _, _ = mciGetErrorStringProc.Call(uintptr(mcierr), uintptr(unsafe.Pointer(&b[0])), uintptr(256))
+    	return syscall.UTF16ToString(b[:])
+    }
+    
+    func mciSendString(cmd string) int {
+    	r1, _, _ := mciSendStringProc.Call(uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(cmd))), 0, 0, 0)
+    	return int(r1)
+    }
+    
+    func Eject() error {
+    	r := mciSendString("capability cdaudio can eject")
+    	if r == 0 {
+    		r = mciSendString("set cdaudio door open")
+    	} else {
+    		r = mciSendString("set cdaudio door close")
+    	}
+    	if r != 0 {
+    		return errors.New(mciGetErrorString(r))
+    	}
+    	return nil
+    }
+
+Note that you've better to use wide string APIs on windows. As I wrote in above, Go is very nice language for windows programmers.
+If you write package wrapping OS specific issue at once, most of users doesn't need to worry about compatibilities. 
+i.e. many users can eject CD-ROM with just type `eject.Eject()`.
+
+* Let's Go Web
+
+Finally, The thing that you should do at the later is to write applications using this library.
+
+    package main
+    
+    import (
+        "encoding/json"
+        "github.com/hoisie/web"
+        "github.com/mattn/go-eject"
+    )
+    
+    type result struct {
+    	Error interface{} `json:"error"`
+    }
+    
+    func main() {
+    	web.Get("/eject", func(ctx *web.Context) {
+    		ctx.ContentType("application/json")
+    		if err := eject.Eject(); err != nil {
+    			json.NewEncoder(ctx).Encode(&result{err.Error()})
+    		} else {
+    			json.NewEncoder(ctx).Encode(&result{nil})
+    		}
+    	})
+    	web.Run(":8080")
+    }
+
+And put `static/index.html`
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset="UTF-8">
+    <title>Eject the Web</title>
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script>
+    $(function() {
+      $('#eject-the-web').click(function() {
+        $.ajax("/eject", function(res) {
+    	  if (res.error) {
+            alert(res.error);
+          }
+        });
+      });
+    })
+    </script>
+    </head>
+    <body>
+      <input type="button" value="Eject the Web">    
+    </body>
+    </html>
+
+Click "Eject the Web". Have fun.
+

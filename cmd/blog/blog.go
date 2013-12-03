@@ -20,9 +20,9 @@ import (
 	"sort"
 	"time"
 
-	"github.com/bketelsen/gablog/pkg/atom"
 	_ "code.google.com/p/go.tools/playground"
 	"code.google.com/p/go.tools/present"
+	"github.com/bketelsen/gablog/pkg/atom"
 )
 
 const (
@@ -160,6 +160,7 @@ func authorName(a present.Author) string {
 // denormalized docPaths, docTags, and tags fields, and populates the various
 // helper fields (Next, Previous, Related) for each Doc.
 func (s *Server) loadDocs(root string) error {
+	s.docs = s.docs[:0]
 	// Read content into docs field.
 	const ext = ".article"
 	fn := func(p string, info os.FileInfo, err error) error {

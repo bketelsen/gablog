@@ -8,6 +8,8 @@ Matthew Holt
 Michael Whatcott
 @mdwhatcott
 
+* Introduction
+
 One highly appealing aspect about Go is built-in testing with `go test`. From one who once eschewed test-driven development, I now wholly encourage it. [[http://golang.org/pkg/testing/][Testing is fundamental]] to writing Go code, and Go 1.2's [[http://blog.golang.org/cover][new test coverage tools]] make TDD more compelling than ever.
 
 * Introducing GoConvey

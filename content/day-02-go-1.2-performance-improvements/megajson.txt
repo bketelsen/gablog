@@ -1,0 +1,15 @@
+#linux/amd64 (thinkpad x220)
+benchmark               old ns/op    new ns/op    delta
+BenchmarkCodeEncoder     21046056     15128375  -28.12%
+BenchmarkCodeDecoder     75689535     54396430  -28.13%
+
+#linux/386 (atom 330)
+#megajson
+benchmark               old ns/op    new ns/op    delta
+BenchmarkCodeEncoder    151787535    118807279  -21.73%
+BenchmarkCodeDecoder    524685534    365967180  -30.25%
+
+#linux/arm (beaglebone black)
+benchmark               old ns/op    new ns/op    delta
+BenchmarkCodeEncoder    301043525    259263566  -13.88%
+BenchmarkCodeDecoder    989344841    788959416  -20.25%

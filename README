@@ -6,6 +6,12 @@ To add articles, fork and create articles in the /content directory.  See exampl
 
 Send pull request with article.
 
+Local development
+
+Clone repo to the proper location in $GOPATH (src/github/bketelsen/gablog).
+cd cmd/blog && go build -o blog && cd ../..
+./cmd/blog # Runs on localhost:9003 by default; use -http to change
+
 Deployment:
 
 ssh to GA server. SU to git user:

@@ -1,0 +1,20 @@
+# HP N54L Microserver, FreeBSD 9.0
+# http
+benchmark                                   old ns/op    new ns/op    delta
+BenchmarkHeaderWriteSubset                       1968         1834   -6.81%
+BenchmarkReadRequestChrome                      14923        13708   -8.14%
+BenchmarkReadRequestCurl                         7490         6933   -7.44%
+BenchmarkReadRequestApachebench                  7470         6951   -6.95%
+BenchmarkReadRequestSiege                       10156         9252   -8.90%
+BenchmarkReadRequestWrk                          4935         4800   -2.74%
+BenchmarkClientServer                         8016165        78233  -99.02%
+BenchmarkClientServerParallel4                1963172        76178  -96.12%
+BenchmarkClientServerParallel64                308964        85921  -72.19%
+BenchmarkServer                               4104571       112773  -97.25%
+BenchmarkServerFakeConnNoKeepAlive              32196        27889  -13.38%
+BenchmarkServerFakeConnWithKeepAlive            27494        22932  -16.59%
+BenchmarkServerFakeConnWithKeepAliveLite        16407        12920  -21.25%
+BenchmarkServerHandlerTypeLen                   21874        18422  -15.78%
+BenchmarkServerHandlerNoLen                     20149        16948  -15.89%
+BenchmarkServerHandlerNoType                    20823        17424  -16.32%
+BenchmarkServerHandlerNoHeader                  15881        12303  -22.53%

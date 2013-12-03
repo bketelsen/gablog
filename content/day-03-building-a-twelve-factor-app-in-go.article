@@ -14,7 +14,7 @@ It’s pretty obvious there are twelve things you gotta do to build a Twelve Fac
 
 Before moving on we need to define application configuration:
 
-“An app’s config is everything that is likely to vary between deploys (staging, production, developer environments, etc).”
+_“An app’s config is everything that is likely to vary between deploys (staging, production, developer environments, etc).”_
 
 For most applications configuration includes logging levels, port bindings, and database settings. These settings are typically stored in configuration files, for example:
 
@@ -40,7 +40,7 @@ Notice the use of the `MYAPP` prefix. Though not required, using a prefix is com
  $ echo $MYAPP_DEBUG
  true
 
-Its equally as easy to access environment variables in Go using the os package:
+It's equally as easy to access environment variables in Go using the `os` package:
 
 .code day-03-building-a-twelve-factor-app-in-go/code1.go
 
@@ -60,18 +60,18 @@ The most import bit happens on the following line:
 
 The configuration will be populated by the `envconfig.Process()` function. This is done by looking up environment variables based on capitalized struct file names prefixed with the prefix string; i.e `MYAPP_USERNAME`.
 
-If you have Go setup on your system, you can save the above example to myapp.go under your local `GOPATH` directory. For example:
+If you have Go setup on your system, you can save the above example to `myapp.go` under your local `GOPATH` directory. For example:
 
- mkdir -p $GOPATH/src/github.com/kelseyhightower/myapp
- cd $GOPATH/src/github.com/kelseyhightower/myapp
- vim myapp.go
+ $ mkdir -p $GOPATH/src/github.com/kelseyhightower/myapp
+ $ cd $GOPATH/src/github.com/kelseyhightower/myapp
+ $ vim myapp.go
 
-Next fetch the envconfig dependency and build the myapp binary:
+Next fetch the `envconfig` dependency and build the `myapp` binary:
 
- go get
- go build myapp.go
+ $ go get
+ $ go build 
 
-At this point we are ready to configure and launch the myapp application. All we have to do is export a few environment variables:
+At this point we are ready to configure and launch the `myapp` application. All we have to do is export a few environment variables:
 
  export MYAPP_DEBUG="true"
  export MYAPP_HOST="0.0.0.0"
@@ -80,17 +80,17 @@ At this point we are ready to configure and launch the myapp application. All we
  export MYAPP_TIMEOUT="10"
  export MYAPP_USERNAME="myapp"
 
-Then start the myapp application
+Then start the `myapp` application
 
- ./myapp
+ $ ./myapp
 
-You should now be able to visit [[http://127.0.0.1/config][http://127.0.0.1/]][[http://127.0.0.1/config][config]] and see a table listing myapp’s configuration settings.
+You should now be able to visit [[http://127.0.0.1/config][`http://127.0.0.1/config`]] and see a table listing `myapp`’s configuration settings.
 
 .image day-03-building-a-twelve-factor-app-in-go/myapp_config_screenshot.png
 
 * How does envconfig work?
 
-Behind the scenes envconfig makes use of Go’s [[http://golang.org/pkg/reflect/][reflect]] and [[http://golang.org/pkg/strconv/][strconv]] packages. Let’s walk through a section of the envconfig source code that’s responsible for extracting configuration from the environment and converting the results to the appropriate type.
+Behind the scenes envconfig makes use of Go’s [[http://golang.org/pkg/reflect/][`reflect`]] and [[http://golang.org/pkg/strconv/][`strconv`]] packages. Let’s walk through a section of the `envconfig` source code that’s responsible for extracting configuration from the environment and converting the results to the appropriate type.
 
 .code day-03-building-a-twelve-factor-app-in-go/code3.go /START1 OMIT/,/END1 OMIT/
 
@@ -105,7 +105,7 @@ Next we iterate over each struct field in the specification, and if settable, me
 
 .code day-03-building-a-twelve-factor-app-in-go/code3.go /START3 OMIT/,/END3 OMIT/
 
-Next envconfig converts the string retrieved from the environment to a value with the same type as the struct field represented by f.Kind() and assigns the value to the struct field represented by f.
+Next `envconfig` converts the string retrieved from the environment to a value with the same type as the struct field represented by `f.Kind()` and assigns the value to the struct field represented by `f`.
 
 .code day-03-building-a-twelve-factor-app-in-go/code3.go /START4 OMIT/,/END4 OMIT/
 

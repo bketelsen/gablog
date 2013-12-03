@@ -13,21 +13,21 @@ import (
 var configHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>MyApp Config</title>
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <title>MyApp Config</title>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h2>Configuration Settings</h2>
-<table class="table table-bordered table-striped table-condensed">
-<tr><th>Name</th><th>Value</th></tr>
-<tr><td>Debug</td><td>{{ .Debug }}</td></tr>
-<tr><td>Host</td><td>{{ .Host }}</td></tr>
-<tr><td>Password</td><td>{{ .Password }}</td></tr>
-<tr><td>Port</td><td>{{ .Port }}</td></tr>
-<tr><td>Timeout</td><td>{{ .Timeout }}</td></tr>
-<tr><td>Username</td><td>{{ .Username }}</td></tr>
-</table>
+  <h2>Configuration Settings</h2>
+  <table class="table table-bordered table-striped table-condensed">
+    <tr><th>Name</th><th>Value</th></tr>
+    <tr><td>Debug</td><td>{{ .Debug }}</td></tr>
+    <tr><td>Host</td><td>{{ .Host }}</td></tr>
+    <tr><td>Password</td><td>{{ .Password }}</td></tr>
+    <tr><td>Port</td><td>{{ .Port }}</td></tr>
+    <tr><td>Timeout</td><td>{{ .Timeout }}</td></tr>
+    <tr><td>Username</td><td>{{ .Username }}</td></tr>
+  </table>
 </body>
 </html>`
 
@@ -41,7 +41,7 @@ type Spec struct {
 	Username string
 }
 
-// Spec holds the myapp configuration.
+// spec holds the myapp configuration.
 var spec Spec
 
 func ConfServer(w http.ResponseWriter, req *http.Request) {
@@ -51,7 +51,8 @@ func ConfServer(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	if err := envconfig.Process("myapp", &spec); err != nil {
+	err := envconfig.Process("myapp", &spec)
+	if err != nil {
 		log.Fatal(err)
 	}
 	http.HandleFunc("/config", ConfServer)

@@ -7,9 +7,7 @@ import (
 	"strconv"
 )
 
-var (
-	debug bool
-)
+var debug bool
 
 func main() {
 	raw_debug := os.Getenv("MYAPP_DEBUG")

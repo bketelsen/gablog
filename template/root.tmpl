@@ -192,11 +192,12 @@
 
 {{define "doc"}}
 	<div class="article">
-		<p class="date">{{.Time.Format "2 January 2006"}}</p>
+
 		<h1 class="title"><a href="{{.Path}}">{{.Title}}</a></h1>
     {{with .Authors}}
       <p class="author">By {{authors .}}</p>
     {{end}}
+    <p class="date">{{.Time.Format "2 January 2006"}}</p>
 		{{.HTML}}
 	</div>
 {{end}}

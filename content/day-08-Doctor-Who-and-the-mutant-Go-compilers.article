@@ -1,0 +1,113 @@
+Go Advent Day 8 - Doctor Who and the mutant Go compilers
+A prophesy born of the oracle
+8 Dec 2013
+Tags: goadvent
+
+Elliott Stoneham
+Gopher, helping fun & exciting stuff to fall out of go.tools/ssa
+elliott.stoneham@gmail.com
+http://twitter.com/ElliottStoneham
+@ElliottStoneham
+
+* 
+
+At the end of 1963 the UK was in the grip of [[http://en.wikipedia.org/wiki/Beatlemania][Beatlemania]], but for an impressionable 7-year old like me, it was the arrival of [[http://en.wikipedia.org/wiki/Doctor_Who][Doctor Who]] that really fired my imagination. The highlight of my week was peeping out from behind the furniture in our living-room on a Saturday evening, alternately terrified and transfixed by the exciting new program on our small black-and-white television set. During the rest of the week, my friends and I would play "[[http://en.wikipedia.org/wiki/Dalek][Daleks]]”. We would take turns either to mechanically move towards the inferior humans shouting “EXTERMINATE, EXTERMINATE", or recoil in mock-horror and run away back to our trusty [[http://en.wikipedia.org/wiki/TARDIS][TARDIS]] to escape. Happy days.
+
+Half a century later, I found myself tweeting on the parallels between my life-long favourite sci-fi show and the joys of being a gopher: 
+
+.html day-08-tweet.html
+
+The TARDIS is a good metaphor for the [[http://golang.org/ref/spec][Go language specification]]. For most languages this document would be unreadably dry, but not for Go. In fact I think it is the essence of why the language will be successful in the long term - it contains the smallest possible number of features necessary to provide the functionality required. Everything else is in the extensive libraries. 
+
+By resisting feature-bloat in the core language, Go is very easy to read. [[http://en.wikipedia.org/wiki/Tony_Hoare][Tony Hoare]] highlighted why this is a key implementation issue: 
+
+- “There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies. The first method is far more difficult."  
+
+Go enables the first method, even for very large code-sets. That is quality engineering.
+
+But Go's small feature set also has another big advantage, it makes the core language relatively easy to implement. So, like the TARDIS, the Go language specification can travel to other (programming) worlds.
+
+** The Time Lords of Golang 
+
+Rob Pike has recently [[http://blog.golang.org/cover][blogged]] that: “From the beginning of the project, Go was designed with tools in mind.”
+
+There now are a dazzling array of tools, yet the team are still enthusiastic to build more. One current prototype tool and it’s libraries have inspired my Go programming efforts over the last 8 months: [[http://godoc.org/code.google.com/p/go.tools/cmd/oracle][Oracle]], a tool for answering questions about Go source code, analyses the entire code-set of a Go application. 
+
+As a by-product of creating the Oracle tool, the Golang team have already created much of what is required to implement a Go compiler in Go.
+
+The [[http://golang.org/s/oracle-design][design document]] for the oracle tool states that: 
+
+- “As a prerequisite to pointer analysis, the program must first be converted from typed syntax trees into a simpler, more explicit intermediate representation (IR), as used by a compiler.  We use a high-level static single-assignment (SSA) form IR in which the elements of all Go programs can be expressed using only about 30 basic instructions."
+
+It is this SSA form IR created by [[http://godoc.org/code.google.com/p/go.tools/ssa][go.tools/ssa]] that holds such promise for the future.
+
+For testing purposes, [[http://godoc.org/code.google.com/p/go.tools/ssa/interp][go.tools/ssa/interp]] provides an interpreter for these basic instructions; which you can either access through the [[https://code.google.com/p/go/source/browse/?repo=tools#hg%2Fcmd%2Fssadump][ssadump]] command or through your own short Go program, as in this [[https://gist.github.com/elliott5/7578605][gist]].
+
+But the more intriguing prospect is to translate these basic instructions into executable code, probably via some intermediate form.
+
+** Materialising on alien worlds
+
+The future I envisage, is one in which your Go code can be automatically translated into many other programming languages or intermediate forms.
+ 
+Imagine how useful it would be to be able to write a set of code once in Go and have it available to be used from many other languages, after automatic translation. It would be possible to create portable library packages. 
+
+Alternately, consider an organisation with a large code-set in one language that wants to transition to using Go. A Go translator to their main language would provide a way to assist that process.
+
+Or what if you want to run a chunk of Go code in some environment not targeted by the existing compilers? Maybe using JavaScript or Flash on a web page, or inside a mobile app? Here is a route to doing that.
+
+This is not pie-in-the-sky:
+
+- There is already a successful open-source language with a vibrant user community that takes this multi-target approach: [[http://haxe.org][Haxe]]. 
+
+- And I have already successfully translated some Go (via SSA and Haxe) into JavaScript, C++, Java, C#, PHP and Flash as an [[https://speakerdeck.com/elliott5/ssa?slide=29][experiment]] (including a single-threaded emulation of goroutines and channels).
+
+But the target of the translation need not be a programming language, it could be another intermediate representation. The [[https://github.com/axw/llgo][llgo]] project is translating the Go SSA form into LLVM bitcode, in order to exploit that compiler architecture’s comprehensive back end. And there is no reason why, for example, Java bytecode could not be similarly targeted by some future project.
+
+More speculatively, if the SSA form of the Go program were further analysed and re-worked, it might be possible for Go programs to run on parallel heterogeneous platforms. Maybe using [[http://en.wikipedia.org/wiki/OpenCL][OpenCL]], perhaps with the addition of a new Go library package to express data-parallelism. This approach might lead to even faster Go execution times for some applications.
+
+** Sonic screwdriver required
+
+Aside from the prototype nature of parts of the current go.tools code-base, which will improve as it matures, the two biggest long-term issues are speed and standard library portability.
+
+Speed is an issue for two reasons:
+
+- Firstly because the SSA form of a Go program is intentionally un-optimised, to allow for easy analysis. Thus if the Go SSA is naively translated into some other form, the speed that can be achieved is dependent on the optimisation abilities of the compiler or interpreter of that other form. So in the medium term, it would probably be helpful to write an SSA-to-SSA optimiser.
+
+- Secondly, the target environment will not have all of the language features of Go, so some level of emulation will always be required, potentially slowing down the execution.  
+
+The excellent Go standard library packages, which naturally were not written with the sort of extreme portability that I am advocating in mind, also present some challenges:
+
+- Unsafe pointers are unusable in some execution environments, particularly where pointers must be emulated.
+
+- Many of the library packages make use of runtime assembler/C functions for speed or to access low-level functionality, which need to be emulated in the target environment, again, where possible.
+
+- Links to operating system functionality is not be possible in some execution environments, where that underlying functionality does not exist.
+
+- Finally, the size and interconnectedness of library packages may also be a practical issue on the client side. For example, during my experiments, the frequently imported [[http://golang.org/pkg/unicode/][unicode]] package generated a 492k JavaScript file, even after minification.
+
+In consequence, not all of the Go standard libraries will be either available or desirable in every Go target execution environment. 
+
+However, by contrast, there is no imperative programming environment in which the core Go language specification itself could not be implemented. 
+ 
+** A trip in the TARDIS
+
+My personal plan is to continue my [[https://speakerdeck.com/elliott5/ssa][adventures with go.tools/ssa]]. Using the Go language specification as my TARDIS, I want to see just how far in computing time and space I can travel. 
+
+Let’s use the TARDIS together right now. Since Go has just had its fourth open-source birthday, let’s travel forward in time by another four years.
+
+Picture the festive scene on Christmas morning 2017, with the whole family gathered around. An eager young gopher opens their presents, while their parent looks adoringly on and asks:
+
+- Has Father Christmas brought you any nice new toys? 
+
+- Really? A whole set of new Go compilers. How exciting! 
+
+- Oh, so you’ll be able to use Go for almost every project now. How wonderful!
+
+- OK, OK, you scamper off and play with them straight away, if you must. (sigh)
+
+_Happy_Christmas!_
+
+
+
+
+

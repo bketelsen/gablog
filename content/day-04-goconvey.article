@@ -1,13 +1,16 @@
-GoConvey
+Go Advent Day 4 - GoConvey
 4 Dec 2013
 Tags: testing, goadvent
 
-Matthew Holt (@mholt6) and Michael Whatcott (@mdwhatcott)
+Matthew Holt
+@mholt
 
-One highly appealing aspect about Go is built-in testing with `go test`. From one who once eschewed test-driven development, I now wholly encourage it. [[http://golang.org/pkg/testing/][Testing is fundamental]] to writing Go code, and Go 1.2's 
-[[http://blog.golang.org/cover][new test coverage tools]] make TDD more compelling than ever.
+Michael Whatcott
+@mdwhatcott
 
-** Overview
+One highly appealing aspect about Go is built-in testing with `go test`. From one who once eschewed test-driven development, I now wholly encourage it. [[http://golang.org/pkg/testing/][Testing is fundamental]] to writing Go code, and Go 1.2's [[http://blog.golang.org/cover][new test coverage tools]] make TDD more compelling than ever.
+
+* Introducing GoConvey
 
 [[http://smartystreets.github.io/goconvey][GoConvey]] is a new project that makes testing even better in Go. It consists of (1) a framework for writing behavioral-style tests, and (2) a web UI which reports test results in real-time. Both are optional, depending on your own workflow.
 
@@ -21,26 +24,7 @@ The browser page updates automatically when Go files are changed. You can also e
 
 At its core, though, GoConvey is a testing framework. Its simple DSL is designed so that code is not only tested, but also documented clearly and unambiguously:
 
-    func TestIntegerExample(t *testing.T) {
-        Convey("Subject: Integer incrementation and decrementation", t, func() {
-            var x int
-    
-            Convey("Given a starting integer value", func() {
-                x = 42
-    
-                Convey("When incremented", func() {
-                    x++
-    
-                    Convey("The value should be greater by one", func() {
-                        So(x, ShouldEqual, 43)
-                    })
-                    Convey("The value should NOT be what it used to be", func() {
-                        So(x, ShouldNotEqual, 42)
-                    })
-                })
-            })
-        })
-    }
+.code day-04-goconvey/code.go /START1 OMIT/,/END1 OMIT/
 
 The web UI comes with a tool to stub this out for you without having to worry about Go syntax.
 
@@ -48,22 +32,19 @@ If you prefer the terminal over a browser, just run `go test` as usual:
 
 .image http://smartystreets.github.io/goconvey/resources/images/terminal.png
 
-** Assertions
+* Assertions
 
 GoConvey provides _positive_ assertions, which is different from traditional Go tests. _Quick:_tell_me_what_the_expected_results_are,_not_what_they_aren't:_
 
-    if foo < bar || baz != "abc" {
-        t.Error("Test failed...")
-    }
+.code day-04-goconvey/code.go /START2 OMIT/,/END2 OMIT/
 
 (Are you right? Keep reading.) This statement tells us what the code _shouldn’t_ do, rather than telling us what it _should_ do. It would be much easier to understand if we replace it with two clear `So` assertions:
 
-    So(foo, ShouldBeGreaterThanOrEqualTo, bar)
-    So(baz, ShouldEqual, "abc")
+.code day-04-goconvey/code.go /START3 OMIT/,/END3 OMIT/
 
 Did you read the original test correctly? Most people forget that `foo` can _equal_ `bar` and still pass.
 
-** Summary
+* Summary
 
 GoConvey is a different way of thinking about testing in Go. GoConvey is verbose, whereas Go convention is concise and even abbreviated. But Go purists may still find the web UI appealing while sticking to the standard testing package. (And let’s remind ourselves that the test files and packages, with all their verbosity, are not compiled into the production binaries.)
 

@@ -14,7 +14,7 @@ It’s pretty obvious there are twelve things you gotta do to build a Twelve Fac
 
 Before moving on we need to define application configuration:
 
-_“An app’s config is everything that is likely to vary between deploys (staging, production, developer environments, etc).”_
+_“An_app’s_config_is_everything_that_is_likely_to_vary_between_deploys_(staging,_production,_developer_environments,_etc).”_
 
 For most applications configuration includes logging levels, port bindings, and database settings. These settings are typically stored in configuration files, for example:
 

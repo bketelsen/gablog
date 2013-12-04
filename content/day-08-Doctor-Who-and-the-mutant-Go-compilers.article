@@ -71,7 +71,7 @@ Aside from the prototype nature of parts of the current go.tools code-base, whic
 
 Speed is an issue for two reasons:
 
-- Firstly because the SSA form of a Go program is intentionally un-optimised, to allow for easy analysis. Thus if the Go SSA is naively translated into some other form, the speed that can be achieved is dependent on the optimisation abilities of the compiler or interpreter of that other form. So in the medium term, it would probably be helpful to write an SSA-to-SSA optimiser.
+- Firstly the SSA form of a Go program is intentionally un-optimised, to allow for easy analysis. Thus if the Go SSA is naively translated into some other form, the speed that can be achieved is dependent on the optimisation abilities of the compiler or interpreter of that other form. So in the medium term, it would probably be helpful to write an SSA-to-SSA optimiser of some sort.
 
 - Secondly, the target environment will not have all of the language features of Go, so some level of emulation will always be required, potentially slowing down the execution.  
 

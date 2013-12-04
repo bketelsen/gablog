@@ -18,7 +18,7 @@ One highly appealing aspect about Go is built-in testing with `go test`. From on
 
 .image http://smartystreets.github.io/goconvey/resources/images/ok.png
 
-The web interface works with any tests that run with `go test`. In other words, it fully supports native Go tests using the standard `testing` package, and it should play nicely with other frameworks like gocheck, Testify, and Ginkgo.
+The web interface works with any tests that run with go test. In other words, it fully supports native Go tests using the standard `testing` package, and it should play nicely with other frameworks like gocheck, Testify, and Ginkgo.
 
 The browser page updates automatically when Go files are changed. You can also enable desktop notifications so you don't have to leave your editor:
 
@@ -30,7 +30,7 @@ At its core, though, GoConvey is a testing framework. Its simple DSL is designed
 
 The web UI comes with a tool to stub this out for you without having to worry about Go syntax.
 
-If you prefer the terminal over a browser, just run `go test` as usual:
+If you prefer the terminal over a browser, just run go test as usual:
 
 .image http://smartystreets.github.io/goconvey/resources/images/terminal.png
 

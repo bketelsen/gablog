@@ -93,6 +93,11 @@
           <div class="row">
           
             <div class="widget span4">
+            <h3>GopherCon 2014</h3>
+            <a href="http://www.gophercon.com/?utm_source=gopheracademyblog&utm_medium=banner&utm_campaign=banner"><img src="/static/gophercon.png" alt="Gophercon 2014" /></a>
+            </div>
+
+            <div class="widget span4">
             <h3>GopherCon 2014 Needs Sponsors</h3>
             <p>Gopher Academy is looking for sponsors for GopherCon 2014. Sponsoring this event is a great way to get your products, services, an ideas in front of top-notch Go developers and decision makers.</p>
             <p>Check out our <a href="http://www.gophercon.com/cfp-sponsors/">Sponsorship page</a> today and help make this conference amazing.</p>
@@ -187,11 +192,12 @@
 
 {{define "doc"}}
 	<div class="article">
-		<p class="date">{{.Time.Format "2 January 2006"}}</p>
+
 		<h1 class="title"><a href="{{.Path}}">{{.Title}}</a></h1>
+    {{with .Authors}}
+      <p class="author">By {{authors .}}</p>
+    {{end}}
+    <p class="date">{{.Time.Format "2 January 2006"}}</p>
 		{{.HTML}}
-		{{with .Authors}}
-			<p class="author">By {{authors .}}</p>
-		{{end}}
 	</div>
 {{end}}

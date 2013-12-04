@@ -1,14 +1,10 @@
-Day 5 - An introduction to beego
+Go Advent - Day 5 - An introduction to beego
 5 Dec 2013
 Tags: goadvent
 
 Jiahua Chen
 
 * Welcome
-
-Welcome to our first Go Advent Calendar.
-
-Gopher Academy is bringing you 25 blog posts about Go in 25 days and we're starting from the top with a blog post from the Go team themselves.
 
 * An introduction to beego
 
@@ -47,7 +43,7 @@ And here is the classic organization of projects that are based on beego:
 
 When you develop with beego, the [[Bee][https://github.com/beego/bee]] tool will give great convenience features, like hot compile for your code. 
 
-** Get started
+** Getting started
 
 *** Installation
 
@@ -57,20 +53,28 @@ You will need a functioning Go 1.1 installation for this to work.
 
 Beego is a "go get" able Go project: `go get github.com/astaxie/beego`
 
-Or through [[gopm][https://github.com/gpmgo/gopm]] by executing `gopm get -gopath github.com/astaxie/beego`.
+Or through [[gopm][https://github.com/gpmgo/gopm]] by executing 
+	
+	gopm get -gopath github.com/astaxie/beego
 
-You may also need bee tool for developing: `go get github.com/beego/bee` or `gopm bin -dir github.com/beego/bee $GOPATH/bin`.
+You may also need bee tool for developing: 
 
-For convenient, you should add `$GOPATH/bin` into $PATH variable.
+	go get github.com/beego/bee 
 
-Want to quick setup an application see if it works?
+or 
+
+	gopm bin -dir github.com/beego/bee $GOPATH/bin
+
+For convenient, you should add `$GOPATH/bin` into `$PATH` variable.
+
+Want to quickly setup an application see if it works?
 
 	$ cd $GOPATH/src
 	$ bee new hello
 	$ cd hello
 	$ bee run
 
-These commands help you:
+These commands will help you:
 
 1. Install beego into your $GOPATH.
 2. Install Bee tool in your computer.
@@ -102,14 +106,14 @@ The following example prints string "Hello world" to your browser, it shows how 
 		beego.Run()
 	}
 
-Save file as "hello.go", build and run it:
+Save file as `hello.go`, build and run it:
 
 	$ go build -o hello hello.go
 	$ ./hello
 
 Open address [http://127.0.0.1:8080](http://127.0.0.1:8080) in your browser and you will see "hello world".
 
-What happened in behind above example?
+What is happening in this example?
 
 1. We import package `github.com/astaxie/beego`. As we know that Go initialize packages and runs init() function in every package ([more details](https://github.com/Unknwon/build-web-application-with-golang_EN/blob/master/eBook/02.3.md#main-function-and-init-function)), so beego initializes the BeeApp application at this time.
 2. Define controller. We define a struct called `MainController` with a anonymous field `beego.Controller`, so the `MainController` has all methods that `beego.Controller` has.

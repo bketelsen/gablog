@@ -83,7 +83,7 @@ The excellent Go standard library packages, which naturally were not written wit
 
 - Links to operating system functionality is not be possible in some execution environments, where that underlying functionality does not exist.
 
-- Finally, the size and interconnectedness of library packages may also be a practical issue on the client side. For example, during my experiments, the frequently imported unicode package generated a 492k JavaScript file, even after minification.
+- Finally, the size and interconnectedness of library packages may also be a practical issue on the client side. For example, a test involving the frequently imported `unicode` package generated un-minified JavaScript files of 1.7M using my experimental (Go->SSA->Haxe->JS) set-up (reduced down to 492K after using the [[https://developers.google.com/closure/][Closure compiler]]) and 597K using [[https://github.com/neelance/gopherjs][GopherJs]].    
 
 In consequence, not all of the Go standard libraries will be either available or desirable in every Go target execution environment. 
 

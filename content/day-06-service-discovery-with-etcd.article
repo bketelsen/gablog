@@ -10,7 +10,7 @@ At [[https://poptip.com/][Poptip]], our first foray into Go was a small but crit
 
 One of the many things that we didn’t want to overcomplicate early in the process was deployment, so we made it dead simple. Once a commit to master is made, our continuous integration server pulls the latest, compiles the binary, runs the tests, and then if everything is green, scps the binary and a run script to a set of hosts listed in a text file checked into master. Once that’s complete, it executes the run script which will kill the existing process and start up the new binary. The time from push to live in production was less than 2 minutes, which made rollbacks simple: just revert the change and push.
 
-This process was fine for a single service, but since we’ve moved the majority of our stack to Go, it’s become suboptimal. Many services share the same config flags, which causes a headache when we rotate a database credential but forget to update one of the services' config. Additionally, our infrastructure has gotten mature enough that autoscaling has become a crucial need in order for us to handle traffic spikes while minimizing cost overhead. Updating a text file in the repo just isn’t cutting it anymore.
+This process was fine for a single service, but since we’ve moved the majority of our stack to Go, it’s become suboptimal. Many services share the same config flags, which causes a headache when we rotate a database credential but forget to update one of the service's config. Additionally, our infrastructure has gotten mature enough that autoscaling has become a crucial need in order for us to handle traffic spikes while minimizing cost overhead. Updating a text file in the repo just isn’t cutting it anymore.
 
 Enter [[https://github.com/coreos/etcd#etcd][etcd]], “[a] highly-available key value store for shared configuration and service discovery.”
 
@@ -90,4 +90,4 @@ And that’s it! You can use this functionality to update any clients to reconne
 
 We’ve only scratched the surface of how you can make your life easier using etcd with some basic examples, and I hope that they helped to demonstrate how powerful etcd can be for you. I find it to be one of the best-designed tools precisely because of this simplicity, and I hope you do too. Also, did I mention it’s also completely written in Go?
 
-Happy hacking!
+Happy hacking and if you’d like to see more posts like this, get @ me on [[https://twitter.com/andybons][Twitter]]!

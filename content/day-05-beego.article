@@ -8,15 +8,15 @@ Jiahua Chen
 
 * An introduction to beego
 
-Beego is an open-source, high-performance and lightweight application framework for the Go programming language; it supports RESTful router, MVC design, session, cache intelligent routing, thread-safe map and many more features that you can check out from [[here][http://beego.me]].
+Beego is an open-source, high-performance and lightweight application framework for the Go programming language; it supports a RESTful router, MVC design, session, cache intelligent routing, thread-safe map and many more features that you can check out at [[here][http://beego.me]].
 
-This post will give you an overview and get started of beego framework.
+This post will give you an overview and get started with the beego framework.
 
 ** Overview
 
-The goal of beego is to help you build and develop Go applications effectively in the Go way. Which means beego integrates features belong to Go and great mechanisms from other frameworks; in other words, it's not a translated framework, it's a native and designed only for Go.
+The goal of beego is to help you build and develop Go applications effectively in the Go way.  Beego integrates features belonging to Go and great mechanisms from other frameworks; in other words, it's not a translated framework, it's native and designed only for Go.
 
-Beego also uses modular design and thus gives you freedom of choosing which modules you want to use in your applications and leave alone useless ones for you.
+Beego also uses a modular design and thus gives you the freedom of choosing which modules you want to use in your applications and leave alone useless ones for you.
 
 The following figure shows 8 major modules of beego:
 
@@ -126,9 +126,4 @@ What is happening in this example?
 
 The [[offical website][http://beego.me]] of beego contains all the information you may need, and the [[documentation][http://beego.me/docs]] page is made as an [[open-source project][https://github.com/beego/beedoc]] so that you can open issues for requesting more details or pull request and be a part of the [[community][http://beego.me/community]]. To follow up news of beego, keep eyes on our [[blog][http://beego.me/blog]].
 
-* Following Go Advent
-
-That's one down blog post down, 24 more to go.
-
-You can subscribe the Go Advent via the [[feed://blog.gopheracademy.com/feed.atom][RSS feed]] on the right hand side or our [[https://twitter.com/gopheracademy][Twitter account]].
 

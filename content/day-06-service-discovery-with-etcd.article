@@ -88,6 +88,6 @@ It will print the updated credentials value:
 
 And that’s it! You can use this functionality to update any clients to reconnect using the new database credentials however you see fit.
 
-We’ve only scratched the surface of how you can make your life easier using etcd with some basic examples, and I hope that they helped to demonstrate how powerful etcd can be for you. I find it to be one of the best-designed tools precisely because of this simplicity, and I hope you do too. Also, did I mention it’s also completely written in Go?
+We’ve only scratched the surface of how you can make your life easier using etcd with some basic examples, and I hope that they helped to demonstrate how powerful it can be for you. I find it to be one of the best-designed tools precisely because of this simplicity, and I hope you do too. Also, did I mention it’s also completely written in Go?
 
 Happy hacking and if you’d like to see more posts like this, get @ me on [[https://twitter.com/andybons][Twitter]]!

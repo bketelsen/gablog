@@ -34,7 +34,7 @@ Most of Go's packages are beautiful, because Go hide OS's peculiar matters as po
     }
 
 This code will works fine for UNIX OS and Windows.
-`path/filepath` treat file paths as UTF-8 strings. And os.Args is encoded to UTF-8 even though it's on windows. So windows user can write programs without falling down to hell of multi-byte encoding.
+`path/filepath` treat file paths as UTF-8 strings. And `os.Args` is encoded to UTF-8 even though it's on windows. So windows user can write programs without falling down to hell of multi-byte encoding.
 In japanese, windows application works Shift_JIS (MS932) file system encoding. Shift_JIS is double-byte character-set which some characters are contained 0x5C in trailing-byte. So many windows application developer met a hell of multi-byte encoding.
 
     C:\path\contains\backslash\char>gcc -o unix_like_app.c
@@ -45,7 +45,7 @@ In japanese, windows application works Shift_JIS (MS932) file system encoding. S
 
 Go make them happy.
 
-* Concurrency
+* Concurrency Pattern
 
 I guess that Go will provide new style operation of UI. It is difficult to handle both of key events and input timeout at once. However, if you separate key event handling in goroutine and pass events to a channel for external of the goroutine, it maybe get simple and complexity operation for the UI
 	
@@ -77,6 +77,7 @@ I guess that Go will provide new style operation of UI. It is difficult to handl
     	event := make(chan termbox.Event)
     	go func() {
     		for {
+    			// Post events to channel
     			event <- termbox.PollEvent()
     		}
     	}()
@@ -84,6 +85,7 @@ I guess that Go will provide new style operation of UI. It is difficult to handl
     	print_tb(1, 1, "Hit any key")
     loop:
     	for {
+    		// Poll key event or timeout
     		select {
     		case ev := <-event:
     			print_tb(1, 2, fmt.Sprintf("Key typed: %v", ev.Ch))
@@ -98,13 +100,51 @@ I guess that Go will provide new style operation of UI. It is difficult to handl
     	termbox.Close()
     }
 
-If you make a new channel for the event, you will be able to add into `select` easily.
+If you create a channel for the event, you will be able to add into `select` easily.
 
 - Receiving new tweet
 - Redraw window event
 - Key events
 
-Of course, this above code works fine for windows. You don't need to go for hard way. Writing pthread codes? Writing multiple event polling? Go easy way by Go.
+When typing keys, in the most cases, internal condition will be changed and will need to be redrawn. But the rendering may be heavy to call in each of key typing.
+So use goroutine and timer.
+
+    	dirty := false
+    	timer := time.AfterFunc(0, func() {
+    		if dirty {
+    			redraw_full()
+    		} else {
+    			redraw_part()
+    		}
+    	})
+    	for {
+    		select {
+    		case ev := <-event:
+    			// handle terminal event
+    			switch ev.Type {
+    			case termbox.EventKey:
+    				// handle key event
+    				switch ev.Key {
+    				case termbox.KeyEnter:
+    					// update internal condition
+    					update_condition(ev)
+    					dirty = false
+    					// redraw immediately
+    					timer.Reset(1 * time.Microsecond)
+    				default:
+    					// update candidate
+    					update_candidate(ev)
+    					dirty = true
+    					// redrwa in later
+    					timer.Reset(200 * time.Microsecond)
+    				}
+    			}
+    		// handle another events
+    		}
+    	}
+
+The `timer` make delay for redrawing screen. And if the next event require forcely screen update, it will update immediately.
+Of course, those above code works fine for windows. You don't need to go for hard way. Writing pthread codes? Writing multiple event polling? Go easy way by Go.
 
 * But... I must write OS Specifiec Code
 

@@ -31,7 +31,7 @@ But Go's small feature set also has another big advantage, it makes the core lan
 
 Rob Pike has recently [[http://blog.golang.org/cover][blogged]] that: “From the beginning of the project, Go was designed with tools in mind.”
 
-There now are a dazzling array of tools, yet the team are still enthusiastic to build more. One current prototype tool and it’s libraries have inspired my Go programming efforts over the last 8 months: [[http://godoc.org/code.google.com/p/go.tools/cmd/oracle][Oracle]], a tool for answering questions about Go source code, analyses the entire code-set of a Go application. 
+There are now a dazzling array of tools, yet the team are still enthusiastic to build more. One current prototype tool and it’s libraries have inspired my Go programming efforts over the last 8 months: [[http://godoc.org/code.google.com/p/go.tools/cmd/oracle][Oracle]], a tool for answering questions about Go source code, analyses the entire code-set of a Go application. 
 
 As a by-product of creating the Oracle tool, the Golang team have already created much of what is required to implement a Go compiler in Go.
 
@@ -47,17 +47,17 @@ But the more intriguing prospect is to translate these basic instructions into e
 
 ** Materialising on alien worlds
 
-The future I envisage, is one in which your Go code can be automatically translated into many other programming languages or intermediate forms.
+The future I envisage, is one in which your Go code can be automatically translated into many other programming languages and intermediate forms.
  
 Imagine how useful it would be to be able to write a set of code once in Go and have it available to be used from many other languages, after automatic translation. It would be possible to create portable library packages. 
 
-Alternately, consider an organisation with a large code-set in one language that wants to transition to using Go. A Go translator to their main language would provide a way to assist that process.
-
-Or what if you want to run a chunk of Go code in some environment not targeted by the existing compilers? Maybe using JavaScript or Flash on a web page, or inside a mobile app? Here is a route to doing that.
+Or what if you want to run a chunk of Go code in some environment not targeted by the existing compilers. Maybe using JavaScript or Flash on a web page; or inside a mobile app; or as part of some large established existing non-Go application. Here is a route to doing that.
 
 This is not pie-in-the-sky:
 
-- There is already a successful open-source language with a vibrant user community that takes this multi-target approach: [[http://haxe.org][Haxe]]. 
+- [[http://haxe.org][Haxe]] is a successful open-source language with a vibrant user community that already takes this multi-target approach. 
+
+- [[https://github.com/neelance/gopherjs][GopherJS]], a transpiler from Go to JavaScript, already implements much of the Go language specification, without using the go.tools/ssa library itself, but relying on the same underlying libraries in the go.tools sub-repository.
 
 - And I have already successfully translated some Go (via SSA and Haxe) into JavaScript, C++, Java, C#, PHP and Flash as an [[https://speakerdeck.com/elliott5/ssa?slide=29][experiment]] (including a single-threaded emulation of goroutines and channels).
 
@@ -71,23 +71,23 @@ Aside from the prototype nature of parts of the current go.tools code-base, whic
 
 Speed is an issue for two reasons:
 
-- Firstly the SSA form of a Go program is intentionally un-optimised, to allow for easy analysis. Thus if the Go SSA is naively translated into some other form, the speed that can be achieved is dependent on the optimisation abilities of the compiler or interpreter of that other form. So in the medium term, it would probably be helpful to write an SSA-to-SSA optimiser of some sort.
+- Firstly, the target environment will not have all of the language features of Go, so some level of emulation will always be required, potentially slowing down execution. The inspiring [[http://emscripten.org][Emscripten]] LLVM to JavaScript compiler project has an excellent [[https://github.com/kripken/emscripten/blob/master/docs/paper.pdf?raw=true][technical paper]] which describes the types of issues involved.
 
-- Secondly, the target environment will not have all of the language features of Go, so some level of emulation will always be required, potentially slowing down the execution.  
-
+- Secondly, the SSA form of a Go program is intentionally un-optimised, to allow for easy analysis. Thus if the Go SSA is naively translated into some other form, the speed that can be achieved is dependent on the optimisation abilities of the compiler or interpreter of that other form. So in the medium term, it would probably be helpful to write an SSA-to-SSA optimiser of some sort.
+ 
 The excellent Go standard library packages, which naturally were not written with the sort of extreme portability that I am advocating in mind, also present some challenges:
 
-- Unsafe pointers are unusable in some execution environments, particularly where pointers must be emulated.
+- Unsafe pointers probably will not work as expected in every execution environment.
 
-- Many of the library packages make use of runtime assembler/C functions for speed or to access low-level functionality, which need to be emulated in the target environment, again, where possible.
+- Many of the library packages make use of runtime assembler/C functions for speed or to access low-level functionality, which need to be emulated in the target environment, where possible.
 
 - Links to operating system functionality is not be possible in some execution environments, where that underlying functionality does not exist.
 
-- Finally, the size and interconnectedness of library packages may also be a practical issue on the client side. For example, during my experiments, the frequently imported [[http://golang.org/pkg/unicode/][unicode]] package generated a 492k JavaScript file, even after minification.
+- Finally, the size and interconnectedness of library packages may also be a practical issue on the client side. For example, during my experiments, the frequently imported unicode package generated a 492k JavaScript file, even after minification.
 
 In consequence, not all of the Go standard libraries will be either available or desirable in every Go target execution environment. 
 
-However, by contrast, there is no imperative programming environment in which the core Go language specification itself could not be implemented. 
+However, by contrast, I believe there is no imperative programming environment in which the core Go language specification itself could not be implemented, excluding the “System considerations” section at the end regarding “Package unsafe” and “Size and alignment guarantees”. 
  
 ** A trip in the TARDIS
 
@@ -103,7 +103,7 @@ Picture the festive scene on Christmas morning 2017, with the whole family gathe
 
 - Oh, so you’ll be able to use Go for almost every project now. How wonderful!
 
-- OK, OK, you scamper off and play with them straight away, if you must. (sigh)
+- OK, OK, you go and play with them straight away, if you must. (sigh)
 
 _Happy_Christmas!_
 

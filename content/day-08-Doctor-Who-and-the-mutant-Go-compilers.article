@@ -19,7 +19,7 @@ Half a century later, I found myself tweeting on the parallels between my life-l
 
 The TARDIS is a good metaphor for the [[http://golang.org/ref/spec][Go language specification]]. For most languages this document would be unreadably dry, but not for Go. In fact I think it is the essence of why the language will be successful in the long term - it contains the smallest possible number of features necessary to provide the functionality required. Everything else is in the extensive libraries. 
 
-By resisting feature-bloat in the core language, Go is very easy to read. [[http://en.wikipedia.org/wiki/Tony_Hoare][Tony Hoare]] highlighted why this is a key implementation issue: 
+By resisting feature-bloat in the core language, Go is very easy to read. [[http://en.wikipedia.org/wiki/Tony_Hoare][C. A. R. Hoare]] highlighted why this is a key implementation issue: 
 
 - “There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies. The first method is far more difficult."  
 

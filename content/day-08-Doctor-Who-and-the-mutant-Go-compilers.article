@@ -57,7 +57,7 @@ This is not pie-in-the-sky:
 
 - [[http://haxe.org][Haxe]] is a successful open-source language with a vibrant user community that already takes this multi-target approach. 
 
-- [[https://github.com/neelance/gopherjs][GopherJS]], a transpiler from Go to JavaScript, already implements much of the Go language specification, without using the go.tools/ssa library itself, but relying on the same underlying libraries in the go.tools sub-repository.
+- [[https://github.com/neelance/gopherjs][GopherJS]], a transpiler from Go to JavaScript, already implements much of the Go language specification. It does not use the go.tools/ssa library itself, but does rely on the same underlying libraries in the go.tools sub-repository.
 
 - And I have already successfully translated some Go (via SSA and Haxe) into JavaScript, C++, Java, C#, PHP and Flash as an [[https://speakerdeck.com/elliott5/ssa?slide=29][experiment]] (including a single-threaded emulation of goroutines and channels).
 
@@ -77,7 +77,7 @@ Speed is an issue for two reasons:
  
 The excellent Go standard library packages, which naturally were not written with the sort of extreme portability that I am advocating in mind, also present some challenges:
 
-- Unsafe pointers probably will not work as expected in every execution environment.
+- Some execution environments may not fully support unsafe pointers, or have the same data sizes and alignments as the main compilers.
 
 - Many of the library packages make use of runtime assembler/C functions for speed or to access low-level functionality, which need to be emulated in the target environment, where possible.
 
@@ -103,7 +103,7 @@ Picture the festive scene on Christmas morning 2017, with the whole family gathe
 
 - Oh, so you’ll be able to use Go for almost every project now. How wonderful!
 
-- OK, OK, you go and play with them straight away, if you must. (sigh)
+- OK, OK, you go off and play with your new Golang toys straight away, if you must. (sigh)
 
 _Happy_Christmas!_
 

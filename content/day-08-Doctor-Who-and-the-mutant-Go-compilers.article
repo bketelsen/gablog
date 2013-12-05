@@ -43,7 +43,7 @@ It is this SSA form IR created by [[http://godoc.org/code.google.com/p/go.tools/
 
 For testing purposes, [[http://godoc.org/code.google.com/p/go.tools/ssa/interp][go.tools/ssa/interp]] provides an interpreter for these basic instructions; which you can either access through the [[https://code.google.com/p/go/source/browse/?repo=tools#hg%2Fcmd%2Fssadump][ssadump]] command or through your own short Go program, as in this [[https://gist.github.com/elliott5/7578605][gist]].
 
-But the more intriguing prospect is to translate these basic instructions into executable code, probably via some intermediate form.
+But the more intriguing prospect is to translate these basic instructions into executable code.
 
 ** Materialising on alien worlds
 

@@ -87,7 +87,7 @@ The excellent Go standard library packages, which naturally were not written wit
 
 In consequence, not all of the Go standard libraries will be either available or desirable in every Go target execution environment. 
 
-However, by contrast, I believe there is no imperative programming environment in which the core Go language specification itself could not be implemented, excluding the “System considerations” section at the end regarding “Package unsafe” and “Size and alignment guarantees”. 
+However, by contrast, I believe there is no imperative programming environment in which the core Go language specification itself could not be implemented. The only exception being the “System considerations” section of the specification regarding “Package unsafe” and “Size and alignment guarantees”. 
  
 ** A trip in the TARDIS
 

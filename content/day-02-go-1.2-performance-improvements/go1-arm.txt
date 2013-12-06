@@ -1,0 +1,33 @@
+#linux/arm (beaglebone black)
+benchmark                         old ns/op    new ns/op    delta
+BenchmarkBinaryTree17            2147483647   2147483647  -10.18%
+BenchmarkFannkuch11              2147483647   2147483647   +4.24%
+BenchmarkFmtFprintfEmpty                830          878   +5.78%
+BenchmarkFmtFprintfString              3917         3587   -8.42%
+BenchmarkFmtFprintfInt                 1985         2052   +3.38%
+BenchmarkFmtFprintfIntInt              3160         3088   -2.28%
+BenchmarkFmtFprintfPrefixedInt         3551         3230   -9.04%
+BenchmarkFmtFprintfFloat              10149         8977  -11.55%
+BenchmarkFmtManyArgs                  14559        15168   +4.18%
+BenchmarkGobDecode                187385600    141360095  -24.56%
+BenchmarkGobEncode                 68925931     67236489   -2.45%
+BenchmarkGzip                    2147483647   2147483647  -14.01%
+BenchmarkGunzip                   991178566    603119958  -39.15%
+BenchmarkHTTPClientServer            916596       837445   -8.64%
+BenchmarkJSONEncode               809293333    356967983  -55.89%
+BenchmarkJSONDecode              1932279041   1631930166  -15.54%
+BenchmarkMandelbrot200            137827437    153710287  +11.52%
+BenchmarkGoParse                   73351362     68473039   -6.65%
+BenchmarkRegexpMatchEasy0_32           1223         1166   -4.66%
+BenchmarkRegexpMatchEasy0_1K           5793         5661   -2.28%
+BenchmarkRegexpMatchEasy1_32           1283         1202   -6.31%
+BenchmarkRegexpMatchEasy1_1K          13029        11807   -9.38%
+BenchmarkRegexpMatchMedium_32          2067         1879   -9.10%
+BenchmarkRegexpMatchMedium_1K        735587       629721  -14.39%
+BenchmarkRegexpMatchHard_32           37966        33890  -10.74%
+BenchmarkRegexpMatchHard_1K         1179754      1034027  -12.35%
+BenchmarkRevcomp                  124724689    106668143  -14.48%
+BenchmarkTemplate                1863269958   1773811500   -4.80%
+BenchmarkTimeParse                    13158         6938  -47.27%
+BenchmarkTimeFormat                   13255        13126   -0.97%
+

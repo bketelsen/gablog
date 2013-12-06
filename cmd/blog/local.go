@@ -10,6 +10,8 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"path/filepath"
+	"time"
 )
 
 var (
@@ -25,8 +27,36 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	go reloadDocs(s, *contentPath)
 	http.Handle("/", s)
 	fs := http.FileServer(http.Dir(*staticPath))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	log.Println("Now listening on", *httpAddr)
 	log.Fatal(http.ListenAndServe(*httpAddr, nil))
+}
+
+func reloadDocs(s *Server, contentPath string) {
+
+	var err error
+	// sleep then reload docs
+	for {
+		time.Sleep(30 * time.Second)
+
+		// Load content.
+		err = s.loadDocs(filepath.Clean(contentPath))
+		if err != nil {
+			log.Println(err)
+		}
+
+		err = s.renderAtomFeed()
+		if err != nil {
+			log.Println(err)
+		}
+
+		err = s.renderJSONFeed()
+		if err != nil {
+			log.Println(err)
+		}
+	}
+
 }

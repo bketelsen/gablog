@@ -15,7 +15,7 @@ At the end of 1963 the UK was in the grip of [[http://en.wikipedia.org/wiki/Beat
 
 Half a century later, I found myself tweeting on the parallels between my life-long favourite sci-fi show and the joys of being a gopher: 
 
-.html day-08-doctor-who-and-the-mutant-go-compilers/day-08-tweet.html
+.html day-08-dr-who-and-the-mutant-go-compilers/day-08-tweet.html
 
 The TARDIS is a good metaphor for the [[http://golang.org/ref/spec][Go language specification]]. For most languages this document would be unreadably dry, but not for Go. In fact I think it is the essence of why the language will be successful in the long term - it contains the smallest possible number of features necessary to provide the functionality required. Everything else is in the extensive libraries. 
 

@@ -6,17 +6,18 @@ William Kennedy
 
 * Introduction
 
-At Ardan Studios we have spent the last 6 months, in our spare time and on weekends, building a consumer based mobile
-application called OutCast. The mobile application is tailored towards those who like spending time outdoors, whether that be
+At [[http://www.ardanstudios.com][Ardan Studios]] we have spent the last 6 months, in our spare time and on weekends, building a consumer based mobile
+application called [[http://www.outcast.io][OutCast]]. The mobile application is tailored towards those who like spending time outdoors, whether that be
 fishing, hunting or any other type of activity.
 
 .image day-09-building-a-weather-app-using-go/image1.jpg
+The Main Weather and Buoy Screens
 
-This first release of OutCast has the conditions for the buoy stations and marine forecasts areas within the United States.
+This first release of OutCast shows the conditions for the buoy stations and marine forecasts areas within the United States.
 All this information is updated every 10 minutes and there are map views with traditional grids and search.
 
-The backend processing for buoy and marine data is built using Go and running as a worker task in [[http://www.iron.io/][Iron.IO]]. The buoy
-processing downloads a text file from the NOAA website and rips through it, updating MongoDB with any changes.
+The backend processing for buoy and marine data is built using Go and running at [[http://www.iron.io/][Iron.IO]] as a scheduled worker task.
+The buoy processing downloads a text file from the NOAA website and rips through it, updating MongoDB with any changes.
 The marine processing is a bit more complicated. This requires pulling down multiple web pages from the NOAA website
 and parsing out all the text. Go made building and running these tasks a breeze.
 
@@ -47,9 +48,10 @@ Then you have the issue of updating S3 storage and MongoDB for each image. This 
 image overlays from being out of sync. At the end of the day, you want to do your best to make sure that the images for
 all the radar stations are in sync. This will provide the best user experience.
 
-So how does Go help make this all happen every 5 minutes all day and all night without fail?
+Radar image processing happens in three stages and runs on a VM at [[https://www.digitalocean.com/][Digital Ocean]] with 2 Gig
+of memory and 2 Cores.
 
-Radar image processing happens in three stages and runs on a VM at [[https://www.digitalocean.com/][Digital Ocean]] with 2 Gig of memory and 2 Cores.
+So how does Go help make this all happen every 5 minutes all day and all night without fail?
 
 * Stage 1: Download Images
 
@@ -113,7 +115,7 @@ The program will consistently complete this work in 90 seconds or less:
 
 The last stage requires uploading all the cleaned images to S3 storage, removing the old images from S3 and then updating MongoDB
 with the new list of available image files. I am using the [[https://wiki.ubuntu.com/goamz][goamz]] package from Ubuntu for accessing
-S3 and the [[http://labix.org/mgo][mgo]] package from Labix.org to access MongoDB.
+S3 and the [[http://labix.org/mgo][mgo]] package from [[http://labix.org][Gustavo Neimeyer]] to access MongoDB.
 
 Just like when we download the images, this stage spawns a Go routine for each image that needs to be uploaded and recorded.
 The Go program consistently performs this work in one second:

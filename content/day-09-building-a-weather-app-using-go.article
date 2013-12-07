@@ -6,7 +6,7 @@ William Kennedy
 
 * Introduction
 
-At Ardan Studios we have spent the last 6 months, in our spare time and on weekends, building our first consumer based mobile
+At Ardan Studios we have spent the last 6 months, in our spare time and on weekends, building a consumer based mobile
 application called OutCast. The mobile application is tailored towards those who like spending time outdoors, whether that be
 fishing, hunting or any other type of activity.
 
@@ -15,19 +15,20 @@ fishing, hunting or any other type of activity.
 This first release of OutCast has the conditions for the buoy stations and marine forecasts areas within the United States.
 All this information is updated every 10 minutes and there are map views with traditional grids and search.
 
-The backend processing for buoy and marine data is built using Go and running as a worker task in Iron.IO. The buoy
+The backend processing for buoy and marine data is built using Go and running as a worker task in [[http://www.iron.io/][Iron.IO]]. The buoy
 processing downloads a text file from the NOAA website and rips through it, updating MongoDB with any changes.
-The marine processing is a bit more complicated. This required pulling down multiple web pages from the NOAA website
+The marine processing is a bit more complicated. This requires pulling down multiple web pages from the NOAA website
 and parsing out all the text. Go made building and running these tasks a breeze.
 
-Another important aspect of OutCast is real time weather radar for the last 50 minutes. This has been the most challenging
-task. Mainly because we needed a real good image library that would run on Linux and could be integrated with Go.
-We were fortunate to find the ImageMagick's MagickWand C API and their Go package that provides the CGO
+Another important aspect of OutCast is real time weather radar for the last 50 minutes. This has been very challenging
+on multiple levels. Mainly because we needed a real good image library that would run on Linux and could be integrated with Go.
+We were fortunate to find ImageMagick's MagickWand C API and their Go package that provides the CGO
 [[https://github.com/gographics/imagick][bindings]].
 
 Processing images is an intense piece of work. Sometimes it takes 3 seconds to clean a single image. With 155 radar stations
-that need to be processed every 5 minutes, the task became difficult to manage. Mainly because the MagickWand library could
-only handle processing one image at a time.
+that need to be processed every 5 minutes, it took us several refactors to get things working well. The MagickWand library can
+only handle processing one image at a time. This restriction places a lot of stress on getting things done accurately within
+an acceptable amount of time.
 
 Here is a sample of a radar image before and after processing:
 
@@ -48,12 +49,12 @@ all the radar stations are in sync. This will provide the best user experience.
 
 So how does Go help make this all happen every 5 minutes all day and all night without fail?
 
-Radar image processing happens in three stages and runs on a VM at Digital Ocean with 2 Gig of memory and 2 Cores.
+Radar image processing happens in three stages and runs on a VM at [[https://www.digitalocean.com/][Digital Ocean]] with 2 Gig of memory and 2 Cores.
 
 * Stage 1: Download Images
 
 There are 155 images that have to be downloaded. The images range from 1k to 20k in size depending on the activity of
-the weather at that moment. In this stage the program spawns a Go routine for each image that needs to be downloaded.
+the weather at that moment. In this stage, the program spawns a Go routine for each image that needs to be downloaded.
 The Go program consistently does all 155 downloads in less than one second:
 
  15:15:02 : main : downloadImages : Started
@@ -111,8 +112,8 @@ The program will consistently complete this work in 90 seconds or less:
 * Stage 3: Upload To S3 and Update MongoDB
 
 The last stage requires uploading all the cleaned images to S3 storage, removing the old images from S3 and then updating MongoDB
-with the new list of available image files. I am using the goamz package from Ubuntu for accessing S3 and the mgo package from
-Labix.org to access MongoDB.
+with the new list of available image files. I am using the [[https://wiki.ubuntu.com/goamz][goamz]] package from Ubuntu for accessing
+S3 and the [[http://labix.org/mgo][mgo]] package from Labix.org to access MongoDB.
 
 Just like when we download the images, this stage spawns a Go routine for each image that needs to be uploaded and recorded.
 The Go program consistently performs this work in one second:
@@ -148,11 +149,11 @@ The Go program consistently performs this work in one second:
 * Conclusion
 
 This project has taught me a lot about Go. It is exciting to see how fast the Go routines can download the images and perform
-all the S3 and MongoDB tasks. Thanks to CGO, I was able to leverage a powerful image processing library and make calls directly
+all the S3 and MongoDB work. Thanks to CGO, I was able to leverage a powerful image processing library and make calls directly
 from my Go code.
 
-Currently we are porting the web service that powers the mobile application. It is currently written in Ruby and we are porting
-it to Go. We are using the [[http://beego.me/][beego]] package for our web framework, the [[http://smartystreets.github.io/goconvey/][goconvey]]
+Currently we are porting the web service that powers the mobile application to Go. It is currently written in Ruby. We are using
+the [[http://beego.me/][beego]] package for our web framework, the [[http://smartystreets.github.io/goconvey/][goconvey]]
 package for our tests and the [[http://godoc.org/github.com/kelseyhightower/envconfig][envconfig]] package to handle our configuration needs.
 
 Our goal for OutCast is to provide people the ability to know in advance that the weekend is going to be great. We plan on using

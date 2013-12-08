@@ -1,0 +1,49 @@
+Go Advent Day 11 - Martini: Extra DRY
+11 Dec 2013
+Tags: goadvent
+
+Jeremy Saenz
+@codegangsta
+
+* Introduction
+
+I don't actually fancy a dry Martini. 
+
+My preferable gin to vermouth ratio sits anywhere from 1:1 to 3:2. What can I say? I love that classic turn of the century taste!
+
+Some people love dry Martinis, some love no vermouth at all! Some people prefer vodka instead of Gin (not me). Where do you stand on this 100 year old debate? What is the perfect Martini? (leave comments below, I'm interested.)
+
+The truth is that there is none, there is only preference.
+
+** Who is This Crazy Person and Why is He Talking About Martinis?
+
+Hello world! My name is Jeremy Saenz, and I wrote [[http://github.com/codegangsta/martini][Martini]] to help make web development in Go a convenient, expressive, and DRY (pun intended) process.
+
+Martini makes you feel classy. Seriously! I am concurrently typing this article while slowly sipping a glass of scotch. If that isn't classy then I don't know what is!
+
+* Demo
+I put together a short video describing how Martini works:
+
+.html day-11-martini/embed.html
+
+* A Web Cocktail
+Martini is meant to be mixed and matched. Your web app is your own!
+
+- _Need_HTML/JSON_rendering?_ - Pull in the martini-contrib [[http://github.com/codegangsta/martini-contrib/tree/master/render][render]] package.
+- _Need_gzip?_ - Go grab the martini-contrib [[http://github.com/codegangsta/martini-contrib/tree/master/gzip][gzip]] package.
+- _Need_Sessions?_ - Confide in the martini-contrib [[http://github.com/codegangsta/martini-contrib/tree/master/sessions][sessions]] package.
+- _Need_Form_Binding?_ - Revel in the sheer awesomeness of the martini-contrib [[http://github.com/codegangsta/martini-contrib/tree/master/binding][binding]] package.
+
+
+* Community
+Although Martini is young, the community surrounding it is vibrant. Here are some resources to help you get involved:
+
+- [[https://github.com/codegangsta/martini][Github]]
+- [[https://github.com/codegangsta/martini-contrib][Useful Martini Components]]
+- [[https://groups.google.com/forum/#!forum/martini-go][Mailing List]]
+- [[http://0value.com/build-a-restful-API-with-Martini][Build a RESTful API with Martini]]
+
+* Go Build Stuff!
+The Beauty of Martini is that it embraces the diversity of the web. Martini gives you the flexibility to build API's, render HTML, and serve rich content over HTTP. Make your Martini the way you like it!
+
+2014 is going to be rad for the Go community. Let us together build some valuable web components for the Go ecosystem!

@@ -21,7 +21,7 @@ The TARDIS is a good metaphor for the [[http://golang.org/ref/spec][Go language 
 
 By resisting feature-bloat in the core language, Go is very easy to read. [[http://en.wikipedia.org/wiki/Tony_Hoare][C. A. R. Hoare]] highlighted why this is a key implementation issue: 
 
-- “There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies. The first method is far more difficult."  
+.blockquote "There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies. The first method is far more difficult."
 
 Go enables the first method, even for very large code-sets. That is quality engineering.
 
@@ -37,7 +37,7 @@ As a by-product of creating the Oracle tool, the Golang team have already create
 
 The [[http://golang.org/s/oracle-design][design document]] for the oracle tool states that: 
 
-- “As a prerequisite to pointer analysis, the program must first be converted from typed syntax trees into a simpler, more explicit intermediate representation (IR), as used by a compiler.  We use a high-level static single-assignment (SSA) form IR in which the elements of all Go programs can be expressed using only about 30 basic instructions."
+.blockquote “As a prerequisite to pointer analysis, the program must first be converted from typed syntax trees into a simpler, more explicit intermediate representation (IR), as used by a compiler.  We use a high-level static single-assignment (SSA) form IR in which the elements of all Go programs can be expressed using only about 30 basic instructions."
 
 It is this SSA form IR created by [[http://godoc.org/code.google.com/p/go.tools/ssa][go.tools/ssa]] that holds such promise for the future.
 
@@ -106,8 +106,3 @@ Picture the festive scene on Christmas morning 2017, with the whole family gathe
 - OK, OK, you go off and play with your new Golang toys straight away, if you must. (sigh)
 
 _Happy_Christmas!_
-
-
-
-
-

@@ -63,9 +63,7 @@
 {{end}}
 
 {{define "image"}}
-<div class="image">
-  <img src="{{.URL}}"{{with .Height}} height="{{.}}"{{end}}{{with .Width}} width="{{.}}"{{end}}>
-</div>
+  <img class="img-responsive" src="{{.URL}}"{{with .Height}} height="{{.}}"{{end}}{{with .Width}} width="{{.}}"{{end}}>
 {{end}}
 
 {{define "blockquote"}}

@@ -19,6 +19,8 @@ The truth is that there is none, there is only preference.
 
 Hello world! My name is Jeremy Saenz, and I wrote [[http://github.com/codegangsta/martini][Martini]] to help make web development in Go a convenient, expressive, and DRY (pun intended) process. Martini is only about a month old and has gained quite a following already. As of this writing Martini has *161* watchers, *2316* Stars, and *153* Forks on Github. There is a ton of weekly activity around both the [[http://github.com/codegangsta/martini][martini]] and [[http://github.com/codegangsta/martini-contrib][martini-contrib]] repositories.
 
+If you haven't already be sure to check out the [[http://martini.codegangsta.io/#demo][Video Demo]] for Martini.
+
 Martini makes you feel classy. Seriously! I am concurrently typing this article while slowly sipping a glass of scotch. If that isn't classy then I don't know what is!
 
 * A Go Advent Christmas List
@@ -52,6 +54,7 @@ Martini is meant to be mixed and matched. Your web app is your own!
 * Community
 Although Martini is young, the community surrounding it is vibrant. Here are some resources to help you get involved:
 
+- [[http://martini.codegangsta.io][Martini Site]]
 - [[https://github.com/codegangsta/martini][Github]]
 - [[https://github.com/codegangsta/martini-contrib][Useful Martini Components]]
 - [[https://groups.google.com/forum/#!forum/martini-go][Mailing List]]

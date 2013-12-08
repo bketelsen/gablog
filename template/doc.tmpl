@@ -68,6 +68,10 @@
 </div>
 {{end}}
 
+{{define "blockquote"}}
+<blockquote>{{.Body}}</blockquote>
+{{end}}
+
 {{define "iframe"}}
 <div class="iframe">
   <iframe src="{{.URL}}"{{with .Height}} height="{{.}}"{{end}}{{with .Width}} width="{{.}}"{{end}} frameborder="0" allowfullscreen mozallowfullscreen webkitallowfullscreen></iframe>

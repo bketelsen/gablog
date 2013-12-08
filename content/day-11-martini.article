@@ -17,22 +17,36 @@ The truth is that there is none, there is only preference.
 
 ** Who is This Crazy Person and Why is He Talking About Martinis?
 
-Hello world! My name is Jeremy Saenz, and I wrote [[http://github.com/codegangsta/martini][Martini]] to help make web development in Go a convenient, expressive, and DRY (pun intended) process.
+Hello world! My name is Jeremy Saenz, and I wrote [[http://github.com/codegangsta/martini][Martini]] to help make web development in Go a convenient, expressive, and DRY (pun intended) process. Martini is only about a month old and has gained quite a following already. As of this writing Martini has *161* watchers, *2316* Stars, and *153* Forks on Github. There is a ton of weekly activity around both the [[http://github.com/codegangsta/martini][martini]] and [[http://github.com/codegangsta/martini-contrib][martini-contrib]] repositories.
 
 Martini makes you feel classy. Seriously! I am concurrently typing this article while slowly sipping a glass of scotch. If that isn't classy then I don't know what is!
 
-* Demo
-I put together a short video describing how Martini works:
+* A Go Advent Christmas List
+In the spirit of Christmas, I decided to put together a simple wishlist web app. Here is a video of how easy it is to write it with Martini:
 
 .html day-11-martini/embed.html
+
+Here is the source code for the example app:
+[[https://github.com/codegangsta/go-advent-martini]]
 
 * A Web Cocktail
 Martini is meant to be mixed and matched. Your web app is your own!
 
 - _Need_HTML/JSON_rendering?_ - Pull in the martini-contrib [[http://github.com/codegangsta/martini-contrib/tree/master/render][render]] package.
+
+.code day-11-martini/render.go /START OMIT/,/END OMIT/
+
 - _Need_gzip?_ - Go grab the martini-contrib [[http://github.com/codegangsta/martini-contrib/tree/master/gzip][gzip]] package.
+
+.code day-11-martini/gzip.go /START OMIT/,/END OMIT/
+
 - _Need_Sessions?_ - Confide in the martini-contrib [[http://github.com/codegangsta/martini-contrib/tree/master/sessions][sessions]] package.
+
+.code day-11-martini/sessions.go /START OMIT/,/END OMIT/
+
 - _Need_Form_Binding?_ - Revel in the sheer awesomeness of the martini-contrib [[http://github.com/codegangsta/martini-contrib/tree/master/binding][binding]] package.
+
+.code day-11-martini/binding.go /START OMIT/,/END OMIT/
 
 
 * Community

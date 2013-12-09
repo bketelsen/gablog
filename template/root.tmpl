@@ -7,15 +7,19 @@
     <meta charset="utf-8">
     <title>{{template "title" .}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
     <link rel="alternate" type="application/atom+xml" title="blog.gopheracademy.com - Atom Feed" href="http://blog.gopheracademy.com/feed.atom" />
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
 
-    <!-- Le styles -->
-    <link href="/static/bootstrap.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
     <style type="text/css">
       body {
-        padding-top: 60px;
+        padding-top: 70px;
         padding-bottom: 40px;
       }
 
@@ -30,7 +34,7 @@
         box-sizing: border-box;         /* Opera/IE 8+ */
       }
 
-      .widget h3 { display: block; background: #212121; color: #f1f1f1; text-transform: capitalize; border-radius: 5px; margin-bottom: 10px; text-align: center; padding: 5px 0px;}
+      .widget h3 { display: block; background: #212121; color: #f1f1f1; text-transform: capitalize; border-radius: 5px; margin-bottom: 10px; text-align: center; padding: 5px 5px;}
 
       .feat-img img { padding: 5px; border: 1px solid #ccc;}
 
@@ -40,12 +44,6 @@
       .widget ul li a { display: block; padding: 5px 0px; color: #888; border-top: 1px dotted #ccc;}
       .widget ul li a:hover { background: #fff; text-decoration: none; padding-left: 5px;}
     </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
 
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="ico/favicon.ico">
@@ -56,55 +54,43 @@
   </head>
 
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span> 
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="index.html">Gopher Academy Blog</a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active"><a href="index.html">Blog</a></li>
-
-            </ul>
-            <ul class="nav pull-right">
-              <li><a href="http://www.gopheracademy.com">Back To Gopher Academy</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="index.html">Gopher Academy Blog</a>
         </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="index.html">Blog</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://www.gopheracademy.com">Back To Gopher Academy</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
       </div>
     </div>
-
 
     <div class="container">
 
       <div class="row">
         
-        <div class="span8">
+        <div class="col-sm-9">
           
 		{{template "content" .}}
         </div><!-- end main area -->
-
-        <aside class="span4">
-          
-          <div class="row">
-          
-            <div class="widget span4">
+        <div class="col-sm-3">
+            <div class="widget">
             <h3>GopherCon 2014</h3>
-            <a href="http://www.gophercon.com/?utm_source=gopheracademyblog&utm_medium=banner&utm_campaign=banner"><img src="/static/gophercon.png" alt="Gophercon 2014" /></a>
+            <a href="http://www.gophercon.com/?utm_source=gopheracademyblog&utm_medium=banner&utm_campaign=banner"><img class="img-responsive" src="/static/gophercon.png" alt="Gophercon 2014" /></a>
             </div>
 
-            <div class="widget span4">
+            <div class="widget">
             <h3>GopherCon 2014 Needs Sponsors</h3>
             <p>Gopher Academy is looking for sponsors for GopherCon 2014. Sponsoring this event is a great way to get your products, services, an ideas in front of top-notch Go developers and decision makers.</p>
             <p>Check out our <a href="http://www.gophercon.com/cfp-sponsors/">Sponsorship page</a> today and help make this conference amazing.</p>
             </div>
 
-            <div class="widget span4">
+            <div class="widget">
               <h3>About Us</h3>
 
               <p>
@@ -122,7 +108,7 @@
             </div><!-- end widget -->
 
 
-        <div class="widget span4">
+        <div class="widget">
         <h3>Article List</h3>
 
           <p><a href="/index">See Article Index</a></p>
@@ -131,7 +117,7 @@
             </div><!-- end widget -->
 
       {{with .Doc}}
-      <div class="widget span4">
+      <div class="widget">
         <h3>Other Articles</h3>
 
 				{{with .Newer}}
@@ -154,16 +140,6 @@
             </div><!-- end widget -->
 
       {{end}}
-
-
-		
-
-
-
-
-          </div><!-- end widget row -->
-        </aside><!-- end sidebar -->
-
       </div><!-- end row -->
  <hr>
       <footer>
@@ -177,7 +153,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/static/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

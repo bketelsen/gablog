@@ -45,7 +45,7 @@ Presumably you know all about `go get` and its way of tracking packages from git
 
 The most low-tech approach is to use source-control submodules, and all of the above version control systems support them out of the box. Of course, I've yet to find someone (who is not a version control hacker) who actually likes submodules. And even if you do love submodules, they still don't support dependencies stored in other version control systems.
 
-For maintaining a GOPATH of dependencies, [[godep][https://github.com/kr/godep]] supports locking to revisions in any version control system and has a delightfully boring config file:
+For maintaining a GOPATH of dependencies, [[https://github.com/kr/godep][godep]] supports locking to revisions in any version control system and has a delightfully boring config file:
 
     {
         "ImportPath": "github.com/kr/hk",
@@ -125,9 +125,9 @@ Fortunately, it's easy to add a signal handler so you can stop accepting new req
 
 * Zero downtime restarts
 
-One of the most important uses of signals is to have a restart that drops no requests. Ruby and Python users may have experience with the (g)unicorn web server, which has the same feature. For this same approach [[github.com/rcrowley/goagain][goagain]] along with [[github.com/braintree/manners][manners]] handle passing open socket connections between processes and cleanly closing down resources.
+One of the most important uses of signals is to have a restart that drops no requests. Ruby and Python users may have experience with the (g)unicorn web server, which has the same feature. For this same approach [[https://github.com/rcrowley/goagain][goagain]] along with [[https://github.com/braintree/manners][manners]] handle passing open socket connections between processes and cleanly closing down resources.
 
-Of course, sometimes it's not as easy to modify an application to make it work with zero downtime restarts as it is to hide it behind a proxy that does the job for you. If that's the case, [[github.com/zimbatm/socketmaster][socketmaster]] can do the job for you. And even better, it doesn't even require you application to be in go, so it's a great tool to have in your toolbelt no matter the application.
+Of course, sometimes it's not as easy to modify an application to make it work with zero downtime restarts as it is to hide it behind a proxy that does the job for you. If that's the case, [[https://github.com/zimbatm/socketmaster][socketmaster]] can do the job for you. And even better, it doesn't even require you application to be in go, so it's a great tool to have in your toolbelt no matter the application.
 
 * Service management
 

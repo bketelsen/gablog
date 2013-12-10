@@ -55,7 +55,7 @@ Now that we have a `DB()` middleware we can add it to our middleware stack like 
 
 .code day-11-martini/final.go /START3 OMIT/,/END3 OMIT/
 
-Having a database is pretty useless if we don't have any data to store. So we will create a Wish struct that we can serialize and deserialize into our database:
+Having a database isn't that useful unless we have data to store. So we will create a Wish struct that we can serialize and deserialize into our database:
 
 .code day-11-martini/final.go /START0 OMIT/,/END0 OMIT/
 

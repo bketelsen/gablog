@@ -15,6 +15,7 @@ type Wish struct {
 //END0 OMIT
 
 //START1 OMIT
+// DB Returns a martini.Handler
 func DB() martini.Handler {
 	session, err := mgo.Dial("mongodb://localhost")
 	if err != nil {
@@ -31,6 +32,7 @@ func DB() martini.Handler {
 //END1 OMIT
 
 //START2 OMIT
+// GetAll returns all Wishes in the database
 func GetAll(db *mgo.Database) []Wish {
 	var wishlist []Wish
 	db.C("wishes").Find(nil).All(&wishlist)

@@ -7,10 +7,12 @@ import (
 	"labix.org/v2/mgo"
 )
 
+//START0 OMIT
 type Wish struct {
 	Name        string `form:"name"`
 	Description string `form:"description"`
 }
+//END0 OMIT
 
 //START1 OMIT
 func DB() martini.Handler {

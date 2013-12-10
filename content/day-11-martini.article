@@ -26,26 +26,70 @@ The return handling is fun, but most of Martini's power comes from Middleware an
 In the spirit of Christmas, I decided that it would only be appropriate to create a Christmas Wish List web app in Martini. By the end of this tutorial we will have a functioning we app complete with *HTML*template*rendering*, *Form*parsing*, and *MongoDB*integration*. Oh yeah, did I mention this will be only *50*lines*of*code?*
 
 ** Rendering HTML Templates
-Our Chrismas wish list only needs one endpoint, `/wishes`. When a browser visits the `/wishes` endpoint we should provide them with a list of wishes that already exists as well as a form to create a new wish.
+Our Christmas wish list only needs one endpoint, `/wishes`. When a browser visits the `/wishes` endpoint we should provide them with a list of wishes that already exists as well as a form to create a new wish.
 
 To render out the HTML we will use an external package from martini-contrib called `render`.
 
 .code day-11-martini/rendering.go
+
+With minimal amount of code we were able to integrate some powerful functionality. Calling `m.Use(render.Renderer())` adds the `render.Renderer()` to our HTTP stack as middleware. When a HTTP request comes in, Martini will pass it through the applications middleware layer for processing. In this case, the `render.Renderer()` middleware provides a `render.Render` interface for use to access via our handler functions argument list.
+
+The `render.Render` interface allows us to easily render HTML templates using the Go standard library's `html/template` package. By default, templates are read from the `templates/` directory with a `.tmpl` file extension.
+
+Here is our wishlist template, located at `templates/list.tmpl`:
+
 .code day-11-martini/list.tmpl
 
+We have a very basic form that POSTs to the `/wishes` endpoint and a loop over the target object, which will eventually be a list of wishes. We will cover both of in more detail, but first let's get MongoDB set up.
+
 ** Hooking up MongoDB
+Now that we learned how to use a middleware with `render.Renderer`, let's build our own! For this example we will use the wonderful `labix.org/v2/mgo` package as a driver for Mongo. This is what the code looks like for our `DB` middleware:
+
 .code day-11-martini/final.go /START1 OMIT/,/END1 OMIT/
-.code day-11-martini/final.go /START2 OMIT/,/END2 OMIT/
+
+When `DB()` is called we initialize a Mongo session on localhost. `DB()` returns a `martini.Handler` which will be called on every request. We simply clone the session for every request and make sure it is closed one the request is done being processed. The important bit is the call to `c.Map`. This maps an instance of `*mgo.Database` to our request context. This allows all subsequent handler functions to specify a `*mgo.Database` as an argument and get it injected.
+
+Now that we have a `DB()` middleware we can add it to our middleware stack like so:
+
 .code day-11-martini/final.go /START3 OMIT/,/END3 OMIT/
 
+Having a database is pretty useless if we don't have any data to store. So we will create a Wish struct that we can serialize and deserialize into our database:
+
+.code day-11-martini/final.go /START0 OMIT/,/END0 OMIT/
+
+You may have noticed the `form:"name"` tags on each field. These will be utilized a bit later when we need to parse out our HTML POST form.
+
+For convenience we will throw in a simple `GetAll` method to retrieve all of the `Wish` objects our of our database:
+
+.code day-11-martini/final.go /START2 OMIT/,/END2 OMIT/
+
 ** Listing the Wishes
+
+Now that all of the heavy lifting is done, we can modify our `GET`/wishes` handler to use the our new `*mgo.Database` service.
+
 .code day-11-martini/final.go /START4 OMIT/,/END4 OMIT/
 
+We are now telling the `templates/list.tmpl` template to render with the result of `GetAll(db)` as the target. Looking back at our HTML you can see that we loop over our target and render a name and description for every `Wish`.
+
+Time to get some wishes in our list!
+
 ** Creating new Wishes
+
+Our HTML form POSTs to the `/wishes` endpoint, so we can write a new route to handle that form. In this example we will make use of the `github.com/codegangsta/martini-contrib/binding` package, which gives us some awesome utilities for binding form data to our `Wish` struct:
+
 .code day-11-martini/final.go /START5 OMIT/,/END5 OMIT/
 
+The call to `binding.Form(Wish{})` will parse out form data when the request comes in. It will bind the data to the struct and map it to the request context so we can get it injected into our next handler function. We then `Insert` the wish into the database and render out our `template/list.tmpl` our newly updated list of wishes.
+
 ** 50 Lines of Go Later...
+
+Putting all of this together, we have a whopping 50 lines of Go code! For everything it does, this wish list app is surprisingly succinct and elegant:
+
 .code day-11-martini/final.go
+
+[[https://github.com/codegangsta/go-advent-martini][Github Source]]
+
+I hope this example gives a little more of an in depth look at how to build real applications in Martini. If you are interested in learning more about Martini check our the links below. 
 
 * Community
 Although Martini is young, the community surrounding it is vibrant. Here are some resources to help you get involved:

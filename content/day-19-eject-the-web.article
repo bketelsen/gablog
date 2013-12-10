@@ -6,14 +6,14 @@ Yasuhiro Matsumoto
 
 * Introduction
 
-As you know, Go is a good programming language to write the web application. There already have many products providing Router, MVC, Sinatra-like frameworks.
+As you know as well, Go is a good programming language to write the web application. There already have many products providing Router, MVC, Sinatra-like frameworks.
 However, Go is also a good programming language to write the command-line application. I wrote many small programs written by Go until today. And I beleave Go is best for it for me.
 
 * OS Compatibility
 
-Most of Go's packages are beautiful, because Go hide OS's peculiar matters as possible. Ex: file system, character encodings, socket, concurrency, and most of feature of Go.
+Most of Go's packages are beautiful to see for beginners, because Go hide operating system's peculiar matters as possible. Ex: file system, character encodings, socket I/O, concurrency. You'll notice this this is a feature of Go.
 
-`path/filepath` provide a way to be compatibility for each OSs.
+For example, `path/filepath` provide a way to be compatibility for each OSs.
 
     package main
     
@@ -33,9 +33,9 @@ Most of Go's packages are beautiful, because Go hide OS's peculiar matters as po
     		filepath.Join(append([]string{pwd}, os.Args[1:]...)...)))
     }
 
-This code will works fine for UNIX OS and Windows.
-`path/filepath` treat file paths as UTF-8 strings. And `os.Args` is encoded to UTF-8 even though it's on windows. So windows user can write programs without falling down to hell of multi-byte encoding.
-In japanese, windows application works Shift_JIS (MS932) file system encoding. Shift_JIS is double-byte character-set which some characters are contained 0x5C in trailing-byte. So many windows application developer met a hell of multi-byte encoding.
+This code will works fine for POSIX OSs and Windows.
+`path/filepath` treat file paths as UTF-8 strings in commonly. All of APIs for file system are doing encoding/decoding for the environment. `os.Args` is encoded to UTF-8 even though it's on windows. So windows user can write programs without falling down to hell of multi-byte encoding.
+In japanese, windows application works Shift_JIS (MS932) file system encoding. Shift_JIS is double-byte character-set which some characters are contained 0x5C (a.k.a backslash) in trailing-byte. So many windows application developer met a hell of multi-byte encoding.
 
     C:\path\contains\backslash\char>gcc -o unix_like_app.c
     
@@ -47,7 +47,7 @@ Go make them happy.
 
 * Concurrency Pattern
 
-I guess that Go will provide new style operation of UI. It is difficult to handle both of key events and input timeout at once. However, if you separate key event handling in goroutine and pass events to a channel for external of the goroutine, it maybe get simple and complexity operation for the UI
+I guess that Go will provide new style coding of UI. It is difficult to handle both of key events and input timeout at once. However, if you separate key event handling in goroutine and pass events to a channel for external of the goroutine, it maybe get simple but complexity coding for the UI.
 	
     package main
     

@@ -1,8 +1,6 @@
 package main
 
-import (
-	"github.com/codegangsta/martini"
-)
+import "..."
 
 func main() {
 	m := martini.Classic()

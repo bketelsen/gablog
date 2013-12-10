@@ -49,7 +49,7 @@ Now that we learned how to use a middleware with `render.Renderer`, let's build 
 
 .code day-11-martini/final.go /START1 OMIT/,/END1 OMIT/
 
-When `DB()` is called we initialize a Mongo session on localhost. `DB()` returns a `martini.Handler` which will be called on every request. We simply clone the session for every request and make sure it is closed one the request is done being processed. The important bit is the call to `c.Map`. This maps an instance of `*mgo.Database` to our request context. This allows all subsequent handler functions to specify a `*mgo.Database` as an argument and get it injected.
+When `DB()` is called we initialize a Mongo session on localhost. `DB()` returns a `martini.Handler` which will be called on every request. We simply clone the session for every request and make sure it is closed once the request is done being processed. The important bit is the call to `c.Map`. This maps an instance of `*mgo.Database` to our request context. This allows all subsequent handler functions to specify a `*mgo.Database` as an argument and get it injected.
 
 Now that we have a `DB()` middleware we can add it to our middleware stack like so:
 

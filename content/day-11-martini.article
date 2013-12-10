@@ -71,7 +71,9 @@ Now that all of the heavy lifting is done, we can modify our `GET`/wishes` handl
 
 .code day-11-martini/final.go /START4 OMIT/,/END4 OMIT/
 
-We are now telling the `templates/list.tmpl` template to render with the result of `GetAll(db)` as the target. Looking back at our HTML you can see that we loop over our target and render a name and description for every `Wish`.
+We are now telling the `templates/list.tmpl` template to render with the result of `GetAll(db)` as the target. Looking back at our HTML you can see that we loop over our target and render a name and description for every `Wish`. 
+
+We get the `*mgo.Database` type injected into our argument list because it was mapped by the handler that we returned from `DB()`. Since we called `session.Copy` in our `DB()` handler the request receives it's own database connection. This is a very powerful pattern in Martini as it allows us to forget about writing all of the boilerplate for setting and tearing down a session for each new request.
 
 Time to get some wishes in our list!
 

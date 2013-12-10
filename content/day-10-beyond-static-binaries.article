@@ -1,75 +1,80 @@
-Go Advent Day 10 - Why ops <3 Go
+Go Advent Day 10 - Beyond Static Binaries
+Deployment Tricks to Bore Your Sysadmin
 10 Dec 2014
 Tags: goadvent ops devops
 
 Joseph Anthony Pasquale Holsten
+Information Janitor @ Simply Measured
+joseph@josephholsten.com
+http://josephholsten.com
+@josephholsten
 
 * Introduction
 
-Today we're going to go against the general theme of the Go Advent Calendar and introduce No New Hotness™. That's because today is all about why folks in IT operations <3 go.  
+Today we're going to go against the general theme of the Go Advent Calendar and introduce No New Hotness™. That's because today is all about why folks in IT operations <3 go.
 
 Fortunately, we've had a couple teasers of the ops perspective with discussions on [[http://blog.gopheracademy.com/day-03-building-a-twelve-factor-app-in-go][environment variable configs]] and [[http://blog.gopheracademy.com/day-06-service-discovery-with-etcd][service discovery]].
 
-* Get in touch with your inner sysadmin
+* Get in Touch with Your Inner Sysadmin
 
 Since you may not be a natural born sysadmin, let's try and get you in the mood. Have you ever:
 
 - set up a home server?
 - had the hard drive fail?
-- have an update go wrong?
-- have a dependency conflict when installing?
-- have it become mysteriously slow?
+- had an update go wrong?
+- had a dependency conflict when installing?
+- had it become mysteriously slow?
 
 If you remember that feeling, you know what every day feels like in IT operations. Just like you, we hate that lost, frustrated, “Isn't this just supposed to work?” sensation. Once you've spent years waging war against the robots, you learn the ops mantra:
 
 .blockquote boring is good
 
-All the cool languages have [[http://www.haskell.org/][incredible type systems]], or can [[http://nodejs.org][automatically scale horizontally]], or can [[http://racket-lang.org][metaprogram even their own syntax]]. Go barely qualifies as object-oriented, has the same concurrency system used by Pike almost 25 years ago, and doesn't even have preprocessor macros. With so much boring, an admin knows they'll be able to reason about how and why code is behaving the way it does in production.
+All the cool languages have [[http://www.haskell.org/][incredible type systems]], or can [[http://nodejs.org][automatically scale horizontally]], or can even [[http://racket-lang.org][metaprogram their own syntax]]. Go barely qualifies as object-oriented, has the same concurrency system used by Pike almost 25 years ago, and doesn't even have preprocessor macros. With so much boring, an admin knows they'll be able to reason about how and why code is behaving the way it does in production.
 
-* Making the daily grind delightful
+* Making the Daily Grind Delightful
 
-By now you should be feeling the urge to wear a fedora, if not start trolling about package management systems in `alt.sysadmin.recovery`. Don't worry, these sensations will pass. Let's just get through a good day of getting a Go application into production. Assuming your devs have already got the code ready (ha!), it should be your job to build & deploy.
+By now you should be feeling the urge to wear a fedora, if not start trolling about package management systems in [[https://groups.google.com/forum/#!forum/alt.sysadmin.recovery][`alt.sysadmin.recovery`]]. Don't worry, these sensations will pass. Let's just get through a good day of getting a Go application into production. Assuming your devs already have the code ready (ha!), it should be your job to build & deploy.
 
 * Building
 
-Before you've got anything to deploy, you need to build it. Unfortunately, unlike many stacks we haven't locked down a set of standard tools or phases for building. But you've got to start somewhere, and Travis CI has a reasonable starting point:
+Before you've got anything to deploy, you need to build it. Unfortunately, unlike many stacks we haven't locked down a set of standard tools or phases for building. But you've got to start somewhere, and [[http://about.travis-ci.org/docs/user/languages/go/][Travis CI has a reasonable starting point]]:
 
-    $ go get -d -v . # download dependencies
-    $ go build -v .  # build top-level binaries
-    $ go test -v     # run tests
+  $ go get -d -v . # download dependencies
+  $ go build -v .  # build top-level binaries
+  $ go test -v     # run tests
 
-But while those phases are critical, they aren't the only hammer for each nail. 
+But while those phases are critical, they aren't the only hammer for each nail.
 
 * Dependencies
 
-Presumably you know all about `go`get` and its way of tracking packages from git, hg, svn and bzr. If you work at Google, or maintain every single one of your dependant libraries, you'll be comfortable running on HEAD from each of your dependencies. But most of us don't live in that world.
+Presumably you know all about [[http://golang.org/cmd/go/#hdr-Download_and_install_packages_and_dependencies][`go`get`]] and its way of tracking packages from git, hg, svn and bzr. If you work at Google, or maintain every single one of your dependant libraries, you'll be comfortable running on HEAD from each of your dependencies. But most of us don't live in that world.
 
 The most low-tech approach is to use source-control submodules, and all of the above version control systems support them out of the box. Of course, I've yet to find someone (who is not a version control hacker) who actually likes submodules. Even if you do love submodules, they still don't support dependencies stored in other version control systems.
 
 For maintaining a `$GOPATH` of dependencies, [[https://github.com/kr/godep][`godep`]] supports locking to revisions in any version control system and has a delightfully boring config file:
 
-    {
-        "ImportPath": "github.com/kr/hk",
-        "GoVersion": "go1.1.2",
-        "Deps": [
-            {
-                "ImportPath": "code.google.com/p/go-netrc/netrc",
-                "Rev": "28676070ab99"
-            },
-            {
-                "ImportPath": "github.com/kr/binarydist",
-                "Rev": "3380ade90f8b0dfa3e363fd7d7e941fa857d0d13"
-            }
-        ]
-    }
+  {
+      "ImportPath": "github.com/kr/hk",
+      "GoVersion": "go1.1.2",
+      "Deps": [
+          {
+              "ImportPath": "code.google.com/p/go-netrc/netrc",
+              "Rev": "28676070ab99"
+          },
+          {
+              "ImportPath": "github.com/kr/binarydist",
+              "Rev": "3380ade90f8b0dfa3e363fd7d7e941fa857d0d13"
+          }
+      ]
+  }
 
 While working with transitive dependencies isn't perfect, it's got support for importing an existing set of dependencies and works around many of the magical solutions of other package management tools.
 
 * Automation
 
-While plenty of folks are happy with `go`build`, by far the most popular way to deal with more complicated automation situations is boring old `make`. I promise your admin loves traditional `Makefile`s over `autotools`.
+While plenty of folks are happy with [[http://golang.org/cmd/go/#hdr-Compile_packages_and_dependencies][`go`build`]], by far the most popular way to deal with more complicated automation situations is boring old `make`. I promise your admin loves traditional `Makefile`s over `autotools`.
 
-Presumably you'll use this to wrap your favorite testing tool, from `go`test` to a Test-Anything tool like `bats`.
+Presumably you'll use this to wrap your favorite testing tool, from [[http://golang.org/cmd/go/#hdr-Test_packages][`go`test`]] to a Test-Anything tool like [[https://github.com/sstephenson/bats][`bats`]].
 
 * Deployment
 
@@ -85,9 +90,9 @@ While you deploy out binaries across all your servers, you may not desire each s
 
 Ultimately, you've got three main philosophies for local config: file, flag and env var.
 
-File is perhaps most traditional, with the most common being the standard `encoding/json` package (used by e.g. Docker, Packer, Lumberjack & Camlistore).
+File is perhaps most traditional, with the most common being the standard [[http://golang.org/pkg/encoding/json/][`encoding/json`]] package (used by e.g. Docker, Packer, Lumberjack & Camlistore).
 
-Command line flags are the style used for Google services, easily accessed by the `flag` package (also used by NSQ, Doozerd & Etcd).
+Command line flags are the style used for Google services, easily accessed by the [[http://golang.org/pkg/flag/][`flag`]] package (also used by NSQ, Doozerd & Etcd).
 
 Environment variables are most popular amongst twelve-factor apps and folks fond of `daemontools` or `runit` process management, and are well benefited by reading Hightower's discussion of [[http://blog.gopheracademy.com/day-03-building-a-twelve-factor-app-in-go][envconfig]].
 
@@ -107,9 +112,9 @@ Once the new binary in dropped in place along with new configuration, it's time 
 
 Fortunately, it's easy to add a signal handler so you can stop accepting new requests or reload a configuration:
 
-.code day-10-why-ops-heart-go/signal.go
+.code day-10-beyond-static-binaries/signal.go
 
-* Zero downtime restarts
+* Zero Downtime Restarts
 
 One of the most important uses of signals is to have a restart that drops no requests. Ruby and Python users may have experience with the (g)unicorn web server, which has the same feature. For this same approach [[https://github.com/rcrowley/goagain][goagain]] along with [[https://github.com/braintree/manners][manners]] handle passing open socket connections between processes and cleanly closing down resources.
 

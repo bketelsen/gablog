@@ -21,7 +21,7 @@ The Martini API was obsessively designed to make HTTP servers easy to write and 
 
 Handling HTTP requests is extremely intuitive. A `Handler` in Martini is any callable function. If your function returns something, Martini will write it out to the http response body. In the same vein, a handler function can return a `(int,`string)` and Martini will write out a response code as well as a body.
 
-The return handling is fun, but most of Martini's power comes from Middleware and Services. Let's dive a little deeper and create our first real web app in Martini!
+The return handling is fun, but most of Martini's power comes from [[https://github.com/codegangsta/martini#middleware-handlers][Middleware]] and [[https://github.com/codegangsta/martini#services][Services]]. Let's dive a little deeper and create our first real web app in Martini!
 
 * A Go Advent Christmas List
 
@@ -49,7 +49,7 @@ Now that we learned how to use a middleware with `render.Renderer`, let's build 
 
 .code day-11-martini/final.go /START1 OMIT/,/END1 OMIT/
 
-When `DB()` is called we initialize a Mongo session on localhost. `DB()` returns a `martini.Handler` which will be called on every request. We simply clone the session for every request and make sure it is closed once the request is done being processed. The important bit is the call to `c.Map`. This maps an instance of `*mgo.Database` to our request context. This allows all subsequent handler functions to specify a `*mgo.Database` as an argument and get it injected.
+When `DB()` is called we initialize a Mongo session on localhost. `DB()` returns a [[http://godoc.org/github.com/codegangsta/martini#Handler][martini.Handler]] which will be called on every request. We simply clone the session for every request and make sure it is closed once the request is done being processed. The important bit is the call to `c.Map`. This maps an instance of `*mgo.Database` to our request context. This allows all subsequent handler functions to specify a `*mgo.Database` as an argument and get it injected.
 
 Now that we have a `DB()` middleware we can add it to our middleware stack like so:
 

@@ -6,7 +6,9 @@ Jeremy Saenz
 @codegangsta
 
 * Introduction
-[[http://github.com/codegangsta/martini][Martini]] is a Go package for web server development that has gained quite a bit of popularity over the last month. Martini was written to help make web development in Go a convenient, expressive, and DRY (pun intended) process. As of this writing Martini has *161* watchers, *2316* Stars, and *153* Forks on Github. There is a ton of weekly activity around both the [[http://github.com/codegangsta/martini][martini]] and [[http://github.com/codegangsta/martini-contrib][martini-contrib]] repositories.
+[[http://github.com/codegangsta/martini][Martini]] is a Go package for web server development that has gained quite a bit of popularity over the last month. Martini was written to help make web development in Go a convenient, expressive, and DRY (pun intended) process.
+
+As of this writing Martini has *161* watchers, *2316* Stars, and *153* Forks on Github. There is a ton of weekly activity around both the [[http://github.com/codegangsta/martini][martini]] and [[http://github.com/codegangsta/martini-contrib][martini-contrib]] repositories.
 
 If you haven't already be sure to check out the [[http://martini.codegangsta.io/#demo][Video Demo]].
 
@@ -17,7 +19,7 @@ Martini makes web development classy, just take a gander at the following code:
 
 The Martini API was obsessively designed to make HTTP servers easy to write and easy to read. A `martini.Classic()` contains a good set of base functionality like logging, error recovery, routing, and static file serving. If you do not need any of the base functionality it is just as easy to instantiate a blank canvas with `martini.New`.
 
-Handling HTTP requests is extremely intuitive. A `Handler` in Martini is any callable function. If your function returns something, Martini will write it out to the http response body. In the same vein, a handler function can return a `(int, string)` and Martini will write out a response code as well as a body.
+Handling HTTP requests is extremely intuitive. A `Handler` in Martini is any callable function. If your function returns something, Martini will write it out to the http response body. In the same vein, a handler function can return a `(int,`string)` and Martini will write out a response code as well as a body.
 
 The return handling is fun, but most of Martini's power comes from Middleware and Services. Let's dive a little deeper and create our first real web app in Martini!
 

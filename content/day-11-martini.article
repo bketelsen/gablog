@@ -17,9 +17,9 @@ Martini makes web development classy, just take a gander at the following code:
 
 .code day-11-martini/hello.go
 
-The Martini API was obsessively designed to make HTTP servers easy to write and easy to read. A `martini.Classic()` contains a good set of base functionality like logging, error recovery, routing, and static file serving. If you do not need any of the base functionality it is just as easy to instantiate a blank canvas with `martini.New`.
+The Martini API was obsessively designed to make HTTP servers easy to write and easy to read. A [[http://godoc.org/github.com/codegangsta/martini#Classic][`martini.Classic()`]] contains a good set of base functionality like logging, error recovery, routing, and static file serving. If you do not need any of the base functionality it is just as easy to instantiate a blank canvas with [[http://godoc.org/github.com/codegangsta/martini#New][`martini.New()`]].
 
-Handling HTTP requests is extremely intuitive. A `Handler` in Martini is any callable function. If your function returns something, Martini will write it out to the http response body. In the same vein, a handler function can return a `(int,`string)` and Martini will write out a response code as well as a body.
+Handling HTTP requests is extremely intuitive. A [[http://godoc.org/github.com/codegangsta/martini#Handler][`Handler`]] in Martini is any callable function. If your function returns something, Martini will write it out to the http response body. In the same vein, a handler function can return a `(int,`string)` and Martini will write out a response code as well as a body.
 
 The return handling is fun, but most of Martini's power comes from [[https://github.com/codegangsta/martini#middleware-handlers][Middleware]] and [[https://github.com/codegangsta/martini#services][Services]]. Let's dive a little deeper and create our first real web app in Martini!
 
@@ -34,7 +34,7 @@ To render out the HTML we will use an external package from martini-contrib call
 
 .code day-11-martini/rendering.go
 
-With minimal amount of code we were able to integrate some powerful functionality. Calling `m.Use(render.Renderer())` adds the `render.Renderer()` to our HTTP stack as middleware. When a HTTP request comes in, Martini will pass it through the applications middleware layer for processing. In this case, the `render.Renderer()` middleware provides a `render.Render` interface for use to access via our handler functions argument list.
+With minimal amount of code we were able to integrate some powerful functionality. Calling `m.Use(render.Renderer())` adds the [[http://godoc.org/github.com/codegangsta/martini-contrib/render#Renderer][`render.Renderer()`]] to our HTTP stack as middleware. When a HTTP request comes in, Martini will pass it through the applications middleware layer for processing. In this case, the `render.Renderer()` middleware provides a [[http://godoc.org/github.com/codegangsta/martini-contrib/render#Render][`render.Render`]] interface for use to access via our handler functions argument list.
 
 The `render.Render` interface allows us to easily render HTML templates using the Go standard library's `html/template` package. By default, templates are read from the `templates/` directory with a `.tmpl` file extension.
 

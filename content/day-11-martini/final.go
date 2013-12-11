@@ -12,6 +12,7 @@ type Wish struct {
 	Name        string `form:"name"`
 	Description string `form:"description"`
 }
+
 //END0 OMIT
 
 //START1 OMIT
@@ -29,6 +30,7 @@ func DB() martini.Handler {
 		c.Next()
 	}
 }
+
 //END1 OMIT
 
 //START2 OMIT
@@ -38,27 +40,28 @@ func GetAll(db *mgo.Database) []Wish {
 	db.C("wishes").Find(nil).All(&wishlist)
 	return wishlist
 }
+
 //END2 OMIT
 
 func main() {
 	m := martini.Classic()
 	m.Use(render.Renderer())
-  //START3 OMIT
+	//START3 OMIT
 	m.Use(DB())
-  //END3 OMIT
+	//END3 OMIT
 
-  //START4 OMIT
+	//START4 OMIT
 	m.Get("/wishes", func(r render.Render, db *mgo.Database) {
 		r.HTML(200, "list", GetAll(db))
 	})
-  //END4 OMIT
+	//END4 OMIT
 
-  //START5 OMIT
+	//START5 OMIT
 	m.Post("/wishes", binding.Form(Wish{}), func(wish Wish, r render.Render, db *mgo.Database) {
 		db.C("wishes").Insert(wish)
 		r.HTML(200, "list", GetAll(db))
 	})
-  //END5 OMIT
+	//END5 OMIT
 
 	m.Run()
 }

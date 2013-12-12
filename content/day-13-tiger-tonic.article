@@ -24,7 +24,7 @@ Tiger Tonic eschews HTML templates, JavaScript and CSS asset pipelines, cookies,
 
 ** Multiplexing requests
 
-Most web services respond differently to requests for different URLs so they reach for the standard `http.ServeMux`.  Then these web services start handling requests like `POST`/games/{id}/bet` (an example from [[https://developers.betable.com][Betable]]) and `http.ServeMux` gets in the way.  `tigertonic.TrieServeMux` is here to help.
+Most web services respond differently to requests for different URLs so they reach for the standard `http.ServeMux`.  Then these web services start handling requests like `POST`/games/{id}/bet` (an example from [[https://developers.betable.com][Betable]]) and `http.ServeMux` gets in the way.  [[http://godoc.org/github.com/rcrowley/go-tigertonic#TrieServeMux][tigertonic.TrieServeMux]] is here to help.
 
     mux := tigertonic.NewTrieServeMux()
     mux.Handle("POST", "/games/{id}/bet", handler)
@@ -44,7 +44,7 @@ So now the question is how we respond to all the requests we're now multiplexing
         }
     }
 
-That's a bit clumsy.  `tigertonic.Marshaled` allows you to construct handlers from functions that automatically deserialize request bodies according to the type of the final argument and serialize response bodies from the error or response object returned.
+That's a bit clumsy.  [[http://godoc.org/github.com/rcrowley/go-tigertonic#Marshaled][tigertonic.Marshaled]] allows you to construct handlers from functions that automatically deserialize request bodies according to the type of the final argument and serialize response bodies from the error or response object returned.
 
     var handler http.Handler = tigertonic.Marshaled(func(
        url.URL, http.Header, *MyRequest,
@@ -83,15 +83,15 @@ For those keeping score at home: yes, `tigertonic.Marshaled` also returns an `ht
 
 Though `tigertonic.TrieServeMux` and `tigertonic.Marshaled` are the main attractions, Tiger Tonic packages a number of other useful handlers that make building web services with Go easier:
 
-- `tigertonic.TrieServeMux` has `HandleNamespace` to match and remove prefixes from requested URLs.
-- `tigertonic.HostServeMux` supports virtual hosting of many domains in a single Go process.
-- `tigertonic.First` and `tigertonic.If` enable handler chaining a la Rack or WSGI middleware.
-- `tigertonic.Counted` and `tigertonic.Timed` emit metrics about all your requests via [[https://github.com/rcrowley/go-metrics][go-metrics]].
-- `tigertonic.WithContext` and `tigertonic.Context` add support for strongly-typed per-request context.
-- `tigertonic.HTTPBasicAuth` is a specialization of `tigertonic.If` that conditionally handles requests if an acceptable `Authorization` header is present.
-- `tigertonic.CORSBuilder` and `tigertonic.CORSHandler` facilitate setting the basic CORS response headers.
-- `tigertonic.Server` has `CA` and `TLS` methods that simplify listening for TLS connections.
-- `tigertonic.Configure`, in conjunction with method values, makes it easy to read configuration files.
+- [[http://godoc.org/github.com/rcrowley/go-tigertonic#TrieServeMux.HandleNamespace][tigertonic.TrieServeMux]] has a `HandleNamespace` method to match and remove prefixes from requested URLs.
+- [[http://godoc.org/github.com/rcrowley/go-tigertonic#HostServeMux][tigertonic.HostServeMux]] supports virtual hosting of many domains in a single Go process.
+- [[http://godoc.org/github.com/rcrowley/go-tigertonic#First][tigertonic.First]] and [[http://godoc.org/github.com/rcrowley/go-tigertonic#If][tigertonic.If]] enable handler chaining a la Rack or WSGI middleware.
+- [[http://godoc.org/github.com/rcrowley/go-tigertonic#Counted][tigertonic.Counted]] and [[http://godoc.org/github.com/rcrowley/go-tigertonic#Timed][tigertonic.Timed]] emit metrics about all your requests via [[https://github.com/rcrowley/go-metrics][go-metrics]].
+- [[http://godoc.org/github.com/rcrowley/go-tigertonic#WithContext][tigertonic.WithContext]] and [[http://godoc.org/github.com/rcrowley/go-tigertonic#Context][tigertonic.Context]] add support for strongly-typed per-request context.
+- [[http://godoc.org/github.com/rcrowley/go-tigertonic#HTTPBasicAuth][tigertonic.HTTPBasicAuth]] is a specialization of `tigertonic.If` that conditionally handles requests if an acceptable `Authorization` header is present.
+- [[http://godoc.org/github.com/rcrowley/go-tigertonic#CORSBuilder][tigertonic.CORSBuilder]] and [[http://godoc.org/github.com/rcrowley/go-tigertonic#CORSHandler][tigertonic.CORSHandler]] facilitate setting the basic CORS response headers.
+- [[http://godoc.org/github.com/rcrowley/go-tigertonic#Server][tigertonic.Server]] has `CA` and `TLS` methods that simplify listening for TLS connections.
+- [[http://godoc.org/github.com/rcrowley/go-tigertonic#Configure][tigertonic.Configure]], in conjunction with method values, makes it easy to read configuration files.
 
 ** Go forth
 

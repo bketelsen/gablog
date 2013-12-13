@@ -4,9 +4,11 @@ Tags: goadvent
 
 Richard Crowley
 
+* Welcome
+
 Go is unique among mainstream programming languages in that its standard library web server is not a complete afterthought.  The Go language is well-suited for engineering complex networked services and Go's standard library recognizes that many (if not most) of those services communicate via HTTP.  Sprinkle some [[https://groups.google.com/forum/#!msg/golang-nuts/BNUNbKSypE0/E4qSfpx9qI8J][Google scale]] on it and your web applications and services can really hit the ground running.
 
-The standard library sets the tone but it's far from the end of the story of how to effectively build web services in Go.  And as most Go stories do, ours begins with an interface:
+The standard library sets the tone but it's far from the end of the story of how to effectively build web services in Go.  As most Go stories do, ours begins with an interface:
 
     type Handler interface {
         ServeHTTP(ResponseWriter, *Request)
@@ -16,13 +18,13 @@ The standard library sets the tone but it's far from the end of the story of how
 
 ** Introducing Tiger Tonic
 
-[[https://github.com/rcrowley/go-tigertonic][Tiger Tonic]] packages several `http.Handler` implementations that make engineering web services easier.  They strive to be orthogonal like the features of the Go language itself.  And because everything is an `http.Handler` it's possible and even easy to use Tiger Tonic in conjunction with your own or anyone else's handlers.
+[[https://github.com/rcrowley/go-tigertonic][Tiger Tonic]] packages several `http.Handler` implementations that make engineering web services easier.  They strive to be orthogonal like the features of the Go language itself.  Because everything is an `http.Handler` it's possible and easy to use Tiger Tonic in conjunction with your own or anyone else's handlers.
 
-Tiger Tonic eschews HTML templates, JavaScript and CSS asset pipelines, cookies, and the like to remain squarely focused on building JSON web services.  Why JSON?  It's become the lingua franca for serialization in web services everywhere.  Why the focus on web services?  The authors love [[http://dropwizard.codahale.com][Dropwizard]] and missed all it brought to the Java community so they worked to reproduce that feeling in Go.
+Tiger Tonic eschews HTML templates, JavaScript and CSS asset pipelines, cookies, and the like to remain squarely focused on building JSON web services.  Why JSON?  It's become the lingua franca for serialization in web services everywhere.  Why the focus on web services?  The authors' love [[http://dropwizard.codahale.com][Dropwizard]] and missed all it brought to the Java community so they worked to reproduce that feeling in Go.
 
 ** Multiplexing requests
 
-Most web services respond differently to requests for different URLs so they reach for the standard `http.ServeMux`.  Then these web services start handling requests like `POST /games/{id}/bet` (an example from [[https://developers.betable.com][Betable]]) and `http.ServeMux` gets in the way.  `tigertonic.TrieServeMux` is here to help.
+Most web services respond differently to requests for different URLs so they reach for the standard `http.ServeMux`.  Then these web services start handling requests like `POST`/games/{id}/bet` (an example from [[https://developers.betable.com][Betable]]) and `http.ServeMux` gets in the way.  `tigertonic.TrieServeMux` is here to help.
 
     mux := tigertonic.NewTrieServeMux()
     mux.Handle("POST", "/games/{id}/bet", handler)
@@ -50,7 +52,7 @@ That's a bit clumsy.  `tigertonic.Marshaled` allows you to construct handlers fr
        return http.StatusOK, nil, &MyResponse{/*...*/}, nil
     })
 
-This proves to be a powerful higher-level abstraction that removes JSON serialization from the web service programmer's long list of concerns.  And just as before, handlers returned by `tigertonic.Marshaled` understand how to respond 400, 406, and 415 like Roy Fielding intended.
+This proves to be a powerful higher-level abstraction that removes JSON serialization from the web service programmer's long list of concerns.  Just as before, handlers returned by `tigertonic.Marshaled` understand how to respond 400, 406, and 415 like Roy Fielding intended.
 
 ** Testing
 

@@ -1,0 +1,61 @@
+Go Advent Day 14 - Accelerating ecommerce with Go
+14 Dec 2013
+Tags: goadvent
+
+Shane Hansen
+
+* Welcome
+
+** Writing an ecommerce site in go
+
+Go adoption in the enterprise is increasing
+since the 1.0 release. Large respected tech companies have been using go
+to build interesting backend services like etcd, or specialized content
+delivery systems like dl.google.com, or mobile optimization services like
+mooveweb. Steals.com, a botique quality daily deal site for children and women,
+was preparing to launch a retail site, with the goal of engaging customers
+in a pinterest like product presentation.
+
+Due to past experience working with the search architects behind Backountry.com,
+Best Buy, and Walmart, we knew that search is a great opportunity to
+build a section of an ecommerce site in a new technology. (Solr, Elastic Search, Go).
+
+One of the deficiencies we wanted to rectify is that traditional search focuses on drill down and eliminating options. We wanted to focus on never eliminating options, instead grouping and sorting our entire product list based on user searches. We weren't aware of a search engine build around this paradigm.
+
+** Why Go?
+
+We wanted the instant performance gains we'd get by building on top of go's net/http lib
+rather than the more full featured legacy framework our cart uses. The technology team decided to build shop.steals.com purely in Go using an in-memory inverted index of all of our entire product catalog. Allowing customers to instantly reshuffle products based on their interests. Ultimately we chose Go because our Director of Technology was a Go author, we wanted to get better performance for "free", and we knew that the stdlib support for json, sql, http would be able to satisfy our needs. We also wanted to take advantage of strong typing and the easy builtin testing to catch errors and speed the development process.
+
+Executive buy-in at Steals.com was easy. The company is a fan of google technologies in general, and recognized the value of Go in our architecture as we grow both from a performance standpoint and a recruiting standpoint. Risk was mitigated by testing go out on a new site that didn't need to share as much existing business logic and sharing templates with the rest of the retail sites using the Mustache templating language https://github.com/hoisie/mustache.
+
+** Architecture of a Go search engine
+
+We made use of database/sql and encoding/json to pull product content from our
+core systems in the form of feeds. We used https://github.com/jmoiron/sqlx after
+a pull request was accepted from us allowing us to use compose go structs in sqlx
+and feeds.
+
+    query := "select product.*, inventory.* from ..."
+    type SearchProduct {
+        data.Product
+        data.Inventory
+    }
+
+We also developed a small library for introspecting databases to auto-generate
+models that work with sqlx using existing schemas https://github.com/stealnetwork/goper
+
+The resulting data is sucked up into our server on startup and added to an
+in-memory inverted index for brand, category, etc. We have plans to load
+balance the individual instances, but haven't seen the performance need yet.
+We also achieve almost 0-downtime restarts by binding to the http port,
+indexing content, and then serving requests.
+
+We also developed gosp https://github.com/stealnetwork/gosp , a strongly typed
+templating language that compiles to go. The performance is great, but catching
+all syntax and type errors in your template at compile time is the real productivity
+boon.
+
+** Results
+
+shop.steals.com is, we think, one of the first ecommerce sites built on go. By leveraging the stdlib and builtin go datastructures we were able to build an extremely fast site for displaying products to our customers in an innovative way. We built a few libraries along the way and contributed to another open source library. The entire experience was pleasant and Go has been completely stable for us.

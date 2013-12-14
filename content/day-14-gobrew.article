@@ -6,12 +6,11 @@ Craig Wickesser
 
 * What is gobrew?
 
-Simply put, gobrew lets you easily switch between multiple versions of go. It is based on [[https://github.com/sstephenson/rbenv][rbenv]] and [[https://github.com/yyuu/pyenv][pyenv]].
+Simply put, gobrew lets you easily switch between multiple versions of go.  It is based on [[https://github.com/sstephenson/rbenv][rbenv]] and [[https://github.com/yyuu/pyenv][pyenv]].
 
 * Why gobrew?
 
-Often times you'll be developing against one version of Go when another version is released (or perhaps a release candidate is made available). Having
-to download multiple versions, configure your path again and again you can use one simple tool.
+Often times you'll be developing against one version of Go when another version is released (or perhaps a release candidate is made available). Instead of fighting to manage multiple versions and changing your $PATH repeatedly, you can use one simple tool to manage your installations of Go.
 
 * Get gobrewing
 
@@ -37,5 +36,5 @@ note: there's a [[https://github.com/grobins2/gobrew/issues/7][bug]] in gobrew w
 * Contribute
 
 Give [[https://github.com/grobins2/gobrew][gobrew]] a shot, fork it or submit issues and let's make it the best Go version manager around. If you're
-interested, check out [[https://github.com/mindscratch/gobrew_fw][gobrew::fw]] as well.
+behind a proxy server, check out [[https://github.com/mindscratch/gobrew_fw][gobrew::fw]] as well.
 

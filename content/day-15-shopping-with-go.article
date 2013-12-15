@@ -8,9 +8,9 @@ Shane M. Hansen
 
 ** Writing an ecommerce site in Go
 
-Go adoption in the enterprise is increasing since the 1.0 release. Large respected tech companies have been using Go to build interesting backend services like [[https://github.com/coreos/etcd][etcd]], specialized content delivery systems like [[http://www.oscon.com/oscon2013/public/schedule/detail/28669][dl.google.com]], and mobile optimization services like [[http://www.moovweb.com/][Moovweb]].
+Go adoption in the enterprise is increasing since the 1.0 release. Large respected tech companies have been using Go to build interesting back end services like [[https://github.com/coreos/etcd][etcd]], specialized content delivery systems like [[http://www.oscon.com/oscon2013/public/schedule/detail/28669][dl.google.com]], and mobile optimization services like [[http://www.moovweb.com/][Moovweb]].
 
-[[http://steals.com][Steals.com]], a botique quality daily deal site for children and women, was preparing to launch its new retail site, with the goal of engaging customers in a Pinterest-like product presentation.
+[[http://steals.com][Steals.com]], a boutique quality daily deal site for children and women, was preparing to launch its new retail site, with the goal of engaging customers in a Pinterest-like product presentation.
 
 Due to past experience working with the search architects behind Backcountry.com, Best Buy, and Walmart, we (the Steals.com technology team) knew that search is a great opportunity to build a section of an ecommerce site using a separate stack such as Solr, Elasticsearch, or Go.
 
@@ -20,9 +20,9 @@ One of the deficiencies we wanted to rectify is that traditional commerce search
 
 We wanted the instant performance gains we'd get by building on top of Go's HTTP stack rather than the more full featured, but creaky, legacy framework our current cart system uses. Our technology team decided to build [[http://shop.steals.com/][Shop.steals.com]] purely in Go using an in-memory inverted index of our entire product catalog. Customers could then instantly reshuffle products based on categories or brands they found interesting.
 
-Ultimately we chose Go because our Director of Technology was a [[http://golang.org/AUTHORS#L308][Go author]], we wanted to get better performance for "free". We knew that the stdlib support for [[http://golang.org/pkg/encoding/json/][JSON]], [[http://golang.org/pkg/database/sql][SQL]], and [[http://golang.org/pkg/net/http][HTTP]] would be able to satisfy our needs. We also wanted to take advantage of strong typing and the easy builtin testing framework to catch errors and speed the development process.
+Ultimately we chose Go because our Director of Technology was a [[http://golang.org/AUTHORS#L308][Go author]], we wanted to get better performance for "free". We knew that the stdlib support for [[http://golang.org/pkg/encoding/json/][JSON]], [[http://golang.org/pkg/database/sql][SQL]], and [[http://golang.org/pkg/net/http][HTTP]] would be able to satisfy our needs. We also wanted to take advantage of strong typing and the easy built-in testing framework to catch errors and speed the development process.
 
-Executive buy-in at Steals.com was easy. The frontend engineer for the project, [[https://github.com/swecker][Sam Wecker]], was also excited to build a site in Go. Steals.com is a fan of Google technologies in general, and recognized the value of Go in our architecture as we grow both from a systems standpoint and a recruiting standpoint.
+Executive buy-in at Steals.com was easy. The front end engineer for the project, [[https://github.com/swecker][Sam Wecker]], was also excited to build a site in Go. Steals.com is a fan of Google technologies in general, and recognized the value of Go in our architecture as we grow both from a systems standpoint and a recruiting standpoint.
 
 Risk was mitigated by testing Go out on a new site that didn't need to share as much existing business logic and also by sharing templates with the rest of the deal sites using the [[http://mustache.github.io/][Mustache]] templating language with the [[https://github.com/hoisie/mustache][go mustache bindings]].
 
@@ -44,10 +44,10 @@ We found this patch extremely useful because it allows us to easily compose our 
 
 We also developed a small utility for introspecting databases to auto-generate models that work with sqlx using existing database schemas [[https://github.com/stealnetwork/goper][github.com/stealnetwork/goper]]
 
-The resulting data is sucked up into our server on startup and added to an in-memory inverted index for brand, category, etc. We have plans to load balance the individual instances, but haven't seen the performance need yet. We also achieve almost 0-downtime restarts by binding to the http port, indexing content, and then serving requests.
+The resulting data is sucked up into our server on start up and added to an in-memory inverted index for brand, category, etc. We have plans to load balance the individual instances, but haven't seen the performance need yet. We also achieve almost 0-downtime restarts by binding to the HTTP port, indexing content, and then serving requests.
 
     listener, err := net.Listen("tcp", ":80")
-    // index feeds, register http handlers, etc
+    // index feeds, register HTTP handlers, etc
     http.Serve(listener, nil)
 
 Additionally we developed [[https://github.com/stealnetwork/gosp][gosp]], a strongly typed templating language that compiles to Go. The performance is great, but catching all syntax and type errors in your template at compile time is the real productivity boon. Gosp compiles to a function that closes over template arguments, returning a function that itself takes an `io.Writer`. For example:

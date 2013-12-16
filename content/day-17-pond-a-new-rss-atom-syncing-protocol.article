@@ -30,7 +30,7 @@ First, when I started this project, I was already very comfortable writing Go co
 
 Second, I wanted to provide users with a way to easily deploy the reference implementation server (which I aim to make as high quality as possible, so it can also be used in production, and it's not just there as a learning tool), and Go, with its statically linked binaries and wide range of target platforms and architectures was a perfect fit.
 
-Third, there were concurrency and performace, both of which are important factors in server code. Go is built for speed, and has an _amazing_ concurrency model built right into it.
+Third, there were concurrency and performance as factors to consider when writing the reference implementation, both of which are important in server code. Go is built for speed, and has an _amazing_ concurrency model built right into it.
 
 * An Amazing Learning Experience
 

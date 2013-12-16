@@ -142,7 +142,10 @@ with the optional `Error` method on `Bool`
      if ok {
          return ok, nil
      }
-     panic("Failed with: " + e.Error())
+     if e != nil {
+          panic("Failed with: " + e.Error())
+     }
+     panic("Failed with unknown error")
  }
 
 ** Throw in the Go housekeeping header and run

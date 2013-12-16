@@ -19,7 +19,10 @@ func (ok Bool) Error(e error) (Bool, error) {
 	if ok {
 		return ok, nil
 	}
-	panic("Failed with: " + e.Error())
+	if e != nil {
+		panic("Failed with: " + e.Error())
+	}
+	panic("Failed with unknown error")
 }
 
 var allApis = outside.Apis{

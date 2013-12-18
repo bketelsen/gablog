@@ -21,3 +21,6 @@ _testmain.go
 
 *.exe
 .DS_Store
+
+# Unsuffixed executable
+cmd/blog/blog

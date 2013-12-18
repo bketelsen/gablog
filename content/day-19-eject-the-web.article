@@ -158,7 +158,7 @@ Another way to separate specific OS code is to add magic into the top of the fil
 
     // +build !windows
 
-This mean "Build this code if compiling for Windows".
+This mean "Build this code unless compiling for Windows".
 Go provides an easy way to write bindings. If you already have C code, and you want to use it, you can use CGO.
 Look at `eject_linux.go`
 

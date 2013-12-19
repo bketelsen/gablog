@@ -180,4 +180,8 @@ Please be aware that the web page is still quite buggy by the time this is writt
 
 * Contribution
 
-Squirrel Land is GPL licensed. It's still in early stage. (There's no test coverage yet please don't hate it.) Please feel free to send PRs or submit issues on [[https://github.com/squirrel-land/squirrels][GitHub]]. If you are doing research in computer networking, please consider improve or submit new [[https://github.com/squirrel-land/models][models]].
+Squirrel Land is GPL licensed. It's still in early stage. (There's no test coverage yet please don't hate it.) Please feel free to [[https://song.gao.io/][drop me a line]], send PRs or submit issues on [[https://github.com/squirrel-land/squirrels][GitHub]]. If you are doing research in computer networking, please consider improve or submit new [[https://github.com/squirrel-land/models][models]].
+
+-- 
+
+This article is also posted at: [[http://blog.song.gao.io/posts/2013/go-in-academia-emulating-wireless-networks/][http://blog.song.gao.io/posts/2013/go-in-academia-emulating-wireless-networks/]]

@@ -1,18 +1,11 @@
 package main
 
 import (
-	"github.com/nsf/termbox-go"
 	"time"
 )
 
 func main() {
-	event := make(chan termbox.Event)
-	go func() {
-		for {
-			event <- termbox.PollEvent()
-		}
-	}()
-
+	// START OMIT
 	dirty := false
 	timer := time.AfterFunc(0, func() {
 		if dirty {
@@ -21,7 +14,6 @@ func main() {
 			redraw_part()
 		}
 	})
-
 	for {
 		select {
 		case ev := <-event:
@@ -47,4 +39,5 @@ func main() {
 			// handle another events
 		}
 	}
+	// END OMIT
 }

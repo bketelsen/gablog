@@ -6,35 +6,20 @@ Yasuhiro Matsumoto
 
 * Introduction
 
-As you already know, Go is a good programming language to write web applications. There are already many packages providing routers, MVC, and Sinatra-like frameworks.
-However, Go is also a good programming language to write command-line applications. I have written many small programs written by Go, and I believe Go is best for this task.
+As you already know, Go is a good programming language to write web applications.
+
+There are already many packages providing routers, MVC, and Sinatra-like frameworks. However, Go is also a good programming language to write command-line applications. I have written many small programs written in Go, and I believe Go is best for this task.
 
 * OS Compatibility
 
-Most of Go's packages are beautiful for beginners to see, because Go hides the operating system's peculiar matters as much as possible. Ex: file system, character encodings, socket I/O, concurrency. You'll notice this this is a feature of Go.
+Most of Go's packages are beautiful for beginners to see, because Go hides the operating system's peculiar matters as much as possible. For example: file system differences, character encodings, socket I/O, concurrency. You'll notice this is a feature of Go.
 
-For example, `path/filepath` provides a way to be compatible for each Operating System.
+For example, `path/filepath` provides a way to manipulate file paths in an operating system indepdentant manner. This code will work fine for POSIX Operating Systems and Windows.
 
-    package main
-    
-    import (
-    	"fmt"
-    	"log"
-    	"os"
-    	"path/filepath"
-    )
-    
-    func main() {
-    	pwd, err := os.Getwd()
-    	if err != nil {
-    		log.Fatal(err)
-    	}
-    	fmt.Println(filepath.ToSlash(
-    		filepath.Join(append([]string{pwd}, os.Args[1:]...)...)))
-    }
+.code day-19-eject-the-web/code1.go
 
-This code will work fine for POSIX Operating Systems and Windows.
 `path/filepath` treats file paths as UTF-8 strings in commonly. All of the APIs for file systems are doing the proper encoding/decoding for their environment. `os.Args` is encoded to UTF-8 even though it's on Windows. So Windows user can write programs without entering the hell of multi-byte encoding.
+
 In Japanese, windows applications use Shift_JIS (MS932) file system encoding. Shift_JIS is a double-byte character-set in which some characters contain 0x5C (a.k.a backslash) in the trailing-byte. So many Windows application developers meet a hell of multi-byte encoding.
 
     C:\path\contains\backslash\char>gcc -o unix_like_app.c
@@ -49,56 +34,7 @@ Go make them happy.
 
 I speculate that Go will provide a new style coding of UI. It is difficult to handle both key-press events and input timeouts at once. However, if you separate key event handling in a goroutine and pass events to a channel  external to the goroutine, it may make complex UI coding more simple.
 	
-    package main
-    
-    import (
-    	"fmt"
-    	"github.com/mattn/go-runewidth"
-    	"github.com/nsf/termbox-go"
-    	"log"
-    	"time"
-    )
-    
-    func print_tb(x, y int, msg string) {
-    	for _, c := range []rune(msg) {
-    		termbox.SetCell(x, y, c, termbox.ColorWhite, termbox.ColorDefault)
-    		x += runewidth.RuneWidth(c)
-    	}
-    	termbox.Flush()
-    }
-    
-    func main() {
-    	err := termbox.Init()
-    	if err != nil {
-    		log.Fatal(err)
-    	}
-    	termbox.Clear(termbox.ColorDefault, termbox.ColorDefault)
-    
-    	event := make(chan termbox.Event)
-    	go func() {
-    		for {
-    			// Post events to channel
-    			event <- termbox.PollEvent()
-    		}
-    	}()
-    
-    	print_tb(1, 1, "Hit any key")
-    loop:
-    	for {
-    		// Poll key event or timeout
-    		select {
-    		case ev := <-event:
-    			print_tb(1, 2, fmt.Sprintf("Key typed: %v", ev.Ch))
-    			break loop
-    		case <-time.After(5 * time.Second):
-    			print_tb(1, 2, "Timeout")
-    			break loop
-    		}
-    	}
-    	close(event)
-    	time.Sleep(1 * time.Second)
-    	termbox.Close()
-    }
+.code day-19-eject-the-web/code2.go
 
 If you create a channel for the events, you will be able to handle other events in the `select` easily.
 
@@ -109,39 +45,7 @@ If you create a channel for the events, you will be able to handle other events 
 When typing keys, in most cases, internal conditions will be changed and the UI will need to be redrawn. But the rendering may be expensive to call for each of key press.
 So use a goroutine and a timer.
 
-    	dirty := false
-    	timer := time.AfterFunc(0, func() {
-    		if dirty {
-    			redraw_full()
-    		} else {
-    			redraw_part()
-    		}
-    	})
-    	for {
-    		select {
-    		case ev := <-event:
-    			// handle terminal event
-    			switch ev.Type {
-    			case termbox.EventKey:
-    				// handle key event
-    				switch ev.Key {
-    				case termbox.KeyEnter:
-    					// update internal condition
-    					update_condition(ev)
-    					dirty = false
-    					// redraw immediately
-    					timer.Reset(1 * time.Microsecond)
-    				default:
-    					// update candidate
-    					update_candidate(ev)
-    					dirty = true
-    					// redrwa in later
-    					timer.Reset(200 * time.Microsecond)
-    				}
-    			}
-    		// handle another events
-    		}
-    	}
+.code day-19-eject-the-web/timer.go /START OMIT/,/END OMIT/
 
 The `timer` makes a delay for redrawing screen. And if the next event requires forcing a screen update, it will update immediately.
 Of course, the above code works fine for Windows. You don't need to do things the hard way. Writing pthread codes? Writing multiple event polling? Do it the easy way by using Go.
@@ -162,89 +66,12 @@ This mean "Build this code unless compiling for Windows".
 Go provides an easy way to write bindings. If you already have C code, and you want to use it, you can use CGO.
 Look at `eject_linux.go`
 
-    package eject
-    
-    /*
-    #include <fcntl.h>
-    #include <linux/cdrom.h>
-    #include <sys/ioctl.h>
-    #include <sys/stat.h>
-    #include <sys/types.h>
-    #include <unistd.h>
-    #include <errno.h>
-    
-    static int
-    _eject(int f) {
-      int r = 0;
-      int fd = open("/dev/cdrom", O_RDONLY | O_NONBLOCK);
-      if (fd == -1) {
-        r = errno;
-      } else {
-        int e = CDROMEJECT;
-        if (f == 0) {
-          if (ioctl(fd, CDROM_DRIVE_STATUS, 0) == CDS_TRAY_OPEN)
-            e = CDROMCLOSETRAY;
-        } else if (f == 1)
-          e = CDROMEJECT;
-        else
-          e = CDROMCLOSETRAY;
-        if (ioctl(fd, e, 0) < 0) {
-          r = errno;
-        }
-        close(fd);
-      }
-      return r;
-    }
-    */
-    import "C"
-    import "errors"
-    import "syscall"
-    
-    func Eject() error {
-        if r := C._eject(0); r != 0 {
-            return errors.New(syscall.Errno(r).Error())
-        }
-        return nil
-    }
+.code day-19-eject-the-web/eject_linux.go
 
 If you don't want to contain C code in Go code, you can separate C code to another file. The Go tool will build it perfectly. 
 For Windows, you can call functions in DLLs dynamically.
 
-    package eject
-    
-    import (
-    	"errors"
-    	"syscall"
-    	"unsafe"
-    )
-    
-    var winmm = syscall.MustLoadDLL("winmm.dll")
-    var mciSendStringProc = winmm.MustFindProc("mciSendStringW")
-    var mciGetErrorStringProc = winmm.MustFindProc("mciGetErrorStringW")
-    
-    func mciGetErrorString(mcierr int) string {
-    	var b [256]uint16
-    	_, _, _ = mciGetErrorStringProc.Call(uintptr(mcierr), uintptr(unsafe.Pointer(&b[0])), uintptr(256))
-    	return syscall.UTF16ToString(b[:])
-    }
-    
-    func mciSendString(cmd string) int {
-    	r1, _, _ := mciSendStringProc.Call(uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(cmd))), 0, 0, 0)
-    	return int(r1)
-    }
-    
-    func Eject() error {
-    	r := mciSendString("capability cdaudio can eject")
-    	if r == 0 {
-    		r = mciSendString("set cdaudio door open")
-    	} else {
-    		r = mciSendString("set cdaudio door close")
-    	}
-    	if r != 0 {
-    		return errors.New(mciGetErrorString(r))
-    	}
-    	return nil
-    }
+.code day-19-eject-the-web/eject_windows.go
 
 Note that you're better off using wide string APIs on windows. As I mentioned before, Go is a very nice language for Windows programmers.
 If you write a package wrapping OS specific issue in one place, most of users doesn't need to worry about compatibility. 
@@ -254,29 +81,7 @@ i.e. many users can eject CD-ROM with by using `eject.Eject()`, regardless of th
 
 Finally, you can write a full application using this library:
 
-    package main
-    
-    import (
-        "encoding/json"
-        "github.com/hoisie/web"
-        "github.com/mattn/go-eject"
-    )
-    
-    type result struct {
-    	Error interface{} `json:"error"`
-    }
-    
-    func main() {
-    	web.Get("/eject", func(ctx *web.Context) {
-    		ctx.ContentType("application/json")
-    		if err := eject.Eject(); err != nil {
-    			json.NewEncoder(ctx).Encode(&result{err.Error()})
-    		} else {
-    			json.NewEncoder(ctx).Encode(&result{nil})
-    		}
-    	})
-    	web.Run(":8080")
-    }
+.code day-19-eject-the-web/code3.go
 
 And in `static/index.html`
 

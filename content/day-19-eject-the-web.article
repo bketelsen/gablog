@@ -6,6 +6,8 @@ Yasuhiro Matsumoto
 
 * Introduction
 
+_Editors_Note:_ As Yasuhiro is not a native english speaker, during the editing of this post is was necessary to make some minor corrections. We felt that it was very important however, that the Author's original phrasing and intent be preserved as much as possible.
+
 As you already know, Go is a good programming language to write web applications.
 
 There are already many packages providing routers, MVC, and Sinatra-like frameworks. However, Go is also a good programming language to write command-line applications. I have written many small programs written in Go, and I believe Go is best for this task.
@@ -14,13 +16,13 @@ There are already many packages providing routers, MVC, and Sinatra-like framewo
 
 Most of Go's packages are beautiful for beginners to see, because Go hides the operating system's peculiar matters as much as possible. For example: file system differences, character encodings, socket I/O, concurrency. You'll notice this is a feature of Go.
 
-For example, `path/filepath` provides a way to manipulate file paths in an operating system indepdentant manner. This code will work fine for POSIX Operating Systems and Windows.
+For example, `path/filepath` provides a way to manipulate file paths in an operating system independant manner. This code will work fine for both POSIX Operating Systems and Windows.
 
 .code day-19-eject-the-web/code1.go
 
-`path/filepath` treats file paths as UTF-8 strings in commonly. All of the APIs for file systems are doing the proper encoding/decoding for their environment. `os.Args` is encoded to UTF-8 even though it's on Windows. So Windows user can write programs without entering the hell of multi-byte encoding.
+`path/filepath` treats file paths as simple UTF-8 strings. All of the APIs for file systems are doing the proper encoding/decoding for their environment. `os.Args` is encoded to UTF-8 even though it's on Windows. So Windows user can write programs without entering the hell of multi-byte encoding.
 
-In Japanese, windows applications use Shift_JIS (MS932) file system encoding. Shift_JIS is a double-byte character-set in which some characters contain 0x5C (a.k.a backslash) in the trailing-byte. So many Windows application developers meet a hell of multi-byte encoding.
+In Japanese, Windows applications use Shift_JIS (MS932) file system encoding. Shift_JIS is a double-byte character-set in which some characters contain `0x5C` (a.k.a backslash) in the trailing-byte. So many Windows application developers meet a hell of multi-byte encoding.
 
     C:\path\contains\backslash\char>gcc -o unix_like_app.c
     
@@ -28,11 +30,13 @@ In Japanese, windows applications use Shift_JIS (MS932) file system encoding. Sh
 
 .image day-19-eject-the-web/image1.png
 
-Go make them happy.
+but Go can make them happy.
 
 * Concurrency Pattern
 
-I speculate that Go will provide a new style coding of UI. It is difficult to handle both key-press events and input timeouts at once. However, if you separate key event handling in a goroutine and pass events to a channel  external to the goroutine, it may make complex UI coding more simple.
+I speculate that Go will provide a new style coding of UI. It is difficult to handle both key-press events and input timeouts at once.
+
+However, if you separate key event handling into a goroutine and pass events to a channel external to the goroutine, it may make complex UI coding simpler.
 	
 .code day-19-eject-the-web/code2.go
 
@@ -42,44 +46,45 @@ If you create a channel for the events, you will be able to handle other events 
 - Redraw window event
 - Key events
 
-When typing keys, in most cases, internal conditions will be changed and the UI will need to be redrawn. But the rendering may be expensive to call for each of key press.
-So use a goroutine and a timer.
+When typing keys, in most cases, internal conditions will be changed and the UI will need to be redrawn. But the rendering may be expensive to call for each of key press,and we do not want to block other operations. A solution is to use a goroutine and a timer.
 
 .code day-19-eject-the-web/timer.go /START OMIT/,/END OMIT/
 
-The `timer` makes a delay for redrawing screen. And if the next event requires forcing a screen update, it will update immediately.
+The `timer` makes a delay for redrawing screen. If the next event requires forcing a screen update, our redraw goroutine will be run immediately.
+
 Of course, the above code works fine for Windows. You don't need to do things the hard way. Writing pthread codes? Writing multiple event polling? Do it the easy way by using Go.
 
 * But... I must write OS Specifiec Code
 
-For example, you want to eject the CD-ROM tray in Go. Then, Go [go-eject](https://github.com/mattn/go-eject).
+For example, you want to eject the CD-ROM tray in Go. Then, Go [[https://github.com/mattn/go-eject][go-eject]].
 As you can see, Go can separate operating system specific code using a file naming convention.
 
-- eject_windows.go
-- eject_linux.go
+- [[https://github.com/mattn/go-eject/blob/master/eject_windows.go][`eject_windows.go`]]
+- [[https://github.com/mattn/go-eject/blob/master/eject_linux.go][`eject_linux.go`]]
 
 Another way to separate specific OS code is to add magic into the top of the file.
 
     // +build !windows
 
 This mean "Build this code unless compiling for Windows".
-Go provides an easy way to write bindings. If you already have C code, and you want to use it, you can use CGO.
-Look at `eject_linux.go`
+
+Go provides an easy way to write bindings. If you already have C code, and you want to use it, you can use CGO. For example, `eject_linux.go` uses CGO.
 
 .code day-19-eject-the-web/eject_linux.go
 
-If you don't want to contain C code in Go code, you can separate C code to another file. The Go tool will build it perfectly. 
+If you don't want to mix C code in Go code, you can also separate C code to another file. The Go tool will build it perfectly. 
+
 For Windows, you can call functions in DLLs dynamically.
 
 .code day-19-eject-the-web/eject_windows.go
 
-Note that you're better off using wide string APIs on windows. As I mentioned before, Go is a very nice language for Windows programmers.
-If you write a package wrapping OS specific issue in one place, most of users doesn't need to worry about compatibility. 
-i.e. many users can eject CD-ROM with by using `eject.Eject()`, regardless of their operating system.
+Note that you're better off using the wide string APIs on Windows.
+
+As I mentioned before, Go is a very nice language for Windows programmers. If you write a package wrapping OS specific issue in one place, most of users doesn't need to worry about compatibility.  i.e. many users can eject CD-ROM with by using `eject.Eject()`, regardless of their operating system.
 
 * Let's Go Web
 
-Finally, you can write a full application using this library:
+Finally, you can write a full application using [[https://github.com/mattn/go-eject][go-eject]] and [[https://github.com/hoisie/web][web.go]] to eject a cd from the Web.
 
 .code day-19-eject-the-web/code3.go
 
@@ -110,4 +115,4 @@ And in `static/index.html`
 
 Click "Eject the Web". Have fun.
 
-
+.image day-19-eject-the-web/push-the-button.png

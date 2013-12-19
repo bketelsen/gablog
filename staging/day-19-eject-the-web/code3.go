@@ -1,9 +1,9 @@
 package main
 
 import (
-    "encoding/json"
-    "github.com/hoisie/web"
-    "github.com/mattn/go-eject"
+	"encoding/json"
+	"github.com/hoisie/web"
+	"github.com/mattn/go-eject"
 )
 
 type result struct {

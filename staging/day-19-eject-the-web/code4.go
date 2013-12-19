@@ -44,7 +44,7 @@ func main() {
 					timer.Reset(200 * time.Microsecond)
 				}
 			}
-		// handle another events
+			// handle another events
 		}
 	}
 }

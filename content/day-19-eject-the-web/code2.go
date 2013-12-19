@@ -26,6 +26,7 @@ func main() {
 	event := make(chan termbox.Event)
 	go func() {
 		for {
+			// Post events to channel
 			event <- termbox.PollEvent()
 		}
 	}()
@@ -33,6 +34,7 @@ func main() {
 	print_tb(1, 1, "Hit any key")
 loop:
 	for {
+		// Poll key event or timeout
 		select {
 		case ev := <-event:
 			print_tb(1, 2, fmt.Sprintf("Key typed: %v", ev.Ch))

@@ -1,5 +1,5 @@
 Go Advent Day 21 - Two Factor Authentication in Go
-Making webapps more secure
+Making web apps more secure
 21 Dec 2013
 Tags: goadvent
 
@@ -18,8 +18,8 @@ alone are "something you know", and if the database is compromised then
 somebody else can know it too.  This is why password reuse is a problem.
 
 With 2FA, passwords are augmented with "something you have".  This used to be a
-keyfob, but today mobile phone apps are more common.  When you log in, you
-enter your username, password, and a single-use security token from the keyfob.
+key fob, but today mobile phone apps are more common.  When you log in, you
+enter your username, password, and a single-use security token from the key fob.
 A successful login requires validation of both the password and the token.
 
 * Google Authenticator
@@ -48,7 +48,7 @@ with QR codes.  These can be generated with
 * YubiKey
 
 [[http://www.yubico.com/][Yubico's YubiKey]] hardware token generates one-time
-passwords. The keyfob plugs into a USB port and acts as a keyboard which types
+passwords. The key fob plugs into a USB port and acts as a keyboard which types
 the password directly into the input field when the button is pressed.
 
 If you just want to validate tokens provided by your users, there is a client
@@ -68,7 +68,7 @@ authentication factors, all connected to a user's smartphone.  The user can be
 prompted with a push notification from the app, be provided with a single-use
 token via SMS, and even have the phone generate a token if it is off-line.
 
-Duo provides a demo web app which uses a iframes, javascript, and a high-level
+Duo provides a demo web app which uses a iframes, JavaScript, and a high-level
 API to authenticate users with Duo's 2FA. I have
 [[https://github.com/dgryski/go-duoweb][ported it to Go]].
 

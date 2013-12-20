@@ -57,7 +57,7 @@ I have a separate repo showing a simple benchmark about this technique. You are 
 
 ** Plugin System
 
-Go does not have dynamic linking, instead everything is built into a single binary, which is a great because it's much easier to deploy. However, this removes ehe ability to dynamically load modules.
+Go does not have dynamic linking, instead everything is built into a single binary, which is a great because it's much easier to deploy. However, this removes the ability to dynamically load modules.
 
 We needed a way to allow other researchers to contribute modules into Squirrel Land. These modules include ones that describe mobility patterns of mobile nodes, and ones that models wireless transmission properties, such as interference on wireless links and [[https://en.wikipedia.org/wiki/Distributed_coordination_function][DCF]] in 802.11.
 

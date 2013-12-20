@@ -108,7 +108,7 @@ This would clone `squirrel-land/squirrels` into your $GOPATH, along with its dep
 
     apt-get update && apt-get install wget iperf
     # assuming 172.17.42.1 is the gateway of your docker bridge
-    wget 172.17.42.1:9999/squirrel-worker && chmod +x squirrel-worker
+    (cd /usr/local/bin && wget 172.17.42.1:9999/squirrel-worker && chmod +x squirrel-worker)
 
 Now open up two new shells and create another two such containers, and we'll have three containers ready for `squirrel-worker`.
 

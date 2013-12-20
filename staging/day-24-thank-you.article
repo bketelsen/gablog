@@ -12,14 +12,21 @@ Brian Ketelsen
 
 In this penultimate post we'd like to recap the contributions by our fantastic authors.
 
-So far this year's Go Advent has generated 56k unique page views 
+So far this year's Go Advent has generated 56k TODO(dfc) unique page views and exists as a perminent resource for the future.
 
 [[http://blog.gopheracademy.com/day-01-go-1.2][Day 1]] kicked off Go Advent in great style with the announcement of the Go 1.2 release by Andrew Gerrand.
 
-[[http://blog.gopheracademy.com/day-02-go-1.2-performance-improvements][Day 2]] arrived shortly after 
+[[http://blog.gopheracademy.com/day-02-go-1.2-performance-improvements][Day 2]] arrived shortly after bringing news that once again the Go team had pulled another rabbit from their performance hat.
+
+On [[http://blog.gopheracademy.com/day-03-building-a-twelve-factor-app-in-go][day 3] [[https://twitter.com/kelseyhightower][Kelsey Hightower]] explained how to handle application configuration, [[http://12factor.net/][12 factor app style], in your Go applications.
+
+In their post on [[http://blog.gopheracademy.com/day-04-goconvey][day 4], [[https://twitter.com/mholt][Matthew Holt]] and [[https://twitter.com/mdwhatcott][Michael Whatcott]] introduced [[https://github.com/smartystreets/goconvey][GoConvey]], their testing framework for Go.
+
 
 Thank you to all of you for contributing your articles, time, and experiences about using Go in the real world.
 
 * One more post to go
 
-Like all great performances we've arranged an encore.
+Like all great performances we've arranged an encore, and just like the encore you'll have to wait. 
+
+Tomorrow, amongst the wrapping paper and gifts, we'll be announcing the names of the GopherCon 2014 presenters.

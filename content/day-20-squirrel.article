@@ -14,11 +14,11 @@ I am in a wireless networking research group in Auburn University. We were worki
 
 We did these real device based experiments because we were doing systematic engineering and we needed to study behaviors of implementations that people would be using in real world. Simulations wouldn't work because everything has to be written in the simulator's script language (Tcl in case of ns-2), in the context of the simulation framework, and that means the protocol running in the simulator is not the one people can run on a laptop or a mobile device. You might wonder why simulation can't be made as close to real-world programs as possible. Just look at the [[http://um-olsr.cvs.sourceforge.net/viewvc/um-olsr/um-olsr/][OLSR module for ns-2]] and the de facto standard implementation [[http://olsr.org/git/][OLSRd]]. Most of advances happen in `OLSRd` instead of the ns-2 module. In addition, applications and OS kernel can make a big difference between real device and simulators.
 
-But real device based experiments are apparently not scalable, especially when we want to consider mobility of wireless nodes. So I started to build an emulator. I was never great at C++ but for some reason I natually picked C++ for this. I used `boost::asio` for asynchronous networking. It ended up with a lot of crazy callbacks written in weird C++11 syntax. And there was a racing problem that I couldn't think of a way to solve efficiently. So I looked into Go, and rewrote everything I had in C++ in Go. I took half the time, wrote half number of lines of code, but the maximum throughput it could handle was twice as much as the C++ version! It worked and it worked better. That was how I started my first Go project, Squirrel Land ([[https://github.com/squirrel-land/squirrels][squirrel-land/squirrels]])
+But real device based experiments are apparently not scalable, especially when we want to consider mobility of wireless nodes. So I started to build an emulator. I was never great at C++ but for some reason I naturally picked C++ for this. I used `boost::asio` for asynchronous networking. It ended up with a lot of crazy callbacks written in weird C++11 syntax. And there was a racing problem that I couldn't think of a way to solve efficiently. So I looked into Go, and rewrote everything I had in C++ in Go. I took half the time, wrote half number of lines of code, but the maximum throughput it could handle was twice as much as the C++ version! It worked and it worked better. That was how I started my first Go project, Squirrel Land ([[https://github.com/squirrel-land/squirrels][squirrel-land/squirrels]])
 
 * So What Is Squirrel Land Exactly?
 
-The goal of Squirrel Land is to emulate wireless network behaviours on ethernet infrastructure. In other words, networking applications running on different Linux hosts connected to each other through ethernet (physical or virtual) should see similar networking performance as in a mobile wireless network, e.g. 802.11 Ad-hoc network. Conceptually, we want to replace the physical layer and part of link layer in TCP/IP stack with software that we have control on. See figure below:
+The goal of Squirrel Land is to emulate wireless network behaviours on Ethernet infrastructure. In other words, networking applications running on different Linux hosts connected to each other through Ethernet (physical or virtual) should see similar networking performance as in a mobile wireless network, e.g. 802.11 Ad-hoc network. Conceptually, we want to replace the physical layer and part of link layer in TCP/IP stack with software that we have control on. See figure below:
 
 .html day-20-squirrel/concept.html
 
@@ -152,7 +152,7 @@ In third container:
     
 Again, this assumes your Linux host address in docker bridge is `172.17.42.1`. Change it accordingly if it's different. Now you should see some output from `squirrel-master` on Linux host.
 
-If you type `ip addr` and `ip route` now in any of these three containers, you'll see a `tap0` interface with `10.0.0.*` IP address, and an entry for `10.0.0.0/24` in routing table.
+If you type `ip`addr` and `ip`route` now in any of these three containers, you'll see a `tap0` interface with `10.0.0.*` IP address, and an entry for `10.0.0.0/24` in routing table.
 
 Open [[http://localhost:8765/][`http://localhost:8765/`]] in browser on your Linux host. It should show a grid with three colorful dots crowded in top left corner. Drag the three dots to center, and place them not two far away from each other.
 

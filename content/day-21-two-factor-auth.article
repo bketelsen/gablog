@@ -15,8 +15,9 @@ the human side of computer security.
 
 Two-factor Authentication (2FA) is an attempt to improve things.  Passwords
 alone are "something you know", and if the database is compromised then
-somebody else can know it too. This is why password reuse is a problem.  With
-2FA, passwords are augmented with "something you have".  This used to be a
+somebody else can know it too.  This is why password reuse is a problem.
+
+With 2FA, passwords are augmented with "something you have".  This used to be a
 keyfob, but today mobile phone apps are more common.  When you log in, you
 enter your username, password, and a single-use security token from the keyfob.
 A successful login requires validation of both the password and the token.
@@ -35,7 +36,7 @@ Facebook, GitHub, Linode, and of course Google.
 
 There are several Go libraries available to generate the corresponding tokens,
 including one by me which also implements the same validation logic as Google's
-PAM module: [[https://github.com/dgryski/dgoogauth][dgoogauth]], named back
+PAM module: [[https://github.com/dgryski/dgoogauth][dgoogauth]], christened back
 when I wasn't sure how to name things. Kyle Isom also has a complete HOTP-based
 authentication solution and demo app at
 [[https://github.com/gokyle/hotp][github.com/gokyle/hotp]]
@@ -76,11 +77,11 @@ write some and become famous!
 
 * Other Providers
 
-Obviously the above list isn't exhaustive.  I've covered the major players, but
+Obviously this list isn't exhaustive.  I've covered the major players, but
 there are many more.  Some already have client libraries (for example
 [[https://www.authy.com/][Authy]]:
 [[https://github.com/dcu/authygo][github.com/dcu/authygo]]), but most do not.
-Luckily, writing clients is generally "easy" given Go's great net/http package.
+Luckily, writing clients is generally "easy" given Go's great `net/http` package.
 
 There are also solutions targeted at enterprise security and require
 interfacing with a RADIUS or LDAP server.  Integration with these becomes more

@@ -18,9 +18,53 @@ So far this year's Go Advent has generated 56k TODO(dfc) unique page views and e
 
 [[http://blog.gopheracademy.com/day-02-go-1.2-performance-improvements][Day 2]] arrived shortly after bringing news that once again the Go team had pulled another rabbit from their performance hat.
 
-On [[http://blog.gopheracademy.com/day-03-building-a-twelve-factor-app-in-go][day 3] [[https://twitter.com/kelseyhightower][Kelsey Hightower]] explained how to handle application configuration, [[http://12factor.net/][12 factor app style], in your Go applications.
+On [[http://blog.gopheracademy.com/day-03-building-a-twelve-factor-app-in-go][day 3]] [[https://twitter.com/kelseyhightower][Kelsey Hightower]] explained how to handle application configuration, [[http://12factor.net/][12 factor app style], in your Go applications.
 
-In their post on [[http://blog.gopheracademy.com/day-04-goconvey][day 4], [[https://twitter.com/mholt][Matthew Holt]] and [[https://twitter.com/mdwhatcott][Michael Whatcott]] introduced [[https://github.com/smartystreets/goconvey][GoConvey]], their testing framework for Go.
+In their post on [[http://blog.gopheracademy.com/day-04-goconvey][day 4]], [[https://twitter.com/mholt][Matthew Holt]] and [[https://twitter.com/mdwhatcott][Michael Whatcott]] introduced [[https://github.com/smartystreets/goconvey][GoConvey]], their testing framework for Go.
+
+For his post on [[http://blog.gopheracademy.com/day-05-beego][day 5]] [[https://plus.google.com/106856826379042824026][Jiahua Chen]] introduced [[http://beego.me/][beego]] which has recently announced its 1.0 release.
+
+On [[http://blog.gopheracademy.com/day-06-service-discovery-with-etcd][day 6]] [[https://twitter.com/andybons][Andrew Bonventre]] spilt the beans on how [[https://poptip.com/][Poptip]] use [[https://github.com/coreos/etcd][etcd]] to manage service discovery and configuration.
+
+Finishing out the week, James Stewart explained on [[http://blog.gopheracademy.com/day-07-a-router-for-govuk][day 7]] how he used Go to replace the frontend router for the entire `gov.uk` domann.
+
+Heading into the second week, [[https://plus.google.com/+ElliottStoneham/about][Elliott Stoneham]] explained on [[http://blog.gopheracademy.com/day-08-dr-who-and-the-mutant-go-compilers][day 8]] how he used [[http://haxe.org/][haxe]], the Go SSA package and a sonic screwdriver to translate Go code into Javascript.
+
+On [[http://blog.gopheracademy.com/day-09-building-a-weather-app-using-go][day 9]] it was [[https://twitter.com/goinggodotnet][William Kennedy]]'s turn to explain how he launched [[https://itunes.apple.com/us/app/outcast-noaa-radar-hourly/id739808997?mt=8][Outcast]], an iOS applicatoin, using a backend powered entirely by Go.
+
+day 10
+
+day 11
+
+day 12  +Andrew Gerrand  lifts the lid on one of +The Go Programming Language 's greatest mysteries: how does the Go Playground work?.
+
+day 13 http://blog.gopheracademy.com/day-13-tiger-tonic
+
+Todays Go Advent post comes to us from Richard Crowley, author of the popular GoAgain zero downtime restart package. 
+
+His post today is about his other labor of love, Tiger Tonic.
+
+day 14 http://blog.gopheracademy.com/day-14-gobrew
+
+day 15 http://blog.gopheracademy.com/day-15-shopping-with-go
+
+Reporting from the front lines in Pinterest based ecommerce search Shane Hansen spills the beans on how steals.com used Go for their new retail shopping site.
+
+day 16 http://blog.gopheracademy.com/day-16-coconut Micah Nordland
+
+Day 16 of Go Advent brings us the story of how Micah Nordland wrote a pure +The Go Programming Language blogging platform, Coconut.
+
+day 17 http://blog.gopheracademy.com/day-17-pond-a-new-rss-atom-syncing-protocol
+
+day 18 http://blog.gopheracademy.com/day-18-go-outside
+
+day 19 http://blog.gopheracademy.com/day-19-eject-the-web
+
+Today's Go Advent post comes from +Yasuhiro MATSUMOTO, author of the beloved go-sqlite3, discussing cross platform Go projects and the benefits of +The Go Programming Language  for UI development.
+
+day 20 
+
+day 21
 
 
 Thank you to all of you for contributing your articles, time, and experiences about using Go in the real world.

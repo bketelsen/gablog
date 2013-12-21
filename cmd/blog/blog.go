@@ -261,6 +261,9 @@ func (s *Server) renderAtomFeed() error {
 		Link: []atom.Link{{
 			Rel:  "self",
 			Href: baseURL + "/feed.atom",
+		}, {
+			Rel:  "alternate",
+			Href: baseURL,
 		}},
 	}
 	for i, doc := range s.docs {

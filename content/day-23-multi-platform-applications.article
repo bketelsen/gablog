@@ -130,13 +130,13 @@ an almost impossibly complex process to build a cross-compilation toolchain.
 With Go, cross compilation is available right out of the box.
 
 To make cross-compilation a little bit nicer, I recommend using
-[[https://github.com/mitchellh/gox][Gox]]. Gox mimics `go build` in usage
+[[https://github.com/mitchellh/gox][Gox]]. Gox mimics `go`build` in usage
 but will compile for multiple platforms in parallel.
 
 But to see the raw bits of how cross compilation in Go works, I
 recommend reading [[http://dave.cheney.net/2013/07/09/an-introduction-to-cross-compilation-with-go-1-1][Dave Cheney's blog post on it]].
 
-To install Gox, just `go get` it:
+To install Gox, just `go`get` it:
 
     go get github.com/mitchellh/gox
 
@@ -146,7 +146,7 @@ compile. You only need to do this once per Go version:
     gox -build-toolchain
 
 That will take some time, but once it is complete, you're ready to cross
-compile! Just run `gox` (just like you would just run `go build`) in the
+compile! Just run `gox` (just like you would just run `go`build`) in the
 directory of your application, and it'll build the application for every
 platform that your version of Go supports! The output should look like the
 following:

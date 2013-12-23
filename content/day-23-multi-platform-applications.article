@@ -16,7 +16,7 @@ An often unknown feature of Go is that it is more or less completely
 portable: you can compile your Go code to run on any other operating
 system Go supports from the comfort of your own operating system. In
 addition to this, Go has build constraints to control which files are compiled
-unde what conditions, allowing you to write OS-specific code and still have
+under what conditions, allowing you to write OS-specific code and still have
 your application compile.
 
 In this post, I'm going to show you how to effectively write Go code
@@ -43,13 +43,13 @@ properly.
 Of course, interface usage could be a whole blog post on its own, so without
 going into detail: don't go overboard on interfaces. Use them where they make
 sense. But one of the places where they make sense is separating complex
-behaviors from their actual implemntation, and distilling their core
+behaviors from their actual implementation, and distilling their core
 operations (the functions of the interface).
 
-* Checking the OS at Runtime
+* Checking the OS at run time
 
 While perhaps obvious, Go provides standard library functions for determining
-the running operating system at runtime. This lets you easily change minor
+the running operating system at run time. This lets you easily change minor
 behaviors based on the OS. For major behaviors, build constrains and most
 likely interfaces should be used. Both are covered in their own sections.
 
@@ -73,7 +73,7 @@ it out into an interface. Or, finally, maybe a build constraint makes sense.
 
 A build constraint is a line comment in a Go file that lists the conditions
 under which a file should be included in a package. One of the possible
-constraints is target operating system, allowing you to selectingly include
+constraints is target operating system, allowing you to selectively include
 and exclude certain files based on the target operating system of the package.
 
 This shouldn't be used to exclude any and all code used
@@ -95,7 +95,7 @@ The most common idiom with code in OS-constrained files is to export the
 callable function in the platform-independent version of the file, and use
 a private function in the platform-dependent files. For example, in
 [[http:/www.packer.io][Packer]], we have a function that returns the path
-to where we should put the configuration file. On Unix, this is as a dotfile
+to where we should put the configuration file. On Unix, this is as a dot file
 in the home folder. On Windows, this is in the application settings folder,
 which can only be determined by making some DLL calls. We use build constraints
 to control whether the DLL calls are included in the package, since they
@@ -130,13 +130,13 @@ an almost impossibly complex process to build a cross-compilation toolchain.
 With Go, cross compilation is available right out of the box.
 
 To make cross-compilation a little bit nicer, I recommend using
-[[https://github.com/mitchellh/gox][Gox]]. Gox mimics `go build` in usage
+[[https://github.com/mitchellh/gox][Gox]]. Gox mimics `go`build` in usage
 but will compile for multiple platforms in parallel.
 
 But to see the raw bits of how cross compilation in Go works, I
 recommend reading [[http://dave.cheney.net/2013/07/09/an-introduction-to-cross-compilation-with-go-1-1][Dave Cheney's blog post on it]].
 
-To install Gox, just `go get` it:
+To install Gox, just `go`get` it:
 
     go get github.com/mitchellh/gox
 
@@ -146,7 +146,7 @@ compile. You only need to do this once per Go version:
     gox -build-toolchain
 
 That will take some time, but once it is complete, you're ready to cross
-compile! Just run `gox` (just like you would just run `go build`) in the
+compile! Just run `gox` (just like you would just run `go`build`) in the
 directory of your application, and it'll build the application for every
 platform that your version of Go supports! The output should look like the
 following:
@@ -195,7 +195,7 @@ full documentation on usage.
 ## Final Thoughts
 
 In my opinion, the ease of cross-compilation with Go rivals the portability
-of runtimes like Java, while still allowing you to easily dig into the
+of languages like Java, while still allowing you to easily dig into the
 platform-specific bits if you need to, and without having to ask your end users
 to install a large runtime.
 

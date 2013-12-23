@@ -174,9 +174,9 @@ second state, "waiting"). Once this happens, we toggle `outCh` to `out`, so that
 channel is ready to receive (this is the last state, "ready to send"). Once we have successfully sent, we
 return to the initial state, `outCh` and `timerCh` having previously been reset to nil.
 
-The `timer` variable is initialized with `time.NewTimer(0)` as a simple way of creating a timer that we don't
-initially want to schedule. This will fire right away, but we don't start listening to its output channel
-until after we have `Reset` it anyway. (There is no way to create a `time.Timer` without scheduling it.)
+The `timer` variable initialized with `time.NewTimer(0)` fires immediately, but we don't start listening to
+its output channel until after we have `Reset` it. (There is no way to create a `time.Timer` without
+scheduling it.)
 
 If you [[http://play.golang.org/p/r4nH9M38Jt][run this on the playground]] you can verify that it behaves as
 advertised.

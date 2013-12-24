@@ -18,26 +18,30 @@ So far this year's Go Advent has generated over 60k unique page views and exists
 - In their post on [[http://blog.gopheracademy.com/day-04-goconvey][day 4]], [[https://twitter.com/mholt6][Matthew Holt]] and [[https://twitter.com/mdwhatcott][Michael Whatcott]] introduced [[https://github.com/smartystreets/goconvey][GoConvey]], their testing framework for Go.
 - For his post on [[http://blog.gopheracademy.com/day-05-beego][day 5]] [[https://plus.google.com/106856826379042824026][Jiahua Chen]] introduced [[http://beego.me/][beego]] which has recently announced its 1.0 release.
 - On [[http://blog.gopheracademy.com/day-06-service-discovery-with-etcd][day 6]] [[https://twitter.com/andybons][Andrew Bonventre]] spilt the beans on how [[https://poptip.com/][Poptip]] use [[https://github.com/coreos/etcd][etcd]] to manage service discovery and configuration.
-- Finishing out the week, James Stewart explained on [[http://blog.gopheracademy.com/day-07-a-router-for-govuk][day 7]] how he used Go to replace the front end router for the entire `gov.uk` domain.
 
+- Finishing out the week, James Stewart explained on [[http://blog.gopheracademy.com/day-07-a-router-for-govuk][day 7]] how he used Go to replace the front end router for the entire `gov.uk` domain.
 - Heading into the second week, [[https://plus.google.com/+ElliottStoneham/about][Elliott Stoneham]] explained on [[http://blog.gopheracademy.com/day-08-dr-who-and-the-mutant-go-compilers][day 8]] how he used [[http://haxe.org/][haxe]], the Go SSA package and a sonic screwdriver to translate Go code into JavaScript.
 - On [[http://blog.gopheracademy.com/day-09-building-a-weather-app-using-go][day 9]] it was [[https://twitter.com/goinggodotnet][William Kennedy]]'s turn to explain how he launched [[https://itunes.apple.com/us/app/outcast-noaa-radar-hourly/id739808997?mt=8][Outcast]], an iOS application, using a back end powered entirely by Go.
 - [[http://blog.gopheracademy.com/day-10-beyond-static-binaries][Day 10]] bought us an expose on using Go on the other side of the Devops equation from Joseph Holsten.
 - The recidivist, Jeremy Saenz brought a little Christmas cheer with a Martini web application for recording wish lists for [[http://blog.gopheracademy.com/day-11-martini][day 11]].
 - Not content with the day 1 spot, Andrew Gerrand was back on [[http://blog.gopheracademy.com/day-12-inside-the-go-playground][day 12]] to lift the lid on one of Go's greatest mysteries: how does the Go Playground work?
+
 - For [[http://blog.gopheracademy.com/day-13-tiger-tonic][day 13]] Richard Crowley, author of the popular GoAgain zero downtime restart package, told us all about his other labor of love, Tiger Tonic.
 - On [[http://blog.gopheracademy.com/day-14-gobrew][day 14]] Craig Wickesser explained how [[https://github.com/grobins2/gobrew][gobrew]] can help you easily switch between multiple versions of Go.
-
 - [[http://blog.gopheracademy.com/day-15-shopping-with-go][Day 15]] bought details of how Shane M. Hansen spills the beans on how steals.com used Go for their new retail shopping site, [[http://shop.steals.com/][shop.steals.com]].
 - For his post on [[http://blog.gopheracademy.com/day-16-coconut][day 16]], Micah Nordland brought us the story of how he wrote a pure Go blogging platform, Coconut.
 - Arturo Vergara chose [[http://blog.gopheracademy.com/day-17-pond-a-new-rss-atom-syncing-protocol][day 17]] to unveil [[https://github.com/ArturoVM/pond][Pond]], his solution for syncing RSS and Atom subscription data.
 - On [[http://blog.gopheracademy.com/day-18-go-outside][day 18]] Tony Wilson instructed us all to Go Outside. This is always good advice, and in this case in particular, extremely useful if you need to call functions in shared objects (or DLLs) from Go.
+
 - In his post for [[http://blog.gopheracademy.com/day-19-eject-the-web][day 19]] Yasuhiro MATSUMOTO, author of the beloved go-sqlite3, discussed cross platform Go projects and the benefits of Go for UI development.
 - [[http://blog.gopheracademy.com/day-20-squirrel][Day 20]] gave Song Gao an opportunity to explain how he used Go to emulate ad hoc mobile networks.
-- For [[http://blog.gopheracademy.com/day-21-two-factor-auth][day 21] [[http://github.com/dgryski][Damian Gryski]]
+- For [[http://blog.gopheracademy.com/day-21-two-factor-auth][day 21]] [[http://github.com/dgryski][Damian Gryski]] 
 - In his post on [[http://blog.gopheracademy.com/day-22-a-journey-into-nsq][day 22]] [[https://twitter.com/imsnakes][Matt Reiferson]] described [[https://github.com/bitly/nsq][NSQ]] and in doing so set a new bar for Go Advent posts by using an animated GIF.
+- On [[http://blog.gopheracademy.com/day-23-multi-platform-applications][day 23]] [[https://twitter.com/mitchellh][Mitchell Hashimoto]] wrote a great piece on cross compiling Go programs for distribution.
+- As a [[http://blog.gopheracademy.com/ginkgo][bonus]], Onsi Fakhouri bought us post on the how and why [[http://pivotallabs.com/][Pivotal Labs]] wrote [[https://github.com/onsi/ginkgo][Ginkgo]], their BDD testing framework.
+- Last, but not least, for [[http://blog.gopheracademy.com/day-24-channel-buffering-patterns][day 24]] Caleb Spare wrote a great post on channel buffering.
 
-Thank you to all of you for contributing your articles, time, and experiences about using Go in the real world.
+Thank you to all of you for contributing your articles, time, and experiences using Go in the real world.
 
 * One more post to go
 

@@ -34,8 +34,12 @@ So far this year's Go Advent has generated over 60k unique page views and exists
 - On [[http://blog.gopheracademy.com/day-18-go-outside][day 18]] Tony Wilson instructed us all to Go Outside. This is always good advice, and in this case in particular, extremely useful if you need to call functions in shared objects (or DLLs) from Go.
 - In his post for [[http://blog.gopheracademy.com/day-19-eject-the-web][day 19]] Yasuhiro MATSUMOTO, author of the beloved go-sqlite3, discussed cross platform Go projects and the benefits of Go for UI development.
 - [[http://blog.gopheracademy.com/day-20-squirrel][Day 20]] gave Song Gao an opportunity to explain how he used Go to emulate ad hoc mobile networks.
-- For [[http://blog.gopheracademy.com/day-21-two-factor-auth][day 21] [[http://github.com/dgryski][Damian Gryski]]
+- For [[http://blog.gopheracademy.com/day-21-two-factor-auth][day 21]] [[http://github.com/dgryski][Damian Gryski]] 
+
 - In his post on [[http://blog.gopheracademy.com/day-22-a-journey-into-nsq][day 22]] [[https://twitter.com/imsnakes][Matt Reiferson]] described [[https://github.com/bitly/nsq][NSQ]] and in doing so set a new bar for Go Advent posts by using an animated GIF.
+- 
+- 
+
 
 Thank you to all of you for contributing your articles, time, and experiences about using Go in the real world.
 

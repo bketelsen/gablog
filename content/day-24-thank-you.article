@@ -35,7 +35,7 @@ So far this year's Go Advent has generated over 60k unique page views and exists
 
 - In his post for [[http://blog.gopheracademy.com/day-19-eject-the-web][day 19]] Yasuhiro MATSUMOTO, author of the beloved go-sqlite3, discussed cross platform Go projects and the benefits of Go for UI development.
 - [[http://blog.gopheracademy.com/day-20-squirrel][Day 20]] gave Song Gao an opportunity to explain how he used Go to emulate ad hoc mobile networks.
-- For [[http://blog.gopheracademy.com/day-21-two-factor-auth][day 21]] [[http://github.com/dgryski][Damian Gryski]] 
+- For [[http://blog.gopheracademy.com/day-21-two-factor-auth][day 21]] [[http://github.com/dgryski][Damian Gryski]] wrote about some options for two-factor authentication.
 - In his post on [[http://blog.gopheracademy.com/day-22-a-journey-into-nsq][day 22]] [[https://twitter.com/imsnakes][Matt Reiferson]] described [[https://github.com/bitly/nsq][NSQ]] and in doing so set a new bar for Go Advent posts by using an animated GIF.
 - On [[http://blog.gopheracademy.com/day-23-multi-platform-applications][day 23]] [[https://twitter.com/mitchellh][Mitchell Hashimoto]] wrote a great piece on cross compiling Go programs for distribution.
 - As a [[http://blog.gopheracademy.com/ginkgo][bonus]], Onsi Fakhouri bought us post on the how and why [[http://pivotallabs.com/][Pivotal Labs]] wrote [[https://github.com/onsi/ginkgo][Ginkgo]], their BDD testing framework.

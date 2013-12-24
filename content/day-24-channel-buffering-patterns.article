@@ -32,7 +32,7 @@ In this post I will explore how to handle bursty messages in channel pipelines.
 
 We'll represent messages with `Event` s, which are just `int` s. Multiple `Event` s are allowed to be merged
 into a single event using addition. (In an fsnotify-based program, for example, you might be able to
-coalesce multiple events by preserving only the unique filenames, or only the fact that some file was changed
+coalesce multiple events by preserving only the unique file names, or only the fact that some file was changed
 at all.) Our producer intermittently emits a burst of random-valued `Event` s.
 
 .code day-24-channel-buffering-patterns/code.go /START1 OMIT/,/END1 OMIT/

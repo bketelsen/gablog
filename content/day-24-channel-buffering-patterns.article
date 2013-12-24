@@ -35,21 +35,7 @@ into a single event using addition. (In an fsnotify-based program, for example, 
 coalesce multiple events by preserving only the unique filenames, or only the fact that some file was changed
 at all.) Our producer intermittently emits a burst of random-valued `Event` s.
 
-    type Event int
-
-    func NewEvent() Event                   { return 0 }
-    func (e Event) Merge(other Event) Event { return e + other }
-
-    func produce(out chan<- Event) {
-      for {
-        delay := time.Duration(rand.Intn(5)+1) * time.Second
-        nMessages := rand.Intn(10) + 1
-        time.Sleep(delay)
-        for i := 0; i < nMessages; i++ {
-          out <- Event(rand.Intn(10))
-        }
-      }
-    }
+.code day-24-channel-buffering-patterns/code.go /START1 OMIT/,/END1 OMIT/
 
 If we print out all the messages created by `produce`, we can see that they come out in small batches.
 [[http://play.golang.org/p/aHsHNFIfGP][See the runnable playground example]] (you may have to scroll down to
@@ -62,19 +48,7 @@ arrive that we can coalesce with the first. One simple way of doing this is simp
 milliseconds and merge all received messages in the meantime. This is easy with a
 [[http://golang.org/pkg/time/#Ticker][`time.Ticker`]]:
 
-    func coalesce500(in <-chan Event, out chan<- Event) {
-      ticker := time.NewTicker(500 * time.Millisecond)
-      event := NewEvent()
-      for {
-        select {
-        case <-ticker.C:
-          out <- event
-          event = NewEvent()
-        case e := <-in:
-          event = event.Merge(e)
-        }
-      }
-    }
+.code day-24-channel-buffering-patterns/code.go /START2 OMIT/,/END2 OMIT/
 
 [[http://play.golang.org/p/yelQeZiyly][See the full runnable code here]]. This works, but it has a few
 problems:
@@ -92,22 +66,7 @@ helps until the buffer fills up, though, and furthermore we won't merge multiple
 potentially causing a downstream burst as well. A better way of handling the slow receiver is to implement the
 desired semantics directly: keep coalescing messages until the receiver is ready to accept more input.
 
-    func coalesceSlow(in <-chan Event, out chan<- Event) {
-      event := NewEvent()
-      for e := range in {
-        event = event.Merge(e)
-      loop:
-        for {
-          select {
-          case e := <-in:
-            event = event.Merge(e)
-          case out <- event:
-            event = NewEvent()
-            break loop
-          }
-        }
-      }
-    }
+.code day-24-channel-buffering-patterns/code.go /START3 OMIT/,/END3 OMIT/
 
 You can [[http://play.golang.org/p/bYZpWB974A][run the code with a slow receiver]] and see that this has the
 desired effect: we only create a single coalesced message while the receiver blocks. `coalesceSlow` still
@@ -136,30 +95,7 @@ Here is a diagram to show these transitions:
 
 Here is the code:
 
-    func coalesce(in <-chan Event, out chan<- Event) {
-      event := NewEvent()
-      timer := time.NewTimer(0)
-
-      var timerCh <-chan time.Time
-      var outCh chan<- Event
-
-      for {
-        select {
-        case e := <-in:
-          event = event.Merge(e)
-          if timerCh == nil {
-            timer.Reset(500 * time.Millisecond)
-            timerCh = timer.C
-          }
-        case <-timerCh:
-          outCh = out
-          timerCh = nil
-        case outCh <- event:
-          event = NewEvent()
-          outCh = nil
-        }
-      }
-    }
+.code day-24-channel-buffering-patterns/code.go /START4 OMIT/,/END4 OMIT/
 
 There are a few techniques used here that deserve explanation. Most notably, we're exploiting the fact that
 any cases inside a select which receive from or send to a nil channel are skipped (read more about this

@@ -89,7 +89,7 @@ But when we’re testing, we can stub the database interactions out:
 
 	type testDB struct{}
 
-	func (sql *SQL) SaveThisThing(thingToSave *Thing) error {
+	func (db testDB) SaveThisThing(thingToSave *Thing) error {
 		// return an error or success, as your test requires
 	}
 

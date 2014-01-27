@@ -6,7 +6,7 @@ Paddy Foran
 
 * Moving to Go
 
-You’ve read all the blog posts about how great Go is. You’ve lost patience with your monolithic framework of choice—Ruby on Rails, Django, etc. You’re ready to take the leap and switch to Go.
+You’ve read [[http://blog.iron.io/2013/03/how-we-went-from-30-servers-to-2-go.html][all]] [[http://blog.golang.org/go-at-heroku][the]] [[http://word.bitly.com/post/29550171827/go-go-gadget][blog]] [[https://airbrake.io/blog/status/planned-airbrake-migration-love-go-love-riak][posts]] about how great Go is. You’ve lost patience with your monolithic framework of choice—Ruby on Rails, Django, etc. You’re ready to take the leap and switch to Go.
 
 Well, what now?
 
@@ -57,6 +57,55 @@ To achieve this, we had to manually go through our Django template and discern w
 Some of our changes aren’t new feature additions, they’re refactoring the way we handle existing things. Authentication, for example, can be a headache. We refactored things so that every request gets a header—applied inside our server stack—providing the user’s ID, so we no longer have to authenticate on every service. Instead, each service can just check for that header. Because this is a global expectation, our security models can be designed around it, so that header can always be trusted. In this way, our services become much simpler and have fewer dependencies.
 
 By utilizing micro-services this way, we’re significantly lowering the contextual information a developer needs to keep in their brain while working on our codebase. Code with a single focus allows developers to focus, too. We’re really excited about our transition to Go, but with millions of requests a day being served, we can’t jump ship all at once. By moving slowly, our users haven’t even noticed that we’re rewriting code, our business has continued to grow, and our product continues to improve—but we’re still eliminating technical debt with extreme prejudice.
+
+** Raindrops on Roses & Whiskers on Kittens
+
+We’ve fallen a bit in love with Go here at DramaFever. Our Operations team loves the simple deploy procedure—they just download the binary our Jenkins server produces as an artifact. Our engineers love its flexibility and clarity. The accountants love the lower server expenses. Everyone wins!
+
+These are a few of our favourite things.
+
+- Interfaces make testing easy
+
+Testing our Django application is a major pain. You need to generate fixtures, load them in specific orders, keep track of them, and figure out mismatches between your development environment’s data and the fixture data. Plus, they take forever to populate the database with.
+
+Comparatively, Go is elegant in its database testing, thanks to interfaces. Our Go database interactions all run through interfaces. So we’ll have a special database type, something like this:
+
+	type Database interface {
+		SaveThisThing(thingToSave *Thing) error
+		GetThing(thingId string) (*Thing, error)
+		DeleteThing(thingId string) error
+	}
+
+Then we can call this interface from all our business logic. In production, the interface is filled by something like this:
+
+	type SQL sql.DB
+
+	func (sql *SQL) SaveThisThing(thingToSave *Thing) error {
+		// generate and execute sQL statements here
+		// return any errors
+	}
+
+But when we’re testing, we can stub the database interactions out:
+
+	type testDB struct{}
+
+	func (sql *SQL) SaveThisThing(thingToSave *Thing) error {
+		// return an error or success, as your test requires
+	}
+
+Our databases are set up in a read-slave configuration, and there are some interesting race conditions that can come up due to the replication lag between writing to master and that write reaching a slave. With these interfaces, we can use goroutines and the `time.After` function to manually create situations in which race conditions would occur, then test against them. It’s trivial to test our Go code for bugs related to replication lag.
+
+Testing nirvana.
+
+- go test -cover is addicting
+
+Because testing in Django is so slow and fraught, our test coverage for it sometimes falls short of our ideal test coverage. With the [[http://blog.golang.org/cover][built-in test coverage tool]], testing has been gamified. Without modifying our code, we can see exactly how much of our code has tests associated with it. Another command will show us exactly what our tests are missing. And watching that output climb towards 100% is strangely motivational. When a project finally hits 100% test coverage, we celebrate with animated GIFs in the IRC channel (we’re on `#dramafever`, come say hi!).
+
+- Taking a Go approach
+
+One of the problems with switching to Go was the loss of Django’s ORM. And while Go ORMs exist, the entire idea of an ORM seems somehow out of place in Go. Andrew Gerrand [[http://go-lang.cat-v.org/quotes][semi-famously]] said “In Go, the code does exactly what it says on the page.” ORMs hide a lot of what the program is doing, so the cost and complexity of a function is less clear than in other Go code.
+
+That being said, ORMs save a huge amount of time, and a lot of our engineers are used to working with them. Transitioning to writing SQL by hand would be difficult for us. We wanted a happy medium, so we [[https://github.com/DramaFever/pan][built one]]. While the project is still undergoing development, it tries to take a more idiomatic approach to the problem of writing SQL. Rather than writing an ORM that hides all the SQL, we built an abstraction layer on top of SQL that makes writing queries easier for us. We tried to take the same pragmatic approach to abstraction you see in the language design of Go: enough abstraction to ensure developers don’t get bogged down in verbosity, but not so much abstraction that the actual work being done is obscured. So far, the Go way hasn’t led us astray.
 
 ** Invested in Go
 

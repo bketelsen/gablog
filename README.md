@@ -41,6 +41,13 @@ following:
     kill $PID of blog
     nohup ./blog &
 
-## TODO
 
-Better deployment script!
+
+## Better Deployment
+
+git clone https://github.com/bketelsen/gablog.git
+cd gablog
+docker build .
+docker run -d -p 9003:9003 $containerid
+
+

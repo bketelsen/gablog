@@ -11,4 +11,4 @@ ADD . /opt/blog
 RUN cd /opt/blog/cmd/blog && go get -d
 RUN cd /opt/blog/cmd/blog && go build
 EXPOSE 9003
-ENTRYPOINT ["/opt/blog/cmd/blog/blog"]
+ENTRYPOINT ["/opt/blog/startblog.sh"]

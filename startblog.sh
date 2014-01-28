@@ -1,4 +1,4 @@
 #!/bin/sh -e
 
 cd /opt/blog/
-/opt/blog/startblog.sh
+/opt/blog/cmd/blog/blog

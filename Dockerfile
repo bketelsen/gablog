@@ -1,6 +1,6 @@
 FROM ubuntu:12.04
 # Let's install go just like Docker (from source).
-RUN add-apt-repository "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe"
+RUN add-apt-repository "deb http://archive.ubuntu.com/ubuntu precise universe"
 RUN apt-get update -q
 RUN apt-get install -qy build-essential curl git mercurial
 RUN curl -s https://go.googlecode.com/files/go1.2.src.tar.gz | tar -v -C /usr/local -xz

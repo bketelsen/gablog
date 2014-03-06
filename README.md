@@ -33,24 +33,7 @@ The `blog` command also supports some configurable parameters:
 
 ## Deployment
 
-To deploy this to a server named `go-academy-server`, enter the
-following:
-
-    ssh go-academy-server
-    sudo -i git
-    cd /var/www/gablog
-    git pull
-    ps -eaf | grep blog
-    kill $PID of blog
-    nohup ./blog &
-
-
-
-## Better Deployment
-
-git clone https://github.com/bketelsen/gablog.git
-cd gablog
-docker build .
-docker run -d -p 9003:9003 $containerid
+git push origin master
+drone.io does the rest, with some bash scripting and docker love
 
 

@@ -1,6 +1,7 @@
 # Gopher Academy Blog engine
 
-Tested and Deployed by drone.io [![Build Status](https://drone.io/github.com/bketelsen/gablog/status.png)](https://drone.io/github.com/bketelsen/gablog/latest)
+Tested and Deployed by drone.io
+[![Build Status](https://drone.io/github.com/bketelsen/gablog/status.png)](https://drone.io/github.com/bketelsen/gablog/latest)
 
 Shamelessly forked from
 [go.blog](https://code.google.com/p/go/source/browse/?repo=blog).

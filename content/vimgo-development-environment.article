@@ -9,18 +9,18 @@ Fatih Arslan
 ** The reason for creating vim-go
 
 Go has a very versatile toolchain and commands that makes Go programming fun.
-One of the famous tool is gofmt, which automatically reformats the Code
+One of the famous tools is gofmt, which automatically reformats the code
 according to some predefined rules. However there are many other tools like
-goimports, oracle, godef, etc.. which are providing a more productive workflow. 
+goimports, oracle, godef, etc.. which help to provide a more productive workflow. 
 
-There are many independent vim plugins that integrates this tools into Vim. We
-also have the offical Vim plugins that provides some basic Go support for vim.
+There are many independent vim plugins that integrate these tools into Vim. We
+also have the offical Vim plugins that provides some basic Go support for Vim.
 However there are many flaws with these plugins:
 
 - Gofmt destroy the undo history and it's impossible to do undo on your code
 - Building, running or testing are not integrated, all of these needs additional settings.
 - Binary paths are hard coded
-- Plugins are not using the same format. Each plugin is build different, some support to lookup under the cursor, some do not.
+- Plugins are not using the same format. Each plugin is built differently, some support lookup under the cursor, some do not.
 - Syntax highlighting can't highlight functions
 - Auto completion needs a package and additional settings.
 - Many other small flaws..
@@ -47,8 +47,8 @@ features:
 - Advanced source analysis tool with oracle
 - Checking for unchecked errors.
 
-vim-go installs automatically all necessary binaries if they are not found in
-the pre-defined path `~/.vim-go` (can be disabled if not wished). It comes with
+vim-go automatically installs all necessary binaries if they are not found in
+the pre-defined path `~/.vim-go` (can be disabled if not desired). It comes with
 pre-defined sensible settings.  Under the hood it uses `goimports`, `oracle`,
 `godef`, `errcheck`, `gocode` and `golint`. Let's see how we can make use of
 those tools.
@@ -71,7 +71,7 @@ completion (completion by type) install YCM:
 
 ** Development with vim-go
 
-For the first usage it tries to download and install all necessary binaries.
+On first usage it tries to download and install all necessary binaries.
 Let's see what commands we now can use. Below is a list of commands vim-go
 supports, most of the commands are improved and new ones were introduced (some
 of them are just from the official Go plugin).
@@ -108,7 +108,7 @@ should be seamless integrated. vim-go has several features that you can use. Fir
     :make
     :GoBuild
 
-`:make` is the default Vim command to build a source code. vim-go integrates it
+`:make` is the default Vim command to build a project. vim-go integrates it
 in way that it ** doesn't produce ** any binary. That it is really useful
 because it doesn't pollute your work environment. Any errors are listed in a
 quickfix window and can be jumped easily with default `:cnext` and
@@ -177,7 +177,7 @@ There is also a Youtube vide that shows vim-go in action:
 
 [[https://www.youtube.com/watch?v=rD11pEx5h8c][Youtube: Go development in Vim]]
 
-There are still tons of modification and improvement one can make to this
+There are still tons of modifications and improvements one can make to this
 setup. vim-go is a new project. Check it out and try it to see how it fits your
 needs. Any improvements and feedback are welcome.
 

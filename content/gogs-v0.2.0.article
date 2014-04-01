@@ -1,5 +1,5 @@
 Gogs: Binary Deployment: The Right Way to Deploy
-1 April 2014
+1 Apr 2014
 Tags: gogs go git
 
 Jiahua Chen
@@ -67,3 +67,4 @@ We're glad you choose Gogs, and here we have some notices for you:
 - Since we distribute Gogs in binary, [[http://gobuild.io][gobuild.io]] is our compile and download service provider.
 
 Thank you for taking time read this post, Gogs will grow much better with your support and feedback!
+

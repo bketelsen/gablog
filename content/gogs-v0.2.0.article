@@ -1,0 +1,69 @@
+Gogs: Binary is what called real deployment
+1 April 2014
+Tags: gogs go git
+
+Jiahua Chen
+
+* Gogs: Binary is what called real deployment
+
+This blog is published with [[https://github.com/gogits/gogs][Gogs - Go Git Service]] `v0.2.0` release.
+
+First, please let me represent develop team to thank all firends who are supporting us on GitHub. As you may know, `v0.2.0` is the first public release of Gogs, and community has contributed over 650 stars to this project on GitHub in just one week.
+
+Then, as my own, I want to give the most sincere tribute to all members of develop team, everybody works extreamly hard for the first public release. Our united and tacit understanding is the key to success of this project.
+
+** Project Overview
+
+Something we have to be clear as the first public release, which helps you understand more about why we launch this project, how we develop it, and current develop status.
+
+*** Purpose
+
+In the area of self-hosted Git service, there are some very succeesful products running all around the world, so why we still decide to develop Gogs? How can we compete with them(e.g. gitlab)? What's the view of us in terms of creating the wheel repeatedly?
+
+In the degree of official, our purpose is to take the advantage of Go that builds everything into one binary to setup your own self hosted Git Service. But in my words, I just don't like the products that are existed right now. Because they need a lot of steps and dependencies, or single developer with no anticipated prospect, or no support for cross-platform. And Gogs certainly support a rich number of operating systems because of Go supports.
+
+We have at least two competitor in the long term, gitlab and GitHub Enterprise. So what does Gogs have to compete with them? I don't think I have any yet but one, the binary deployment. You can setup your own Git hosting service with unbelieve simple steps is good enough to keep us being strong.
+
+Many people just hate so-called "creating the wheel repeatedly" without any reason, then they miss the opportunity to be creative. You need to see it in several perspectives. First of all, it's a great thing for learning and practicing skills, especially try something you've never got a chance to try, like we choose [[http://martini.codegangsta.io/][martini]] as our basic framework. Secondly, things that exist do not make us feel satisfied, and we won't give up the chance to improve it.
+
+*** Develop Team
+
+Gogs is the product that under the internet age, and its develop team is also untied through the internet. All 5 members were known each other for a while by developing Go and we've never face-to-face. We use IM(QQ) to discuss, use [[https://trello.com/b/uxAoeLUl/gogs-go-git-service][Trello]] to assigning tasks, and use GitHub to work together. Four of them are taking time after work to join the project except me(as a student), it's remarkable. 
+
+Now, please let me introduce our develop team:
+
+- [[https://github.com/Unknwon][@Unknown]]：Project manager, back-end develop
+- [[https://github.com/lunny][@lunny]]：Back-end Git and database develop
+- [[https://github.com/fuxiaohei][@fuxiaohei]]：Front-end develop
+- [[https://github.com/slene][@slene]]：Front and back-end develop
+- [[https://github.com/shxsun][@skyblue]]：Back-end develop
+
+*** Current Develop Status
+
+We've released the first public version with many features but only has very low number `v0.2.0` and status `alpha`. I have to say that we do not recommend and Gogs doesn't ready for enterprise usage. So does Gogs just something look nice and useless? Of course not! The core of Git hosting is the Git data, Gogs is kind of stable in this part so every time new version release, you only need to do `copy-paste` upgrade with zero damage of your Git data.
+
+** Getting Started
+
+All documentation is documented in the [[https://github.com/gogits/gogs/wiki][GitHub Wiki]] which helps you understand Gogs more and better.
+
+- For people who just want to have a try, after installing the [[https://github.com/gogits/gogs/wiki/Prerequirements][Prerequirements]], then [[https://github.com/gogits/gogs/wiki/Install-from-binary][Install from binary]] and you're all set.
+- If you want to [[https://github.com/gogits/gogs/wiki/Install-from-source][Install from source]], it's also quite easy once you have Go environment.
+
+To be more convenience, Gogs also provides a install page(URL:`/install`) to help you configurate for the first-time run.
+
+** Notice
+
+We're glad you choose Gogs, and here we have some notice for you:
+
+- To avoid unnecessary exceptions by looking at [[https://github.com/gogits/gogs/wiki/Known-Issues][Known Issues]].
+- See [[https://github.com/gogits/gogs/wiki/FAQs][FAQs]] and [[https://github.com/gogits/gogs/wiki/Troubleshooting][Troubleshooting]] before you [[https://github.com/gogits/gogs/issues/new][Open an Issue]] on GitHub.
+
+** Future Plans
+
+- In general, we'll release new mirror(+0.1) version every month in average.
+- For non-English users, we plan to support i18n in `v0.5.0`. Keep eyes on [[https://github.com/gogits/gogs/issues/9][Issue #9]].
+- Optimizing CPU and memory usage is big part of future releases.
+- To keep tracking on news, follow us on [[https://twitter.com/gogitservice][Twitter]].
+- Since we distribute Gogs in binary, [[http://gobuild.io][gobuild.io]] is our compile and download service provider.
+
+Thank you for taking time read this post, Gogs will grow much better with your support and feedback!

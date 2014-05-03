@@ -1,4 +1,5 @@
 #!/bin/sh -e
 
-cd /opt/blog/
-/opt/blog/cmd/blog/blog
+cd /opt/src/blog/
+/opt/src/blog/cmd/blog/blog
+

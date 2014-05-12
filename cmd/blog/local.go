@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	httpAddr     = flag.String("http", "localhost:9003", "HTTP listen address")
+	httpAddr     = flag.String("http", ":9003", "HTTP listen address")
 	contentPath  = flag.String("content", "content/", "path to content files")
 	templatePath = flag.String("template", "template/", "path to template files")
 	staticPath   = flag.String("static", "static/", "path to static files")

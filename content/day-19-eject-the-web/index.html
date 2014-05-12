@@ -1,0 +1,23 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset="UTF-8">
+    <title>Eject the Web</title>
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script>
+    $(function() {
+      $('#eject-the-web').click(function() {
+        $.ajax("/eject", function(res) {
+          if (res.error) {
+            alert(res.error);
+          }
+        });
+      });
+    })
+    </script>
+    </head>
+    <body>
+      <input type="button" value="Eject the Web">
+    </body>
+    </html>
+
